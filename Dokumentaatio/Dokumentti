@@ -1,0 +1,30 @@
+Dokumentaatio, osa 1
+
+
+aihe: vesistömallijärjestelmä
+Yksinkertainen vesistömallijärjestelmä kuvaa määriteltyjen vesistöjen nestetasetta, eli veden sisään ja ulosvirtausta järvessä tai lammessa. Tämä järjestelmä koostuu ensimmäisessä vaiheessa järvistä, joihin voi lisätä siihen laskevia jokia, kanavia tai puroja sekä vastaavasti siitä pois valuvia jokia tai muita kanavia. Vesistömallijärjestelmän avulla voidaan pitää kirjaa eri joista, sekä saada tuloksena tietyn järven vesitase, kun siihen liittyvät joet tunnetaan. Myöhemmin malliin voidaan liittää myös vaativampia fysikaalisia laskutoimituksia tai muita suureita mittaamaan vesitasetta järvessä (esim. Auringon aiheuttama haihtuminen veden pinnalta).
+
+Käyttäjät: tutkija ja opiskelija
+tutkijan toiminnot:
+-järjestelmään kirjautuminen
+--onnistuu, jos käyttäjätunnus ja salasana oikein
+-uuden joen tai padon lisääminen
+--onnistuu, jos patoa ei ole jo olemassa
+-virtauksen lisääminen tai vähentäminen joessa
+--vähentäminen onnistuu, jos järven vesitase > 0 ja vähennettävä < järven vesitase
+-järvien listaus vesitaseineen ja jokineen
+-jokien listaus virtauksineen
+
+
+opiskelijan toiminnot:
+-järvien listaus vesitaseineen ja jokineen
+-jokien listaus
+-järven tai joen etsiminen nimellä
+--onnistuu, jos löytyy listasta
+
+kaikkien käyttäjien toiminnot:
+-järvien listaus vesitaseineen ja jokineen
+-jokien listaus
+-järven tai joen etsiminen nimellä
+--onnistuu, jos löytyy listasta
+
