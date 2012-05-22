@@ -30,7 +30,8 @@ public class JokiTest {
     
     @Before
     public void setUp() {
-        jokuJoki = new Joki();
+        jokuJoki = new Joki(55);
+        
     }
     
     @After
@@ -44,6 +45,18 @@ public class JokiTest {
         jokuJoki.lisaaVirtausta(34);
         jokuJoki.vahennaVirtausta(4);
         
-        assertEquals(30, jokuJoki.getVirtaus());
+        assertEquals(85, jokuJoki.getVirtaus());
     }
+    
+    @Test
+    public void yrittaaMuuttaaVirtaustaNegatiiviseksi(){
+        jokuJoki.lisaaVirtausta(-40);
+        jokuJoki.vahennaVirtausta(40);
+        assertTrue(jokuJoki.getVirtaus()== 15);
+    }
+    
+    
+    
+    
+    
 }

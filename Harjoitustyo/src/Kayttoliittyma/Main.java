@@ -1,14 +1,18 @@
 
 package Kayttoliittyma;
 
-import java.util.Scanner;
+
 
 
 public class Main {
     public static void main(String[] args) {
-        
-      Scanner lukija = new Scanner(System.in);
-      Kayttoliittyma liittyma = new Kayttoliittyma(lukija);
+
+      Kayttoliittyma liittyma = new Kayttoliittyma();
+      liittyma.lisaaTunnus("kkoivula", "porkkana");
+      liittyma.lisaaTunnus("jvesanen", "karavaani");
+      liittyma.lisaaTunnus("yyrjönen", "kaappaus");
+      liittyma.lisaaTunnus("dsuvela", "suvisaari");
+      
       liittyma.kaynnista();  
     }
 }

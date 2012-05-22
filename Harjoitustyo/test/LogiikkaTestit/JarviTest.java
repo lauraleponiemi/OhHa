@@ -19,8 +19,7 @@ public class JarviTest {
     private int vtase;
     
     public JarviTest() {
-        this.nimi = "Päijänne";
-        this.vtase = paijanne.getTase();
+        
     }
 
     @BeforeClass
@@ -56,5 +55,20 @@ public class JarviTest {
      public void lisataanVetta(){
         paijanne.lisaaVetta(500);
         assertEquals(900, paijanne.getTase());
+     }
+     
+     
+     @Test
+     public void lisataanVettaNegatiivinenMaara(){
+         paijanne.lisaaVetta(-300);
+         paijanne.vahennaVetta(300);
+         assertTrue(paijanne.getTase()==100);
+     }
+     
+     @Test
+     public void vahennetaanVettaEnemmänKuinOn(){
+         int maara = 100 + paijanne.getTase();
+         paijanne.vahennaVetta(maara);
+         assertEquals(0, paijanne.getTase());
      }
 }

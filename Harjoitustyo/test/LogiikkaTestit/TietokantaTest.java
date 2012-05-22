@@ -43,7 +43,7 @@ public class TietokantaTest {
         jokia = new HashMap<Joki, Integer>();
         pikkuJarvi = new Jarvi(450);
         jarvia = new HashMap<Jarvi, HashMap<Joki, Integer>>();
-        pikkuJoki = new Joki();
+        pikkuJoki = new Joki(67);
     }
 
     @After

@@ -32,7 +32,7 @@ public class KayttoliittymaTest {
     @Before
     public void setUp() {
         lukija = new Scanner(System.in);
-        kayttis = new Kayttoliittyma(lukija);
+        kayttis = new Kayttoliittyma();
     }
     
     @After

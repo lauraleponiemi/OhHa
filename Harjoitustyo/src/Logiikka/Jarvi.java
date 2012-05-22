@@ -21,7 +21,11 @@ public class Jarvi {
     }
     
     public void lisaaVetta(int vetta){
+        if(vetta < 0){
+            vetta = 0;
+        }
         vesitase = vesitase + vetta;
+        
     }
     
     public void vahennaVetta(int vetta){
