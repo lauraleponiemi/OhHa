@@ -1,24 +1,24 @@
 package Kayttoliittyma;
 
+
+import Logiikka.Jarjestelma;
 import java.awt.Container;
 import java.awt.GridLayout;
-import java.util.HashMap;
-import java.util.Scanner;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 public class Kayttoliittyma {
 
-    private Scanner lukija;
-    HashMap< String, String> tunnukset;
+    
     private String kayttotunnus;
     private String salasana;
+    private Jarjestelma jarjestelma;
 
-    public Kayttoliittyma() {
-        this.lukija = lukija;
-        this.tunnukset = new HashMap< String, String>();
-        kaynnista();
+    public Kayttoliittyma(Jarjestelma jarjestelma) {
+        this.jarjestelma = jarjestelma;
+        
     }
 
 //    public void rekisteroidu() {
@@ -32,23 +32,7 @@ public class Kayttoliittyma {
 //        tunnukset.put(kayttotunnus, salasana); 
 //
 //    }
-    public void lisaaTunnus(String ktunnus, String salasana){
-        tunnukset.put(ktunnus, salasana);
-    }
 
-    public void kirjauduSisaan() {
-        while (true) {
-            String kayttotunnus = lukija.nextLine();
-            String salasana = lukija.nextLine();
-
-            for (String ktunnus : tunnukset.keySet()) {
-                if (ktunnus.equals(kayttotunnus) && salasana.equals(tunnukset.get(ktunnus))) {
-                    kaynnista();
-                }
-            }
-        }
-
-    }
 
     public void kaynnista() {
         System.out.println("Tervetuloa vesistömallijärjestelmään!");
@@ -79,8 +63,5 @@ public class Kayttoliittyma {
         container.add(lisaaNappi);
     }
 
-    public boolean onkoSalasanaOikein() {
-        
-        return false;
-    }
+
 }

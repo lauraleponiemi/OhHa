@@ -20,7 +20,7 @@ public class HenkilonLisaysKuuntelija implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Henkilo henkilo = new Henkilo(nimiKentta.getText(), salasanaKentta.getText());
-        this.henkiloDao.talleta(henkilo);
+//        Henkilo henkilo = new Henkilo(nimiKentta.getText(), salasanaKentta.getText());
+//        this.henkiloDao.talleta(henkilo);
     }
 }

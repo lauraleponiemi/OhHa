@@ -48,11 +48,6 @@ public class TietokantaTest {
 
     @After
     public void tearDown() {
-//        tkanta.setJarvet(jarvia);
-//        tkanta.setJoet(jokia);
-//        tkanta.getJarvet();
-//        tkanta.getJoet();
-
     }
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:

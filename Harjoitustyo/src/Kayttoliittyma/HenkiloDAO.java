@@ -1,13 +1,15 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
+
+
 package Kayttoliittyma;
 
-/**
- *
- * @author lleponie
- */
-public class HenkiloDAO {
+public interface HenkiloDAO {
+    void talleta(String kayttajatunnus);
     
+
+    void poista(String kayttajatunnus);
+//    void poista(String salasana);
+//    void poistaKaikki();
+//
+//    Collection<Henkilo> haeKaikki();
 }
