@@ -14,10 +14,9 @@ public class Jarvi {
     private String nimi;
     private int vesitase;
     
-    public Jarvi(int vesitase){
-        this.nimi = nimi;
+    public Jarvi(int vesitase, String nimi){
         this.vesitase = vesitase;
-        
+        this.nimi = nimi;
     }
     
     public void lisaaVetta(int vetta){

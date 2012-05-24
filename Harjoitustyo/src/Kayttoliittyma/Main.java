@@ -17,7 +17,8 @@ public class Main {
       Jarjestelma jarjestelma = new Jarjestelma(tkanta);  
       Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
       jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-
+      jarjestelma.palautaListaJarvista();
+      jarjestelma.palautaListaJoista();
       
       liittyma.kaynnista();  
     }

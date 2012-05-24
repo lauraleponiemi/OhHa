@@ -41,9 +41,9 @@ public class TietokantaTest {
     public void setUp() {
         tkanta = new Tietokanta();
         jokia = new HashMap<Joki, Integer>();
-        pikkuJarvi = new Jarvi(450);
+        pikkuJarvi = new Jarvi(450,"Päijänne");
         jarvia = new HashMap<Jarvi, HashMap<Joki, Integer>>();
-        pikkuJoki = new Joki(67);
+        pikkuJoki = new Joki(67,"Kalajoki");
     }
 
     @After

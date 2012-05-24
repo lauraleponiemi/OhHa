@@ -32,7 +32,7 @@ public class JarviTest {
     
     @Before
     public void setUp() {
-        paijanne = new Jarvi(400);
+        paijanne = new Jarvi(400, "Iso-Kalla");
         
     }
     

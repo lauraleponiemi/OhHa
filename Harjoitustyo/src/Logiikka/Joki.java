@@ -8,9 +8,9 @@ public class Joki {
     private int virtaus;
     
     
-    public Joki(int virtaus){
+    public Joki(int virtaus, String nimi){
         this.virtaus = virtaus;
-
+        this.nimi = nimi;
     }
     
     public void lisaaVirtausta(int virtausta){

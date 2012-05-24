@@ -66,6 +66,7 @@ public class JarjestelmaTest {
         jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
         
         assertTrue(jarjestelma.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma"));
+        //TODO: miksi ei toimi?
     }
     
     

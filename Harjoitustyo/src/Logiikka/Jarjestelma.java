@@ -1,6 +1,7 @@
 package Logiikka;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -33,6 +34,22 @@ public class Jarjestelma {
         return "Jokea ei löytynyt";
 
     }
+ //TODO: nämä eivät toimi :(   
+    public ArrayList palautaListaJarvista(){
+        ArrayList jarvet = new ArrayList();
+        for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
+            jarvet.add(ejarvi);
+        }       
+        return jarvet;
+    }
+    
+    public ArrayList palautaListaJoista(){
+        ArrayList joet = new ArrayList();
+        for (Joki e : tkanta.getJoet().keySet()) {
+            joet.add(e);
+        }
+        return joet;
+    }
 
     public void lisaaTunnuksetTiedostosta(File tiedosto) {
 
@@ -55,8 +72,8 @@ public class Jarjestelma {
     }
 
     public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
-        System.out.println(luokka.getClass().getCanonicalName());
+//        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
+//        System.out.println(luokka.getClass().getCanonicalName());
 
         for (String ktunnus : tunnukset.keySet()) {
             if (ktunnus.equals(kayttotunnus) && salasana.equals(tunnukset.get(ktunnus))) {

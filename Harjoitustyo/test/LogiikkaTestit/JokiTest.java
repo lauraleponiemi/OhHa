@@ -30,7 +30,7 @@ public class JokiTest {
     
     @Before
     public void setUp() {
-        jokuJoki = new Joki(55);
+        jokuJoki = new Joki(55, "Aurajoki");
         
     }
     
