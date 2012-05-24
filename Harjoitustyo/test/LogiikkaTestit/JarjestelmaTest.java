@@ -65,7 +65,7 @@ public class JarjestelmaTest {
     public void yrittaaKirjautuaJarjestelmaan(){
         jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
         
-//        assertTrue();
+        assertTrue(jarjestelma.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma"));
     }
     
     

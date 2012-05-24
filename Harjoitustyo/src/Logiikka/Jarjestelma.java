@@ -8,7 +8,7 @@ public class Jarjestelma {
 
     private Tietokanta tkanta;
     private Scanner lukija;
-    private HashMap< String, String> tunnukset;
+    public HashMap< String, String> tunnukset;
 
     public Jarjestelma(Tietokanta tkanta) {
         this.tkanta = tkanta;
@@ -35,9 +35,6 @@ public class Jarjestelma {
     }
 
     public void lisaaTunnuksetTiedostosta(File tiedosto) {
-        Scanner lukija = null;
-        String kayttajatunnus;
-        String salasana;
 
         try {
             lukija = new Scanner(tiedosto);
@@ -49,34 +46,31 @@ public class Jarjestelma {
             String rivi = lukija.nextLine();
             String[] osat = rivi.split(" ");
             tunnukset.put(osat[0], osat[1]);
-            System.out.println(osat);
+            System.out.println(tunnukset);
+//            System.out.println(osat);
         }
 //        System.out.println(tunnukset.get("Lleponiemi"));
         lukija.close();
 
     }
 
+    public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
+        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
+        System.out.println(luokka.getClass().getCanonicalName());
 
-    public void kirjauduSisaan(String kayttotunnus, String salasana) {
-        while (true) {
-            kayttotunnus = lukija.nextLine();
-            salasana = lukija.nextLine();
-  
-            
-            for (String ktunnus : tunnukset.keySet()) {
-                if (ktunnus.equals(kayttotunnus) && salasana.equals(tunnukset.get(ktunnus))) {
-                    AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta, kayttotunnus);
-                    System.out.println("Kirjautuminen onnistui. Tervetuloa tutkijoiden tietokantaan!");
-                }
-                else if(kayttotunnus.equals(" ") && salasana.equals(" ")){
-                    OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
-                    System.out.println("Kirjautuminen onnistui. Tervetuloa selailutietokantaan!");
-                }else{
-                    System.out.println("Kirjautuminen epäonnistui");
-                }
-                    
-            }
+        for (String ktunnus : tunnukset.keySet()) {
+            if (ktunnus.equals(kayttotunnus) && salasana.equals(tunnukset.get(ktunnus))) {
+                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta, kayttotunnus);
+               return ajarjestelma;
+               
+            } else if (kayttotunnus.equals("") && salasana.equals("")) {
+                OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
+                return ojarjestelma; 
+                
+            } else {
+                return null;
+            }          
         }
-
+        return null;
     }
 }
