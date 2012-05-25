@@ -20,13 +20,11 @@ public class TietokantaTest {
     private Tietokanta tkanta;
     private HashMap<Joki, Integer> jokia;
     private HashMap<Jarvi, HashMap<Joki, Integer>> jarvia;
-    private Jarvi pikkuJarvi;
+    private Jarvi isoJarvi;
     private Joki pikkuJoki;
 
     public TietokantaTest() {
-//        this.tkanta = tkanta;
-//        this.jokia = jokia;
-//        this.pikkuJarvi = pikkuJarvi;
+
     }
 
     @BeforeClass
@@ -41,9 +39,12 @@ public class TietokantaTest {
     public void setUp() {
         tkanta = new Tietokanta();
         jokia = new HashMap<Joki, Integer>();
-        pikkuJarvi = new Jarvi(450,"Päijänne");
-        jarvia = new HashMap<Jarvi, HashMap<Joki, Integer>>();
         pikkuJoki = new Joki(67,"Kalajoki");
+        jokia.put(pikkuJoki, 44);
+        isoJarvi = new Jarvi(450,"Päijänne");
+        jarvia = new HashMap<Jarvi, HashMap<Joki, Integer>>();
+        jarvia.put(isoJarvi, jokia);
+        
     }
 
     @After
@@ -54,14 +55,14 @@ public class TietokantaTest {
     //
 
     @Test
-    public void tallennetaanJokiaJaJarvia() {
-        jokia.put(pikkuJoki, 145);
-        tkanta.setJoet(jokia);
-        jarvia.put(pikkuJarvi, jokia);
-        tkanta.setJarvet(jarvia);
-        tkanta.getJarvet();
-        
-
-        assertTrue(jokia.get(pikkuJoki)== 145);
+    public void tallennetaanJokia() {
+        tkanta.setJoet(jokia);       
+        assertTrue(tkanta.getJoet().containsKey(pikkuJoki));
+    }
+    
+    @Test
+    public void tallennetaanJarvia(){
+        tkanta.setJarvet(jarvia);       
+        assertTrue(tkanta.getJarvet().containsKey(isoJarvi));
     }
 }

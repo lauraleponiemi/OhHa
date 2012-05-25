@@ -72,21 +72,18 @@ public class Jarjestelma {
     }
 
     public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-//        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
-//        System.out.println(luokka.getClass().getCanonicalName());
-
-        for (String ktunnus : tunnukset.keySet()) {
-            if (ktunnus.equals(kayttotunnus) && salasana.equals(tunnukset.get(ktunnus))) {
+        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
+        System.out.println(luokka.getClass().getCanonicalName());
+        
+        if (tunnukset.containsKey(kayttotunnus)){
+            if(tunnukset.get(kayttotunnus).equals(salasana)){
                 AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta, kayttotunnus);
-               return ajarjestelma;
-               
-            } else if (kayttotunnus.equals("") && salasana.equals("")) {
-                OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
-                return ojarjestelma; 
-                
-            } else {
-                return null;
-            }          
+                return ajarjestelma;
+            }                     
+        }
+        else if (kayttotunnus.equals("") && salasana.equals("")){
+            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
+            return ojarjestelma; 
         }
         return null;
     }

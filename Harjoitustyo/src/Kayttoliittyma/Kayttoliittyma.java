@@ -1,16 +1,11 @@
 package Kayttoliittyma;
 
-import Logiikka.AdminJarjestelma;
+
+;
 import Logiikka.Jarjestelma;
-import Logiikka.OpiskelijaJarjestelma;
-import Logiikka.Tietokanta;
-import java.awt.Container;
-import java.awt.GridLayout;
+import java.util.Scanner;
 import java.util.Scanner;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 public class Kayttoliittyma {
 
@@ -18,33 +13,19 @@ public class Kayttoliittyma {
     private String salasana;
     private Jarjestelma jarjestelma;
     private Scanner lukija;
-    
 
     public Kayttoliittyma(Jarjestelma jarjestelma) {
         this.jarjestelma = jarjestelma;
-       lukija = new Scanner(System.in);
+        lukija = new Scanner(System.in);
 
     }
 
-//    public void rekisteroidu() {
-//        System.out.println("Anna käyttäjätunnus:");
-//        System.out.println("Anna salasana:");
-//        String kayttotunnus = lukija.nextLine();
-//        String salasana = lukija.nextLine();
-//        if(salasana.length() < 6 || kayttotunnus.length() < 8){
-//            System.out.println("Käyttötunnuksesi pituuden tulee olla vähintään 8 kirjainta, ja salasanasi vähintään 6 kirjainta pitkä.");
-//        }else
-//        tunnukset.put(kayttotunnus, salasana); 
-//
-//    }
     public void kaynnista() {
         System.out.println("Tervetuloa vesistömallijärjestelmään!");
         System.out.println("Jos olet rekisteröitynyt käyttäjä, voit kirjautua järjestelmään.");
-        System.out.println("Jätä kentät tyhjäksi ja paina Enter jos et ole rekisteröitynyt käyttäjä");
-        
+        System.out.println("Jätä kentät tyhjäksi ja paina \"Enter\" jos et ole rekisteröitynyt käyttäjä");
+
         kayttajanKysyminen();
-
-
     }
 
     public void kayttajanKysyminen() {
@@ -53,23 +34,105 @@ public class Kayttoliittyma {
             kayttotunnus = lukija.nextLine();
             System.out.print("Salasana: ");
             salasana = lukija.nextLine();
-            //TODO: miksei hyväksy muita tunnuksia kuin listan viimeisen???
-           
-            Jarjestelma luokka =jarjestelma.kirjauduSisaan(kayttotunnus, salasana);
-                      
-            if(luokka==null){
-               System.out.println("Kirjautuminen epäonnistui."); 
-            }
-            else if(luokka.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma")){
+
+            Jarjestelma luokka = jarjestelma.kirjauduSisaan(kayttotunnus, salasana);
+
+            if (luokka == null) {
+                System.out.println("Kirjautuminen epäonnistui.");
+            } else if (luokka.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma")) {
                 System.out.println("Kirjautuminen onnistui. Tervetuloa tutkijoiden tietokantaan!");
+                jarjestelmaKaynnistys();
+                adminjarjestelmaKaynnistys();
+            } else {
+                System.out.println("Kirjautuminen onnistui. Tervetuloa selailutietokantaan!");
+                jarjestelmaKaynnistys();
+
             }
-            else{             
-               System.out.println("Kirjautuminen onnistui. Tervetuloa selailutietokantaan!");
-            }
-            
         }
-        
     }
 
+    public void jarjestelmaKaynnistys() {
+        System.out.println("Valitse toiminto: ");
+        System.out.println("[1] Avaa lista tietokannan järvistä");
+        System.out.println("[2] Avaa lista tietokannan joista");
+        
+        numeronKysyminen();
 
+    }
+
+    public void adminjarjestelmaKaynnistys() {
+        System.out.println("[3] Lisää uusi järvi tai muuta järven tietoja");
+        System.out.println("[4] Lisää uusi joki tai muuta joen tietoja");
+        
+        numeronKysyminen();
+    }
+
+    public void numeronKysyminen() {
+        //TODO: miten toiminnon [x] lukeminen?
+        int numero = lukija.nextInt();
+        if(numero > 0){
+            numeronToiminnallisuus(numero);
+        }
+        if(numero > 4 && numero < 7){
+            jarviNumeronToiminnallisuus(numero);
+        }
+        if(numero > 6 && numero < 9){
+            jokiNumeronToiminnallisuus(numero);
+        }
+        System.out.println("Et syöttänyt numeroa listasta");
+    }
+
+    public void numeronToiminnallisuus(int numero) {
+//        for(int i =1; i < 5; i++){
+//            
+//        }
+        if(numero == 1){
+            jarjestelma.palautaListaJarvista();
+        }
+        if(numero == 2){
+            jarjestelma.palautaListaJoista();
+        }
+        if(numero == 3){
+            jarvenKysyminen();
+        }
+        if(numero == 4){
+            joenKysyminen();
+        }
+    }
+    
+    
+    public void jarvenKysyminen(){
+        System.out.println("[5] Lisätään järvi ");
+        System.out.println("[6] Muutetaan järven tietoja");
+        System.out.println("[x] Palataan edelliseen valikkoon");
+        numeronKysyminen();
+    }
+    
+    
+    public void jarviNumeronToiminnallisuus(int numero){
+        if(numero == 5){
+            
+        }
+        else if(numero == 6){
+            
+        }
+    }
+    
+    public void joenKysyminen(){
+        System.out.println("[7] Lisätään joki");
+        System.out.println("[8] Muutetaan joen tietoja");
+        System.out.println("[x] Palataan edelliseen valikkoon");
+        numeronKysyminen();
+    }
+    
+    public void jokiNumeronToiminnallisuus(int numero){
+        if(numero == 7){
+            System.out.print("Anna joen nimi: ");
+            String nimi = lukija.nextLine();
+            
+        }
+        if(numero == 8){
+            
+        }
+    }
 }

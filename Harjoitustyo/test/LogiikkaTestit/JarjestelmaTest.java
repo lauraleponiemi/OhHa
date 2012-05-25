@@ -1,5 +1,6 @@
 package LogiikkaTestit;
 
+import Logiikka.AdminJarjestelma;
 import Logiikka.Jarjestelma;
 import Logiikka.Tietokanta;
 import java.io.File;
@@ -48,13 +49,11 @@ public class JarjestelmaTest {
     @Test
     public void yrittaaLisataTiedostosta() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-
-        
+       
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             String[] osat = rivi.split(" ");
             ttunnukset.put(osat[0], osat[1]);
- 
         }
         lukija.close();
 
@@ -63,10 +62,12 @@ public class JarjestelmaTest {
     
     @Test
     public void yrittaaKirjautuaJarjestelmaan(){
-        jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, "Oopiskelija");       
+        Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
         
-        assertTrue(jarjestelma.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma"));
-        //TODO: miksi ei toimi?
+        assertTrue(j.getClass().equals(luokka.getClass()));
+        //TODO: menee läpi, mutta onko tässä vielä jotain häikkää?
     }
     
     

@@ -45,11 +45,8 @@ public class JarviTest {
      @Test
      public void palautetaanTase() {
          paijanne.lisaaVetta(500);
-         paijanne.vahennaVetta(400);
-         
-         
-         assertEquals(500, paijanne.getTase());
-     
+         paijanne.vahennaVetta(400);        
+         assertEquals(500, paijanne.getTase());    
      }
      @Test
      public void lisataanVetta(){
@@ -70,5 +67,11 @@ public class JarviTest {
          int maara = 100 + paijanne.getTase();
          paijanne.vahennaVetta(maara);
          assertEquals(0, paijanne.getTase());
+     }
+     
+     @Test
+     public void lisataanNollaVetta(){
+         paijanne.lisaaVetta(0);
+         assertTrue(paijanne.getTase() == 400);
      }
 }

@@ -30,8 +30,7 @@ public class JokiTest {
     
     @Before
     public void setUp() {
-        jokuJoki = new Joki(55, "Aurajoki");
-        
+        jokuJoki = new Joki(55, "Aurajoki");       
     }
     
     @After
@@ -41,11 +40,14 @@ public class JokiTest {
     // The methods must be annotated with annotation @Test. For example:
     //
     @Test
-    public void muutaVirtausta() {
+    public void vahennaVirtausta() {        
+        jokuJoki.vahennaVirtausta(4);       
+        assertEquals(51, jokuJoki.getVirtaus());
+    }
+    @Test
+    public void lisaaVirtausta(){
         jokuJoki.lisaaVirtausta(34);
-        jokuJoki.vahennaVirtausta(4);
-        
-        assertEquals(85, jokuJoki.getVirtaus());
+        assertEquals(89, jokuJoki.getVirtaus());
     }
     
     @Test
@@ -53,6 +55,12 @@ public class JokiTest {
         jokuJoki.lisaaVirtausta(-40);
         jokuJoki.vahennaVirtausta(40);
         assertTrue(jokuJoki.getVirtaus()== 15);
+    }
+    
+    @Test
+    public void lisataanVirtaustaNolla(){
+        jokuJoki.lisaaVirtausta(0);
+        assertTrue(jokuJoki.getVirtaus()== 55);
     }
     
     
