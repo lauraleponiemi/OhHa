@@ -63,7 +63,7 @@ public class JarjestelmaTest {
     @Test
     public void yrittaaKirjautuaJarjestelmaan(){
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, "Oopiskelija");       
+        AdminJarjestelma luokka = new AdminJarjestelma(tkanta);       
         Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
         
         assertTrue(j.getClass().equals(luokka.getClass()));

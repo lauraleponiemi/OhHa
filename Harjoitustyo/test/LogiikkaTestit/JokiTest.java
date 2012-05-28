@@ -58,7 +58,7 @@ public class JokiTest {
     }
     
     @Test
-    public void lisataanVirtaustaNolla(){
+    public void lisataanVirtaustaNollalla(){
         jokuJoki.lisaaVirtausta(0);
         assertTrue(jokuJoki.getVirtaus()== 55);
     }

@@ -13,7 +13,7 @@ public class AdminJarjestelma extends Jarjestelma{
     private Jarjestelma jarjestelma;
     
     
-    public AdminJarjestelma(Tietokanta tkanta, String kayttajatunnus){
+    public AdminJarjestelma(Tietokanta tkanta){
             super(tkanta);
 //            this.kayttajatunnus = kayttajatunnus;
             this.jarjestelma = new Jarjestelma(tkanta);

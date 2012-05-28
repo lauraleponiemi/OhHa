@@ -16,6 +16,10 @@ public class Jarjestelma {
         tunnukset = new HashMap<String, String>();
     }
 
+    public Tietokanta getTietokanta() {
+        return tkanta;
+    }
+
     public String haeJarvi(Jarvi jarvi) {
         for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
             if (ejarvi.equals(jarvi)) {
@@ -34,16 +38,25 @@ public class Jarjestelma {
         return "Jokea ei löytynyt";
 
     }
- //TODO: nämä eivät toimi :(   
-    public ArrayList palautaListaJarvista(){
-        ArrayList jarvet = new ArrayList();
-        for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
-            jarvet.add(ejarvi);
-        }       
-        return jarvet;
+    //TODO: nämä eivät toimi :(   
+
+    public void palautaListaJarvista() {
+        if (tkanta.getJarvet().isEmpty()) {
+            System.out.println("Lista on tyhjä");
+            
+        } else {
+            System.out.println("tässä ollaan");
+            for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
+                if (!tkanta.getJarvet().keySet().isEmpty()) {
+                    for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
+                        System.out.println(ejarvi + " " + joki);
+                    }
+                }
+            }
+        }
     }
-    
-    public ArrayList palautaListaJoista(){
+
+    public ArrayList palautaListaJoista() {
         ArrayList joet = new ArrayList();
         for (Joki e : tkanta.getJoet().keySet()) {
             joet.add(e);
@@ -72,18 +85,17 @@ public class Jarjestelma {
     }
 
     public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-        AdminJarjestelma luokka = new AdminJarjestelma(tkanta, kayttotunnus);
-        System.out.println(luokka.getClass().getCanonicalName());
-        
-        if (tunnukset.containsKey(kayttotunnus)){
-            if(tunnukset.get(kayttotunnus).equals(salasana)){
-                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta, kayttotunnus);
+//        AdminJarjestelma luokka = new AdminJarjestelma(tkanta);
+//        System.out.println(luokka.getClass().getCanonicalName());
+
+        if (tunnukset.containsKey(kayttotunnus)) {
+            if (tunnukset.get(kayttotunnus).equals(salasana)) {
+                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
                 return ajarjestelma;
-            }                     
-        }
-        else if (kayttotunnus.equals("") && salasana.equals("")){
+            }
+        } else if (kayttotunnus.equals("") && salasana.equals("")) {
             OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
-            return ojarjestelma; 
+            return ojarjestelma;
         }
         return null;
     }
