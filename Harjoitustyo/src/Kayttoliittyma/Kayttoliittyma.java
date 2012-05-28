@@ -1,6 +1,8 @@
 package Kayttoliittyma;
 
 ;
+
+
 import Logiikka.*;
 import java.util.Scanner;
 import java.util.Scanner;
@@ -10,7 +12,6 @@ import java.util.Scanner;
 import java.util.Scanner;
 import java.util.Scanner;
 import java.util.Scanner;
-import Logiikka.AdminJarjestelma;
 import Logiikka.Jarjestelma;
 import java.util.Scanner;
 import java.util.Scanner;
@@ -91,21 +92,55 @@ public class Kayttoliittyma {
 
     public void numeronKysyminen() {
 
-        String komento = lukija.nextLine();
+//        char komento = lukija.next().charAt(0);
+//        for (int i = 1; i < 5; i++) {
+//            if (komento.equals(i)) {
+//                numeronToiminnallisuus(komento);
+//            }
+//        }
+//        if (AdminJarjestelma.class.isInstance(jarjestelma)) {
+//
+//            if (komento.equals("5") || komento.equals("6")) {
+//                jarviNumeronToiminnallisuus(komento);
+//            }
+//            if (komento.equals("7") || komento.equals("8")) {
+//                jokiNumeronToiminnallisuus(komento);
+//            }
+//        } else if (komento.equals("x")) {
+//            jarjestelmaTulostus();
+//            if (AdminJarjestelma.class.isInstance(jarjestelma)) {
+//                adminjarjestelmaTulostus();
+//            }
+//            numeronKysyminen();
+//        } else {
+//            System.out.println("Et syöttänyt numeroa listasta");
+//        }
+//        
+
+
+
+
+
+
+
+
+        char komento = lukija.next().charAt(0);
         for (int i = 1; i < 5; i++) {
-            if (komento.equals(i)) {
+            if (komento == i) {
                 numeronToiminnallisuus(komento);
             }
         }
         if (AdminJarjestelma.class.isInstance(jarjestelma)) {
 
-            if (komento.equals("5") || komento.equals("6")) {
+            if (komento == '5' || komento == '6') {
                 jarviNumeronToiminnallisuus(komento);
             }
-            if (komento.equals("7") || komento.equals("8")) {
+            if (komento == '7' || komento == '8') {
                 jokiNumeronToiminnallisuus(komento);
             }
-        } else if (komento.equals("x")) {
+        }
+
+        if (komento == 'x') {
             jarjestelmaTulostus();
             if (AdminJarjestelma.class.isInstance(jarjestelma)) {
                 adminjarjestelmaTulostus();
@@ -114,24 +149,23 @@ public class Kayttoliittyma {
         } else {
             System.out.println("Et syöttänyt numeroa listasta");
         }
-        
-        
+
     }
 
-    public void numeronToiminnallisuus(String toiminto) {
+    public void numeronToiminnallisuus(char toiminto) {
 //        for(int i =1; i < 5; i++){
 //            
 //        }
-        if (toiminto.equals("1")) {
+        if (toiminto == 1) {
             jarjestelma.palautaListaJarvista();
         }
-        if (toiminto.equals("2")) {
+        if (toiminto == 2) {
             jarjestelma.palautaListaJoista();
         }
-        if (toiminto.equals("3") && AdminJarjestelma.class.isInstance(jarjestelma)) {
+        if (toiminto == 3 && AdminJarjestelma.class.isInstance(jarjestelma)) {
             jarvenKysyminen();
         }
-        if (toiminto.equals("4") && AdminJarjestelma.class.isInstance(jarjestelma)) {
+        if (toiminto == 4 && AdminJarjestelma.class.isInstance(jarjestelma)) {
             joenKysyminen();
         }
     }
@@ -143,12 +177,11 @@ public class Kayttoliittyma {
         numeronKysyminen();
     }
 
-    public void jarviNumeronToiminnallisuus(String toiminto) {
-        if (toiminto.equals("5") ) {
-        } else if (toiminto.equals("6")) {
+    public void jarviNumeronToiminnallisuus(char toiminto) {
+        if (toiminto == 5) {
+        } else if (toiminto == 6) {
         }
     }
-
     public void joenKysyminen() {
         System.out.println("[7] Lisätään joki");
         System.out.println("[8] Muutetaan joen tietoja");
@@ -156,13 +189,13 @@ public class Kayttoliittyma {
         numeronKysyminen();
     }
 
-    public void jokiNumeronToiminnallisuus(String toiminto) {
-        if (toiminto.equals("7")) {
+    public void jokiNumeronToiminnallisuus(char toiminto) {
+        if (toiminto == 7) {
             System.out.print("Anna joen nimi: ");
             String nimi = lukija.nextLine();
 
         }
-        if (toiminto.equals("8")) {
+        if (toiminto == 8) {
         }
     }
 }
