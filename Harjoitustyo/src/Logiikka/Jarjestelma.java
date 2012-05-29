@@ -38,30 +38,71 @@ public class Jarjestelma {
         return "Jokea ei löytynyt";
 
     }
-    //TODO: nämä eivät toimi :(   
+
+    public void lisaaJarvi(int vesitase, String nimi) {
+        Jarvi jarvi = new Jarvi(vesitase, nimi);
+        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+        HashMap<Jarvi, HashMap<Joki, Integer>> uudenJarvenMap = new HashMap<Jarvi, HashMap<Joki, Integer>>();
+        uudenJarvenMap.put(jarvi, jokia);
+        tkanta.setJarvet(uudenJarvenMap);
+    }
+
+    public void lisaaJoki(int virtaus, String nimi) {
+        Joki joki = new Joki(virtaus, nimi);
+        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+        jokia.put(joki, virtaus);
+        //TODO
+    }
+
+    public void poistaJarvi(String nimi) {
+        if (!tkanta.getJarvet().keySet().isEmpty()) {
+            for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+                if (jarvi.getNimi().equals(nimi)) {
+                    tkanta.getJarvet().remove(jarvi);
+                    //TODO: ^ poistaako järven vai vain joki-hashmapin?
+                }
+            }
+        }
+    }
+
+    public void poistaJoki(String nimi) {
+        if (!tkanta.getJoet().keySet().isEmpty()) {
+            for (Joki joki : tkanta.getJoet().keySet()) {
+                if (joki.getNimi().equals(nimi)) {
+                    tkanta.getJoet().remove(joki);
+                    //TODO ^poistaako joen, vai vain integerin?
+                }
+            }
+        }
+    }
 
     public void palautaListaJarvista() {
         if (tkanta.getJarvet().isEmpty()) {
-            System.out.println("Lista on tyhjä");
-            
+            System.out.println("Lista järvistä on tyhjä");
+
         } else {
-            System.out.println("tässä ollaan");
             for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
                 if (!tkanta.getJarvet().keySet().isEmpty()) {
                     for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
-                        System.out.println(ejarvi + " " + joki);
+                        System.out.println(ejarvi + "\n" + "   järveen laskevat joet: " + joki);
                     }
                 }
             }
         }
     }
 
-    public ArrayList palautaListaJoista() {
-        ArrayList joet = new ArrayList();
-        for (Joki e : tkanta.getJoet().keySet()) {
-            joet.add(e);
+    public void palautaListaJoista() {
+        if (tkanta.getJoet().isEmpty()) {
+            System.out.println("Lista joista on tyhjä");
+        } else {
+            for (Joki e : tkanta.getJoet().keySet()) {
+                System.out.println(e);
+            }
         }
-        return joet;
+        //TODO miksi palauttaa saman tulostuksen kuin järvissä?????
+
+
+
     }
 
     public void lisaaTunnuksetTiedostosta(File tiedosto) {

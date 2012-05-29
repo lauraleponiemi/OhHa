@@ -41,7 +41,7 @@ public class Joki {
     
     @Override
     public String toString(){
-        return nimi+"; virtaus tässä joessa on "+virtaus+" kuutioneliömetriä";
+        return nimi+"("+virtaus+")";
     }
     
     

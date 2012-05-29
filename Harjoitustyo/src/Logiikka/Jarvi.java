@@ -18,6 +18,7 @@ public class Jarvi {
         this.vesitase = vesitase;
         this.nimi = nimi;
     }
+
     
     public void lisaaVetta(int vetta){
         if(vetta < 0){
@@ -43,7 +44,7 @@ public class Jarvi {
     }
     
     public String toString(){
-        return nimi+"; vesitase tässä järvessä on "+ vesitase +" kuutiometriä";
+        return nimi+"("+ vesitase+")" ;
     }
     
     
