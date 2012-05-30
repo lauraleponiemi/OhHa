@@ -1,8 +1,6 @@
 package LogiikkaTestit;
 
-import Logiikka.AdminJarjestelma;
-import Logiikka.Jarjestelma;
-import Logiikka.Tietokanta;
+import Logiikka.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -12,16 +10,16 @@ import static org.junit.Assert.*;
 
 public class JarjestelmaTest {
 
-    private Tietokanta tkanta;
+    
     private Jarjestelma jarjestelma;
     File tiedosto;
     private Scanner lukija;
-    private HashMap <String, String> ttunnukset;
+    private HashMap<String, String> ttunnukset;
 
     public JarjestelmaTest() throws FileNotFoundException {
         tiedosto = new File("tunnuksetTest.txt");
         lukija = new Scanner(tiedosto);
-        ttunnukset = new HashMap <String, String>();
+        ttunnukset = new HashMap<String, String>();
     }
 
     @BeforeClass
@@ -34,7 +32,8 @@ public class JarjestelmaTest {
 
     @Before
     public void setUp() {
-        tkanta = new Tietokanta();
+       
+        Tietokanta tkanta = new Tietokanta();
         jarjestelma = new Jarjestelma(tkanta);
 
     }
@@ -49,7 +48,7 @@ public class JarjestelmaTest {
     @Test
     public void yrittaaLisataTiedostosta() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-       
+
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             String[] osat = rivi.split(" ");
@@ -59,15 +58,67 @@ public class JarjestelmaTest {
 
         assertTrue(ttunnukset.get("Hharjoittelija").equals("tapanila"));
     }
-    
+
     @Test
-    public void yrittaaKirjautuaJarjestelmaan(){
+    public void onnistuuKirjautuminenJarjestelmaan() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-        AdminJarjestelma luokka = new AdminJarjestelma(tkanta);       
+        AdminJarjestelma luokka = new AdminJarjestelma(jarjestelma.getTietokanta());
         Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
-        
+
         assertTrue(j.getClass().equals(luokka.getClass()));
         //TODO: menee läpi, mutta onko tässä vielä jotain häikkää?
+    }
+//
+//    @Test
+//    public void epaonnistuuKirjautumaanJarjestelmaan() {
+//        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+//        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
+//        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
+//
+//        assertFalse(j.getClass().equals(luokka.getClass()));
+//        
+//    }
+    
+    @Test
+    public void lisaaJoki(){
+        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        Joki joki = new Joki(22, "hhh");
+        assertTrue(jarjestelma.palautaJoki("Testijoki").getClass().equals(joki.getClass()));
+    }
+    
+
+    @Test
+    public void yrittaaLisataJoenVirtausta() {
+       // Joki tjoki = new Joki(66, "Testijoki");
+        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaVirtaustaJoessa("Testijoki", 4);
+        assertEquals(70, jarjestelma.palautaJoki("Testijoki").getVirtaus());
+
+    }
+    
+    
+    @Test
+    public void yrittaaVahentaaVirtaustaJoessa(){
+        Joki tjoki = new Joki(44, "Hjoki");
+        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.vahennaVirtaustaJoessa("Hjoki", 4);
+        assertEquals(40, tjoki.getVirtaus());
+        
+    }
+    
+    @Test
+    public void yrittaaPoistaaJarvea(){
+        
+    }
+    
+    @Test
+    public void yrittaaPoistaaJokea(){
+        
+    }
+    
+    @Test
+    public void yrittaaPalauttaaListaaJoista(){
+        
     }
     
     

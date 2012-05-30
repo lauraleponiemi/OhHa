@@ -4,28 +4,19 @@ package Kayttoliittyma;
 
 
 import Logiikka.*;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import java.util.Scanner;
-import Logiikka.Jarjestelma;
-import java.util.Scanner;
-import java.util.Scanner;
+
+
+
+
 import Logiikka.Jarjestelma;
 import Logiikka.Tietokanta;
-import java.util.Scanner;
+
 import java.util.Scanner;
 import Logiikka.AdminJarjestelma;
 import Logiikka.Jarjestelma;
-import java.util.Scanner;
-import java.util.Scanner;
+
 import Logiikka.Jarjestelma;
-import java.util.Scanner;
-import java.util.Scanner;
+
 
 
 
@@ -115,7 +106,7 @@ public class Kayttoliittyma {
 //            }
 //        }
         if (komento == '1' || komento == '2' || komento == '3' || komento == '4') {
- 
+
             numeronToiminnallisuus(komento);
         }
 
@@ -134,15 +125,18 @@ public class Kayttoliittyma {
             if (AdminJarjestelma.class.isInstance(jarjestelma)) {
                 adminjarjestelmaTulostus();
             }
-            syotteenKysyminen(komento);
-        } 
-        else 
-            System.out.println("Et syöttänyt numeroa listasta");
-        
+            komento = lukija.next().charAt(0);
+            if (komento == '0') {
+                System.out.println("Olet poistunut järjestelmästä, tervetuloa uudelleen!");
+                syotteenKysyminen(komento);
+            } else {
+                System.out.println("Et syöttänyt numeroa listasta");
+            }
 
-    }
+        }
+        }
 
-
+    
 
     public void numeronToiminnallisuus(char toiminto) {
 //        for(int i =1; i < 5; i++){
@@ -172,9 +166,9 @@ public class Kayttoliittyma {
 
     public void jarviNumeronToiminnallisuus(char toiminto) {
         if (toiminto == '5') {
-            System.out.print("Anna järven nimi: ");
+            System.out.println("Anna järven nimi: ");
             String nimi = lukija.nextLine();
-            System.out.print("Anna järven vesitase: ");           
+            System.out.println("Anna järven vesitase: ");
             int vesitase = lukija.nextInt();
             jarjestelma.lisaaJarvi(vesitase, nimi);
 
@@ -231,8 +225,9 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna virtaus: ");
             int virtaus = lukija.nextInt();
-            jarjestelma.lisaaJoki(virtaus, nimi);
-            //TODO tee lisaaJoki-metodi jarjestelma-luokkaan
+            System.out.print("Anna järven nimi, mihin joki laskee:");
+            String jnimi = lukija.nextLine();
+            jarjestelma.lisaaJoki(virtaus, nimi, jnimi);
         }
         if (toiminto == '8') {
             System.out.println("[d] Joen poistaminen tietokannasta");
@@ -242,20 +237,30 @@ public class Kayttoliittyma {
 
         }
     }
-    
-    public void jokiTietojenMuuttaminen(){
+
+    public void jokiTietojenMuuttaminen() {
         char komento = lukija.next().charAt(0);
-        if(komento == 'd'){
-            
+        if (komento == 'd') {
+            System.out.print("Anna poistettavan joen nimi: ");
+            String nimi = lukija.nextLine();
+            jarjestelma.poistaJoki(nimi);
         }
-        if(komento == 'e'){
-            
+        if (komento == 'e') {
+            System.out.print("Anna joen nimi, jonka virtausta lisätään:");
+            String nimi = lukija.nextLine();
+            System.out.print("Anna lisättävä määrä:");
+            int virtaus = lukija.nextInt();
+            //TODO: tee metodi virtauksen lisäämiseen
         }
-        if(komento == 'f'){
-            
+        if (komento == 'f') {
+            System.out.print("Anna joen nimi, jonka virtausta vähennetään:");
+            String nimi = lukija.nextLine();
+            System.out.print("Anna vähennettävä määrä:");
+            int virtaus = lukija.nextInt();
+            //TODO: tee virtauksen vähentäminen
         }
-        if(komento == 'x'){
-            
+        if (komento == 'x') {
+            syotteenKysyminen(komento);
         }
     }
 }

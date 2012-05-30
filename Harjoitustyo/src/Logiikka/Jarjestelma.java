@@ -29,6 +29,26 @@ public class Jarjestelma {
         return "Jarvea ei löytynyt";
     }
 
+    public Jarvi haeJarviNimella(String nimi) {
+        for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
+            if (ejarvi.getNimi().equals(nimi)) {
+                return ejarvi;
+            }else{
+                System.out.println("Järveä ei löytynyt tietokannasta");
+            }
+        }return null ;
+    }
+
+    public boolean onkoJarviTietokannassa(String nimi) {
+        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+            if (jarvi.getNimi().equals(nimi)) {
+                return true;
+            }
+            System.out.println("Järveä ei ole tietokannassa, luo ensin järvi mihin joki voidaan liittää");
+        }
+        return false;
+    }
+
     public String haeJoki(Joki joki) {
         for (Joki ejoki : tkanta.getJoet().keySet()) {
             if (ejoki.equals(joki)) {
@@ -37,6 +57,14 @@ public class Jarjestelma {
         }
         return "Jokea ei löytynyt";
 
+    }
+    
+    public Joki palautaJoki(String nimi){
+        for (Joki joki : tkanta.getJoet().keySet()) {
+            if(joki.getNimi().equals(nimi)){
+                return joki;
+            }
+        }return null;
     }
 
     public void lisaaJarvi(int vesitase, String nimi) {
@@ -47,11 +75,62 @@ public class Jarjestelma {
         tkanta.setJarvet(uudenJarvenMap);
     }
 
-    public void lisaaJoki(int virtaus, String nimi) {
-        Joki joki = new Joki(virtaus, nimi);
-        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-        jokia.put(joki, virtaus);
-        //TODO
+    public void lisaaVettaJarvessa(String nimi, int vetta) {
+        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+            if (jarvi.getNimi().equals(nimi)) {
+                jarvi.lisaaVetta(vetta);
+            } else {
+                System.out.println("Järveä ei löytynyt tietokannasta");
+            }
+        }
+    }
+
+    public void vahennaVettaJarvessa(String nimi, int vetta) {
+        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+            if (jarvi.getNimi().equals(nimi)) {
+                jarvi.vahennaVetta(vetta);
+            } else {
+                System.out.println("Järveä ei löytynyt tietokannasta");
+            }
+        }
+    }
+
+    public void lisaaJoki(int virtaus, String nimi, String jnimi) {
+        if (onkoJarviTietokannassa(jnimi) == true) {
+            Joki joki = new Joki(virtaus, nimi);
+            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+            jokia.put(joki, virtaus);
+            HashMap<Jarvi, HashMap<Joki, Integer>> uusijarvi = new HashMap<Jarvi, HashMap<Joki, Integer>>();
+            uusijarvi.put(haeJarviNimella(jnimi), jokia);    
+        }
+
+    }
+    
+    public void lisaaJokiOlio(){
+        
+    }
+    
+   
+
+    public void lisaaVirtaustaJoessa(String nimi, int virtausta) {
+        for (Joki joki : tkanta.getJoet().keySet()) {
+            if (joki.getNimi().equals(nimi)) {
+                joki.lisaaVirtausta(virtausta);
+            } else {
+                System.out.println("Jokea ei löytynyt tietokannasta");
+            }
+
+        }
+    }
+
+    public void vahennaVirtaustaJoessa(String nimi, int virtausta) {
+        for (Joki joki : tkanta.getJoet().keySet()) {
+            if (joki.getNimi().equals(nimi)) {
+                joki.vahennaVirtausta(virtausta);
+            } else {
+                System.out.println("Jokea ei löytynyt tietokannasta");
+            }
+        }
     }
 
     public void poistaJarvi(String nimi) {
@@ -99,10 +178,6 @@ public class Jarjestelma {
                 System.out.println(e);
             }
         }
-        //TODO miksi palauttaa saman tulostuksen kuin järvissä?????
-
-
-
     }
 
     public void lisaaTunnuksetTiedostosta(File tiedosto) {
@@ -118,9 +193,7 @@ public class Jarjestelma {
             String[] osat = rivi.split(" ");
             tunnukset.put(osat[0], osat[1]);
             System.out.println(tunnukset);
-//            System.out.println(osat);
         }
-//        System.out.println(tunnukset.get("Lleponiemi"));
         lukija.close();
 
     }
