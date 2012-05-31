@@ -19,7 +19,6 @@ public class TietokantaTest {
 
     private Tietokanta tkanta;
     private HashMap<Joki, Integer> jokia;
-    private HashMap<Jarvi, HashMap<Joki, Integer>> jarvia;
     private Jarvi isoJarvi;
     private Joki pikkuJoki;
 
@@ -42,8 +41,7 @@ public class TietokantaTest {
         pikkuJoki = new Joki(67,"Kalajoki");
         jokia.put(pikkuJoki, 44);
         isoJarvi = new Jarvi(450,"Päijänne");
-        jarvia = new HashMap<Jarvi, HashMap<Joki, Integer>>();
-        jarvia.put(isoJarvi, jokia);
+
         
     }
 
@@ -61,8 +59,8 @@ public class TietokantaTest {
     }
     
     @Test
-    public void tallennetaanJarvia(){
-        tkanta.setJarvet(jarvia);       
+    public void tallennetaanJarvi(){
+        tkanta.setJarvi(isoJarvi,jokia);       
         assertTrue(tkanta.getJarvet().containsKey(isoJarvi));
     }
 }

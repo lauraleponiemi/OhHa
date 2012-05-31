@@ -20,10 +20,24 @@ public class Jarjestelma {
         return tkanta;
     }
 
+    public void lisaaJarvi(int vesitase, String nimi) {
+//        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+//            if (jarvi.getNimi().equals(nimi)) {
+//                System.out.println("Järvi on jo tietokannassa. Siirry muuttamaan järven tietoja.");
+//            } else {
+        Jarvi jarvi = new Jarvi(vesitase, nimi);
+        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+        tkanta.setJarvi(jarvi, jokia);
+// TODO miksei kommentoitu koodi toimi ??
+//            }
+//        }
+
+    }
+
     public String haeJarvi(Jarvi jarvi) {
         for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
             if (ejarvi.equals(jarvi)) {
-                return ejarvi.toString();
+                return ejarvi.getNimi();
             }
         }
         return "Jarvea ei löytynyt";
@@ -33,10 +47,11 @@ public class Jarjestelma {
         for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
             if (ejarvi.getNimi().equals(nimi)) {
                 return ejarvi;
-            }else{
+            } else {
                 System.out.println("Järveä ei löytynyt tietokannasta");
             }
-        }return null ;
+        }
+        return null;
     }
 
     public boolean onkoJarviTietokannassa(String nimi) {
@@ -44,35 +59,49 @@ public class Jarjestelma {
             if (jarvi.getNimi().equals(nimi)) {
                 return true;
             }
-            System.out.println("Järveä ei ole tietokannassa, luo ensin järvi mihin joki voidaan liittää");
+            System.out.println("Tarkista oikeinkirjoitus, tai sitten järveä ei ole tietokannassa, luo ensin järvi mihin voi liittää joen");
         }
         return false;
+    }
+
+    public void lisaaJoki(int virtaus, String nimi, String jnimi) {
+        if (onkoJarviTietokannassa(jnimi) == true) {
+            Joki joki = new Joki(virtaus, nimi);
+            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+            jokia.put(joki, virtaus);
+            tkanta.setJoet(jokia);
+//            tkanta.setJarvi(haeJarviNimella("jnimi"), jokia.put(joki, virtaus));
+            for (Jarvi j : tkanta.getJarvet().keySet()) {
+                if (j.getNimi().equals(jnimi)) {
+                    for (Joki jj : tkanta.getJarvet().get(j).keySet()) {
+                        if (!tkanta.getJarvet().get(j).containsKey(jj)) {
+                            tkanta.getJarvet().get(j).put(joki, virtaus);
+                        } else {
+                            System.out.println("Joki on jo tietokannassa.");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public String haeJoki(Joki joki) {
         for (Joki ejoki : tkanta.getJoet().keySet()) {
             if (ejoki.equals(joki)) {
-                return ejoki.toString();
+                return ejoki.getNimi();
             }
         }
         return "Jokea ei löytynyt";
-
     }
     
-    public Joki palautaJoki(String nimi){
+//TODO käytetäänkö tätä metodia missään????
+    public Joki palautaJoki(String nimi) {
         for (Joki joki : tkanta.getJoet().keySet()) {
-            if(joki.getNimi().equals(nimi)){
+            if (joki.getNimi().equals(nimi)) {
                 return joki;
             }
-        }return null;
-    }
-
-    public void lisaaJarvi(int vesitase, String nimi) {
-        Jarvi jarvi = new Jarvi(vesitase, nimi);
-        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-        HashMap<Jarvi, HashMap<Joki, Integer>> uudenJarvenMap = new HashMap<Jarvi, HashMap<Joki, Integer>>();
-        uudenJarvenMap.put(jarvi, jokia);
-        tkanta.setJarvet(uudenJarvenMap);
+        }
+        return null;
     }
 
     public void lisaaVettaJarvessa(String nimi, int vetta) {
@@ -95,22 +124,8 @@ public class Jarjestelma {
         }
     }
 
-    public void lisaaJoki(int virtaus, String nimi, String jnimi) {
-        if (onkoJarviTietokannassa(jnimi) == true) {
-            Joki joki = new Joki(virtaus, nimi);
-            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-            jokia.put(joki, virtaus);
-            HashMap<Jarvi, HashMap<Joki, Integer>> uusijarvi = new HashMap<Jarvi, HashMap<Joki, Integer>>();
-            uusijarvi.put(haeJarviNimella(jnimi), jokia);    
-        }
-
+    public void lisaaJokiOlio(Joki joki) {
     }
-    
-    public void lisaaJokiOlio(){
-        
-    }
-    
-   
 
     public void lisaaVirtaustaJoessa(String nimi, int virtausta) {
         for (Joki joki : tkanta.getJoet().keySet()) {

@@ -14,8 +14,9 @@ public class Tietokanta {
         this.jarvet= new HashMap< Jarvi, HashMap <Joki, Integer>>();
     }
 
-    public void setJarvet(HashMap<Jarvi, HashMap<Joki, Integer>> jarvet) {
-        this.jarvet = jarvet;
+    public void setJarvi(Jarvi j, HashMap<Joki, Integer> joet) {
+        jarvet.put(j, joet);
+        
     }
 
     public void setJoet(HashMap<Joki, Integer> joet) {

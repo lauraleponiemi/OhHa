@@ -27,10 +27,8 @@ public class Main {
       HashMap <Joki, Integer> joet = new HashMap <Joki, Integer>();
       joet.put(hjoki, 15);
       joet.put(hjoki, 44);
-      HashMap <Jarvi,HashMap<Joki, Integer>> jarvet = new HashMap <Jarvi, HashMap<Joki, Integer>>();
-      jarvet.put(jjarvi, joet);
       tkanta.setJoet(joet);
-      tkanta.setJarvet(jarvet);
+      tkanta.setJarvi(jjarvi,joet);
       
       liittyma.kaynnista();  
     }
