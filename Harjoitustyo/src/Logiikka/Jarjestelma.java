@@ -156,7 +156,7 @@ public class Jarjestelma {
      * @param nimi joen nimi
      * @return Joki joki
      */
-    public Joki palautaJoki(String nimi) {
+    public Joki haeJokiNimella(String nimi) {
         for (Joki joki : tkanta.getJoet().keySet()) {
             if (joki.getNimi().equals(nimi)) {
                 return joki;

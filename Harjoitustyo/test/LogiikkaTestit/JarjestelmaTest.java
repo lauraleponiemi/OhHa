@@ -45,40 +45,6 @@ public class JarjestelmaTest {
     //
 
     @Test
-    public void yrittaaLisataTiedostosta() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-
-        while (lukija.hasNextLine()) {
-            String rivi = lukija.nextLine();
-            String[] osat = rivi.split(" ");
-            ttunnukset.put(osat[0], osat[1]);
-        }
-        lukija.close();
-
-        assertTrue(ttunnukset.get("Hharjoittelija").equals("tapanila"));
-    }
-
-    @Test
-    public void onnistuuKirjautuminenJarjestelmaan() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-        AdminJarjestelma luokka = new AdminJarjestelma(jarjestelma.getTietokanta());
-        Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
-
-        assertTrue(j.getClass().equals(luokka.getClass()));
-        //TODO: menee läpi, mutta onko tässä vielä jotain häikkää?
-    }
-//
-//    @Test
-//    public void epaonnistuuKirjautumaanJarjestelmaan() {
-//        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-//        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
-//        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
-//
-//        assertFalse(j.getClass().equals(luokka.getClass()));
-//        
-//    }
-
-    @Test
     public void lisaaJarvi() {
 
         assertNotNull(jarjestelma.haeJarviNimella("Päijänne"));
@@ -131,7 +97,7 @@ public class JarjestelmaTest {
     @Test
     public void lisaaJokiToimii() {
         jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
-        assertNotNull(jarjestelma.palautaJoki("Testijoki"));
+        assertNotNull(jarjestelma.haeJokiNimella("Testijoki"));
     }
 
     @Test
@@ -156,8 +122,8 @@ public class JarjestelmaTest {
             }
         }
         assertEquals(jarjestelma.haeJoki(suojoki), "Suojoki");
-        assertFalse(jarjestelma.haeJoki(suojoki) == "Päijänne");
-        assertFalse(jarjestelma.haeJoki(suojoki) == "Kalajoki");
+        assertFalse(jarjestelma.haeJoki(suojoki).equals("Päijänne"));
+        assertFalse(jarjestelma.haeJoki(suojoki).equals("Kalajoki"));
     }
     
 //    @Test            (käytetäänkö "palautaJoki-metodia" missään?)
@@ -188,7 +154,7 @@ public class JarjestelmaTest {
     public void yrittaaLisataJoenVirtausta() {
         jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
         jarjestelma.lisaaVirtaustaJoessa("Testijoki", 4);
-        assertEquals(70, jarjestelma.palautaJoki("Testijoki").getVirtaus());
+        assertEquals(70, jarjestelma.haeJokiNimella("Testijoki").getVirtaus());
 
     }
 
@@ -197,21 +163,79 @@ public class JarjestelmaTest {
         jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
         jarjestelma.vahennaVirtaustaJoessa("Hjoki", 4);
 
-        assertTrue(jarjestelma.palautaJoki("Hjoki").getVirtaus() == 40);
+        assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus() == 40);
 
     }
     
     
 
     @Test
-    public void yrittaaPoistaaJarvea() {
+    public void osaaPoistaaJarven() {
+        jarjestelma.poistaJarvi("Päijänne");
+        
+        assertNull(jarjestelma.haeJarviNimella("Päijänne"));
     }
 
     @Test
-    public void yrittaaPoistaaJokea() {
+    public void osaaPoistaaJoen() {
+        
+        jarjestelma.lisaaJoki(33, "Siikajoki", "Päijänne");
+        jarjestelma.poistaJoki("Siikajoki");
+
+        assertNull(jarjestelma.haeJokiNimella("Siikajoki"));
+        assertNull(jarjestelma.haeJokiNimella("Siikajoki").getVirtaus()); //TODO miksi rikkoo?
+        assertNotNull(jarjestelma.haeJarviNimella("Päijänne"));
     }
 
     @Test
     public void yrittaaPalauttaaListaaJoista() {
+        jarjestelma.lisaaJoki(23, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJoki(12, "Koskijoki", "Päijänne");
+        
+//        assertArrayEquals(jarjestelma.palautaListaJoista());  //TODO miten tämä tehdään????
     }
+    
+    @Test
+    public void yrittaaPalauttaaListaaJarvista(){
+        jarjestelma.lisaaJarvi(567, "Laatokka");
+        jarjestelma.palautaListaJarvista();
+        
+//        assertArrayEquals();                                   //TODO miten tämä tehdään??
+    }
+    
+        @Test
+    public void yrittaaLisataTiedostosta() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+
+        while (lukija.hasNextLine()) {
+            String rivi = lukija.nextLine();
+            String[] osat = rivi.split(" ");
+            ttunnukset.put(osat[0], osat[1]);
+        }
+        lukija.close();
+
+        assertTrue(ttunnukset.get("Hharjoittelija").equals("tapanila"));
+        assertFalse(ttunnukset.get("Thalonen").equals("jokusalasana"));
+        assertNull(ttunnukset.get("Hhokkanen"));
+    }
+
+    @Test
+    public void onnistuuKirjautuminenJarjestelmaan() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        AdminJarjestelma luokka = new AdminJarjestelma(jarjestelma.getTietokanta());
+        Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
+
+        assertTrue(j.getClass().equals(luokka.getClass()));
+        //TODO: menee läpi, mutta onko tässä vielä jotain häikkää?
+    }
+//
+//    @Test
+//    public void epaonnistuuKirjautumaanJarjestelmaan() {
+//        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+//        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
+//        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
+//
+//        assertFalse(j.getClass().equals(luokka.getClass()));
+//        
+//    }
 }
