@@ -20,15 +20,15 @@ public class AdminJarjestelma extends Jarjestelma{
             
     }
     
-    public void lisaaJoki(Joki jokujoki, int virtaus){
+    private void lisaaJoki(Joki jokujoki, int virtaus){
         tkanta.getJoet().put(jokujoki, virtaus);
         
     }
-    public void lisaaJarvi(Jarvi jokujarvi){
+    private void lisaaJarvi(Jarvi jokujarvi){
         tkanta.getJarvet().put(jokujarvi, new HashMap <Joki, Integer>());
     }
     
-    public void poistaJoki(Joki jokujoki){
+    private void poistaJoki(Joki jokujoki){
         tkanta.getJoet().remove(jokujoki);
     }
     

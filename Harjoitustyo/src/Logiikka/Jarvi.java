@@ -19,7 +19,11 @@ public class Jarvi {
         this.nimi = nimi;
     }
 
-    
+    /**
+     * Metodi lisaa vetta jarveen. Parametrina annettu "vetta" lisätään jarven taseeseen.
+     * 
+     * @param vetta lisättävä vesimäärä (> 0)
+     */
     public void lisaaVetta(int vetta){
         if(vetta < 0){
             vetta = 0;
@@ -28,6 +32,10 @@ public class Jarvi {
         
     }
     
+    /**
+     * metodi vähentää vettä järvestä. Parametrina annettu "vetta" vähennetään jarven taseesta.
+     * @param vetta vähennettävä vesimäärä (> 0)
+     */
     public void vahennaVetta(int vetta){
         if(vesitase >= vetta){
             vesitase = vesitase -vetta;

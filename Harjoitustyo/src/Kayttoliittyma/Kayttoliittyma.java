@@ -3,17 +3,17 @@ package Kayttoliittyma;
 ;
 
 
+
+
+
+
+
 import Logiikka.*;
+import java.util.Scanner;
 
-
-
-
-import Logiikka.Jarjestelma;
-import Logiikka.Tietokanta;
 
 import java.util.Scanner;
 import Logiikka.AdminJarjestelma;
-import Logiikka.Jarjestelma;
 
 import Logiikka.Jarjestelma;
 
@@ -21,12 +21,31 @@ import Logiikka.Jarjestelma;
 
 
 public class Kayttoliittyma {
-
+/**
+*   Järjestelmän käyttäjän syöttämä käyttötunnus sisäänkirjautumista varten
+*/
     private String kayttotunnus;
+/**
+*   Käyttäjän syöttämä salasana järjestelmään kirjautumisen yhteydessä
+*/
     private String salasana;
+/**
+*   Luokan Jarjestelma oliomuuttuja jarjestelma, jossa tapahtuu ohjelman toiminnallisuus 
+*/    
     private Jarjestelma jarjestelma;
+/**
+*   Javan valmis luokka Scanner:in oliomuuttuja, joka lukee käyttäjän syötteitä
+*/   
     private Scanner lukija;
 
+    /**
+     * Luokan Kayttoliittyma konstruktori, jossa tallennetaan parametrina saatu jarjestelma
+     * sekä käyttäjän syötteitä lukeva Scanner-luokan olio lukija. 
+     * 
+     * @param jarjestelma annetaan järjestelmä jolla käyttöliittymä toimii
+     * 
+     * 
+     */
     public Kayttoliittyma(Jarjestelma jarjestelma) {
 
         this.jarjestelma = jarjestelma;
@@ -34,6 +53,13 @@ public class Kayttoliittyma {
 
     }
 
+    /**
+     * Metodi printtaa tervehdystekstin ja kaynnistaa järjestelmän metodin "kayttajanKysyminen()". 
+     * Metodi tulostaa tervehdystekstin ja kirjautumisinformaation, 
+     * sekä käynnistää metodin "kayttajaKysyminen()", joka kysyy käyttäjän käyttötunnusta ja
+     * salasanaa sekä päästää käyttäjän sisään joko tutkijatietokantaan (käyttötunnuksilla)tahi opiskelijatietokantaan
+     * (painamalla "enter"-nappia 2 kertaa)
+     */
     public void kaynnista() {
         System.out.println("Tervetuloa vesistömallijärjestelmään!");
         System.out.println("Jos olet rekisteröitynyt käyttäjä, voit kirjautua järjestelmään.");
@@ -42,7 +68,7 @@ public class Kayttoliittyma {
         kayttajanKysyminen();
     }
 
-    public void kayttajanKysyminen() {
+    private void kayttajanKysyminen() {
 
         System.out.print("Käyttäjätunnus: ");
         kayttotunnus = lukija.nextLine();
@@ -84,19 +110,19 @@ public class Kayttoliittyma {
         }
     }
 
-    public void jarjestelmaTulostus() {
+    private void jarjestelmaTulostus() {
         System.out.println("Valitse toiminto: ");
         System.out.println("[0] Lopetus");
         System.out.println("[1] Avaa lista tietokannan järvistä");
         System.out.println("[2] Avaa lista tietokannan joista");
     }
 
-    public void adminjarjestelmaTulostus() {
+    private void adminjarjestelmaTulostus() {
         System.out.println("[3] Lisää uusi järvi tai muuta järven tietoja");
         System.out.println("[4] Lisää uusi joki tai muuta joen tietoja");
     }
 
-    public void syotteenKysyminen(char komento) {
+    private void syotteenKysyminen(char komento) {
 
 //        char komento = lukija.next().charAt(0);
 //        for (int i = 1; i < 5; i++) {
@@ -138,7 +164,7 @@ public class Kayttoliittyma {
 
     
 
-    public void numeronToiminnallisuus(char toiminto) {
+    private void numeronToiminnallisuus(char toiminto) {
 //        for(int i =1; i < 5; i++){
 //            
 //        }
@@ -156,7 +182,7 @@ public class Kayttoliittyma {
         }
     }
 
-    public void jarvenKysyminen() {
+    private void jarvenKysyminen() {
         System.out.println("[5] Lisätään järvi ");
         System.out.println("[6] Muutetaan järven tietoja");
         System.out.println("[x] Palataan edelliseen valikkoon");
@@ -164,11 +190,12 @@ public class Kayttoliittyma {
         syotteenKysyminen(komento);
     }
 
-    public void jarviNumeronToiminnallisuus(char toiminto) {
+    private void jarviNumeronToiminnallisuus(char toiminto) {
         if (toiminto == '5') {
-            System.out.println("Anna järven nimi: ");
+            System.out.print("Anna järven nimi: ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
-            System.out.println("Anna järven vesitase: ");
+            System.out.print("Anna järven vesitase: ");
             int vesitase = lukija.nextInt();
             jarjestelma.lisaaJarvi(vesitase, nimi);
 
@@ -182,16 +209,18 @@ public class Kayttoliittyma {
         }
     }
 
-    public void jarviTietojenMuuttaminen() {
+    private void jarviTietojenMuuttaminen() {
         char komento = lukija.next().charAt(0);
         if (komento == 'a') {
             System.out.print("Anna järven nimi, joka poistetaan: ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             jarjestelma.poistaJarvi(nimi);
         }
 
         if (komento == 'b') {
             System.out.print("Anna järven nimi, jonka vesitasetta lisätään: :  ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä vesimäärä: ");
             int vesimaara = lukija.nextInt();
@@ -200,6 +229,7 @@ public class Kayttoliittyma {
         }
         if (komento == 'c') {
             System.out.print("Anna järven nimi, jonka vesitasetta vähennetään:  ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             System.out.print("Anna vähennettävä vesimäärä: ");
             int vesimaara = lukija.nextInt();
@@ -211,7 +241,7 @@ public class Kayttoliittyma {
 
     }
 
-    public void joenKysyminen() {
+    private void joenKysyminen() {
         System.out.println("[7] Lisätään joki");
         System.out.println("[8] Muutetaan joen tietoja");
         System.out.println("[x] Palataan edelliseen valikkoon");
@@ -219,13 +249,15 @@ public class Kayttoliittyma {
         syotteenKysyminen(komento);
     }
 
-    public void jokiNumeronToiminnallisuus(char toiminto) {
+    private void jokiNumeronToiminnallisuus(char toiminto) {
         if (toiminto == '7') {
             System.out.print("Anna joen nimi: ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
-            System.out.print("Anna virtaus: ");
+            System.out.print("Anna virtaus: ");           
             int virtaus = lukija.nextInt();
             System.out.print("Anna järven nimi, mihin joki laskee:");
+            lukija.nextLine();
             String jnimi = lukija.nextLine();
             jarjestelma.lisaaJoki(virtaus, nimi, jnimi);
         }
@@ -238,15 +270,17 @@ public class Kayttoliittyma {
         }
     }
 
-    public void jokiTietojenMuuttaminen() {
+    private void jokiTietojenMuuttaminen() {
         char komento = lukija.next().charAt(0);
         if (komento == 'd') {
             System.out.print("Anna poistettavan joen nimi: ");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             jarjestelma.poistaJoki(nimi);
         }
         if (komento == 'e') {
             System.out.print("Anna joen nimi, jonka virtausta lisätään:");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä määrä:");
             int virtaus = lukija.nextInt();
@@ -254,6 +288,7 @@ public class Kayttoliittyma {
         }
         if (komento == 'f') {
             System.out.print("Anna joen nimi, jonka virtausta vähennetään:");
+            lukija.nextLine();
             String nimi = lukija.nextLine();
             System.out.print("Anna vähennettävä määrä:");
             int virtaus = lukija.nextInt();
