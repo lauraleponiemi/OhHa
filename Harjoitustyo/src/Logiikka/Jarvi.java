@@ -24,11 +24,13 @@ public class Jarvi {
      * 
      * @param vetta lisättävä vesimäärä (> 0)
      */
-    public void lisaaVetta(int vetta){
+    public boolean lisaaVetta(int vetta){
         if(vetta < 0){
-            vetta = 0;
+//            vetta = 0;
+            return false;
         }
         vesitase = vesitase + vetta;
+        return true;
         
     }
     
@@ -36,12 +38,14 @@ public class Jarvi {
      * metodi vähentää vettä järvestä. Parametrina annettu "vetta" vähennetään jarven taseesta.
      * @param vetta vähennettävä vesimäärä (> 0)
      */
-    public void vahennaVetta(int vetta){
+    public boolean vahennaVetta(int vetta){
         if(vesitase >= vetta){
             vesitase = vesitase -vetta;
+            return true;
         }
         else
-            vesitase = 0;
+//            vesitase = 0;
+            return false;
     }
     
     public String getNimi(){

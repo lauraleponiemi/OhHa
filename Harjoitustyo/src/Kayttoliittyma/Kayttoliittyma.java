@@ -19,32 +19,34 @@ import Logiikka.Jarjestelma;
 
 
 
-
 public class Kayttoliittyma {
-/**
-*   Järjestelmän käyttäjän syöttämä käyttötunnus sisäänkirjautumista varten
-*/
+
+    /**
+     * Järjestelmän käyttäjän syöttämä käyttötunnus sisäänkirjautumista varten
+     */
     private String kayttotunnus;
-/**
-*   Käyttäjän syöttämä salasana järjestelmään kirjautumisen yhteydessä
-*/
+    /**
+     * Käyttäjän syöttämä salasana järjestelmään kirjautumisen yhteydessä
+     */
     private String salasana;
-/**
-*   Luokan Jarjestelma oliomuuttuja jarjestelma, jossa tapahtuu ohjelman toiminnallisuus 
-*/    
+    /**
+     * Luokan Jarjestelma oliomuuttuja jarjestelma, jossa tapahtuu ohjelman
+     * toiminnallisuus
+     */
     private Jarjestelma jarjestelma;
-/**
-*   Javan valmis luokka Scanner:in oliomuuttuja, joka lukee käyttäjän syötteitä
-*/   
+    /**
+     * Javan valmis luokka Scanner:in oliomuuttuja, joka lukee käyttäjän
+     * syötteitä
+     */
     private Scanner lukija;
 
     /**
-     * Luokan Kayttoliittyma konstruktori, jossa tallennetaan parametrina saatu jarjestelma
-     * sekä käyttäjän syötteitä lukeva Scanner-luokan olio lukija. 
-     * 
+     * Luokan Kayttoliittyma konstruktori, jossa tallennetaan parametrina saatu
+     * jarjestelma sekä käyttäjän syötteitä lukeva Scanner-luokan olio lukija.
+     *
      * @param jarjestelma annetaan järjestelmä jolla käyttöliittymä toimii
-     * 
-     * 
+     *
+     *
      */
     public Kayttoliittyma(Jarjestelma jarjestelma) {
 
@@ -54,11 +56,12 @@ public class Kayttoliittyma {
     }
 
     /**
-     * Metodi printtaa tervehdystekstin ja kaynnistaa järjestelmän metodin "kayttajanKysyminen()". 
-     * Metodi tulostaa tervehdystekstin ja kirjautumisinformaation, 
-     * sekä käynnistää metodin "kayttajaKysyminen()", joka kysyy käyttäjän käyttötunnusta ja
-     * salasanaa sekä päästää käyttäjän sisään joko tutkijatietokantaan (käyttötunnuksilla)tahi opiskelijatietokantaan
-     * (painamalla "enter"-nappia 2 kertaa)
+     * Metodi printtaa tervehdystekstin ja kaynnistaa järjestelmän metodin
+     * "kayttajanKysyminen()". Metodi tulostaa tervehdystekstin ja
+     * kirjautumisinformaation, sekä käynnistää metodin "kayttajaKysyminen()",
+     * joka kysyy käyttäjän käyttötunnusta ja salasanaa sekä päästää käyttäjän
+     * sisään joko tutkijatietokantaan (käyttötunnuksilla)tahi
+     * opiskelijatietokantaan (painamalla "enter"-nappia 2 kertaa)
      */
     public void kaynnista() {
         System.out.println("Tervetuloa vesistömallijärjestelmään!");
@@ -123,19 +126,9 @@ public class Kayttoliittyma {
     }
 
     private void syotteenKysyminen(char komento) {
-
-//        char komento = lukija.next().charAt(0);
-//        for (int i = 1; i < 5; i++) {
-//            System.out.println("täällä ollaan");
-//            if (komento == (char) i) {
-//                numeronToiminnallisuus(komento);
-//            }
-//        }
         if (komento == '1' || komento == '2' || komento == '3' || komento == '4') {
-
             numeronToiminnallisuus(komento);
         }
-
         if (AdminJarjestelma.class.isInstance(jarjestelma)) {
 
             if (komento == '5' || komento == '6') {
@@ -145,7 +138,6 @@ public class Kayttoliittyma {
                 jokiNumeronToiminnallisuus(komento);
             }
         }
-
         if (komento == 'x') {
             jarjestelmaTulostus();
             if (AdminJarjestelma.class.isInstance(jarjestelma)) {
@@ -158,21 +150,15 @@ public class Kayttoliittyma {
             } else {
                 System.out.println("Et syöttänyt numeroa listasta");
             }
-
         }
-        }
-
-    
+    }
 
     private void numeronToiminnallisuus(char toiminto) {
-//        for(int i =1; i < 5; i++){
-//            
-//        }
         if (toiminto == '1') {
-            jarjestelma.palautaListaJarvista();
+            System.out.println(jarjestelma.palautaListaJarvista());
         }
         if (toiminto == '2') {
-            jarjestelma.palautaListaJoista();
+            System.out.println(jarjestelma.palautaListaJoista());
         }
         if (toiminto == '3' && AdminJarjestelma.class.isInstance(jarjestelma)) {
             jarvenKysyminen();
@@ -205,17 +191,22 @@ public class Kayttoliittyma {
             System.out.println("[b] Järven vesitaseen lisääminen");
             System.out.println("[c] Järven vesitaseen vähentäminen");
             System.out.println("[x] Palataan alkuvalikkoon");
-            jarviTietojenMuuttaminen();
+            char komento = lukija.next().charAt(0);
+            jarviTietojenMuuttaminen(komento);
         }
     }
 
-    private void jarviTietojenMuuttaminen() {
-        char komento = lukija.next().charAt(0);
+    private void jarviTietojenMuuttaminen(char komento) {
+
         if (komento == 'a') {
             System.out.print("Anna järven nimi, joka poistetaan: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            jarjestelma.poistaJarvi(nimi);
+            if (jarjestelma.poistaJarvi(nimi) == false) {
+                System.out.println("Järveä ei löytynyt tietokannasta");
+            } else {
+                System.out.println("Järvi poistettu tietokannasta");
+            }
         }
 
         if (komento == 'b') {
@@ -224,8 +215,12 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä vesimäärä: ");
             int vesimaara = lukija.nextInt();
-            //TODO veden lisääminen: tehdäänkö järjestelmään metodi veden lisäämiselle vai metodi joka käyttää järven metodi "lisääVetta"?
-            //vai miten
+            if (jarjestelma.yrittaalisataVettaJarvessa(nimi, vesimaara) == true) {
+                System.out.println("Järven vesitasetta lisätty.");
+            } else {
+                System.out.println("Järveä ei löytynyt tietokannasta tai antamasi luku ei kelpaa");
+            }
+
         }
         if (komento == 'c') {
             System.out.print("Anna järven nimi, jonka vesitasetta vähennetään:  ");
@@ -233,7 +228,11 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna vähennettävä vesimäärä: ");
             int vesimaara = lukija.nextInt();
-            //TODO ks. ongelma yllä
+            if (jarjestelma.yrittaavahentaaVettaJarvessa(nimi, vesimaara) == true) {
+                System.out.println("Järven vesitasetta vähennetty");
+            } else {
+                System.out.println("Järveä ei löytynyt tietokannasta tai antamasi luku ei kelpaa.");
+            }
         } else if (komento == 'x') {
             syotteenKysyminen(komento);
         }
@@ -254,45 +253,63 @@ public class Kayttoliittyma {
             System.out.print("Anna joen nimi: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            System.out.print("Anna virtaus: ");           
+            System.out.print("Anna virtaus: ");
             int virtaus = lukija.nextInt();
             System.out.print("Anna järven nimi, mihin joki laskee:");
             lukija.nextLine();
             String jnimi = lukija.nextLine();
             jarjestelma.lisaaJoki(virtaus, nimi, jnimi);
+//            if(jarjestelma.lisaaJoki(virtaus, nimi, jnimi)==false){
+//                System.out.println("Joki on jo tietokannassa.");
+//            }else{
+//                System.out.println("Joki lisätty tietokantaan.");
+//            }
         }
         if (toiminto == '8') {
             System.out.println("[d] Joen poistaminen tietokannasta");
             System.out.println("[e] Joen virtauksen lisääminen");
             System.out.println("[f] Joen virtauksen vähentäminen");
             System.out.println("[x] Palataan alkuvalikkoon");
-
+            char komento = lukija.next().charAt(0);
+            jokiTietojenMuuttaminen(komento);
         }
     }
 
-    private void jokiTietojenMuuttaminen() {
-        char komento = lukija.next().charAt(0);
+    private void jokiTietojenMuuttaminen(char komento) {
         if (komento == 'd') {
             System.out.print("Anna poistettavan joen nimi: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            jarjestelma.poistaJoki(nimi);
+            if (jarjestelma.poistaJoki(nimi) == false) {
+                System.out.println("Jokea ei löytynyt tietokannasta" + "\n");
+            } else {
+                System.out.println("Joki poistettu tietokannasta" + "\n");
+            }
+
         }
         if (komento == 'e') {
-            System.out.print("Anna joen nimi, jonka virtausta lisätään:");
+            System.out.print("Anna joen nimi, jonka virtausta lisätään: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä määrä:");
             int virtaus = lukija.nextInt();
-            //TODO: tee metodi virtauksen lisäämiseen
+            if (jarjestelma.yrittaalisataVirtaustaJoessa(nimi, virtaus) == true) {
+                System.out.println("Joen virtausta lisätty." + "\n");
+            } else {
+                System.out.println("Jokea ei löytynyt tietokannasta tai antamasi luku ei kelpaa." + "\n");
+            }
         }
         if (komento == 'f') {
-            System.out.print("Anna joen nimi, jonka virtausta vähennetään:");
+            System.out.print("Anna joen nimi, jonka virtausta vähennetään: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            System.out.print("Anna vähennettävä määrä:");
+            System.out.print("Anna vähennettävä määrä: ");
             int virtaus = lukija.nextInt();
-            //TODO: tee virtauksen vähentäminen
+            if (jarjestelma.yrittaavahentaaVirtaustaJoessa(nimi, virtaus) == true) {
+                System.out.println("Joen virtausta vähennetty." + "\n");
+            } else {             //TODO miksei löydä tietokannassa olevaa jokea :(
+                System.out.println("Jokea ei löytynyt tietokannasta." + "\n");
+            }
         }
         if (komento == 'x') {
             syotteenKysyminen(komento);

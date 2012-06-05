@@ -41,18 +41,15 @@ public class Jarjestelma {
      * @param vesitase jarvelle parametrina annettu vesitase
      * @param nimi jarvelle annettu nimi
      */
-    public void lisaaJarvi(int vesitase, String nimi) {
-//        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
-//            if (jarvi.getNimi().equals(nimi)) {
-//                System.out.println("Järvi on jo tietokannassa. Siirry muuttamaan järven tietoja.");
-//            } else {
-        Jarvi jarvi = new Jarvi(vesitase, nimi);
-        HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-        tkanta.setJarvi(jarvi, jokia);
-// TODO miksei kommentoitu koodi toimi ??
-//            }
-//        }
-
+    public boolean lisaaJarvi(int vesitase, String nimi) {
+        if (haeJarviNimella(nimi) == null) {
+            Jarvi jarvi = new Jarvi(vesitase, nimi);
+            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+            tkanta.setJarvi(jarvi, jokia);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -67,7 +64,7 @@ public class Jarjestelma {
                 return ejarvi.getNimi();
             }
         }
-        return "Jarvea ei löytynyt";
+        return null;
     }
 
     /**
@@ -86,20 +83,18 @@ public class Jarjestelma {
         }
         return null;
     }
-
     /**
-     * Metodi etsii jarvea tietokannasta sen nimella. Jos jarvea ei löytynyt, se
-     * palauttaa false, jos löytyy, se palauttaa true.
-     *
-     * @param nimi
-     * @return boolean
-     */
+* Metodi etsii jarvea tietokannasta sen nimella. Jos jarvea ei löytynyt, se
+* palauttaa false, jos löytyy, se palauttaa true.
+*
+* @param nimi
+* @return boolean
+*/
     public boolean onkoJarviTietokannassa(String nimi) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
             if (jarvi.getNimi().equals(nimi)) {
                 return true;
             }
-            System.out.println("Tarkista oikeinkirjoitus, tai sitten järveä ei ole tietokannassa, luo ensin järvi mihin voi liittää joen");
         }
         return false;
     }
@@ -111,26 +106,26 @@ public class Jarjestelma {
      * @param virtaus joelle annettu virtaus
      * @param nimi joelle annettu nimi
      * @param jnimi järven nimi, johon joki laskee
+     * @return boolean
      */
-    public void lisaaJoki(int virtaus, String nimi, String jnimi) {
+    public boolean lisaaJoki(int virtaus, String nimi, String jnimi) {
         if (onkoJarviTietokannassa(jnimi) == true) {
             Joki joki = new Joki(virtaus, nimi);
-            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-            jokia.put(joki, virtaus);
-            tkanta.setJoet(jokia);
-//            tkanta.setJarvi(haeJarviNimella("jnimi"), jokia.put(joki, virtaus));
+            tkanta.setJoki(joki, virtaus);
             for (Jarvi j : tkanta.getJarvet().keySet()) {
                 if (j.getNimi().equals(jnimi)) {
                     for (Joki jj : tkanta.getJarvet().get(j).keySet()) {
                         if (!tkanta.getJarvet().get(j).containsKey(jj)) {
-                            tkanta.getJarvet().get(j).put(joki, virtaus);
+                            tkanta.setJokiJarvelle(joki, j);
+                            return true;
                         } else {
-                            System.out.println("Joki on jo tietokannassa.");
+                            return false;
                         }
                     }
                 }
             }
         }
+        return false;
     }
 
     /**
@@ -146,7 +141,7 @@ public class Jarjestelma {
                 return ejoki.getNimi();
             }
         }
-        return "Jokea ei löytynyt";
+        return null;
     }
 
 //TODO Käytetään tällä hetkellä lähinnä testauksessa..
@@ -168,165 +163,185 @@ public class Jarjestelma {
     /**
      * Metodi lisää vettä järvessä. Järven nimi ja lisättävä vesimäärä annetaan
      * parametrina ja metodi etsii järven tietokannasta. Mikäli järveä ei löydy,
-     * siitä ilmoitetaan syötteessä.
+     * palatetaan false.
      *
      * @param nimi järven nimi
      * @param vetta lisättävä vesimäärä (>0)
+     * @return boolean
      */
-    public void lisaaVettaJarvessa(String nimi, int vetta) {
+    public boolean yrittaalisataVettaJarvessa(String nimi, int vetta) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
             if (jarvi.getNimi().equals(nimi)) {
-                jarvi.lisaaVetta(vetta);
-            } else {
-                System.out.println("Järveä ei löytynyt tietokannasta. Luo ensin järvi");
+//                jarvi.lisaaVetta(vetta);
+                if(jarvi.lisaaVetta(vetta)==true){
+                    return true;
+                }              
             }
-        }
+        }return false;
     }
 
     /**
      * metodi vähentää vettä järvessä. Järven nimi ja vähennettävä vesimäärä
      * annetaan parametrina ja metodi etsii järven tietokannasta. Mikäli järveä
-     * ei löydy, siitä ilmoitetaan syötteessä.
+     * ei löydy, palatetaan false.
      *
      * @param nimi järven nimi
      * @param vetta vähennetävä vesimäärä (>0)
+     * @return boolean
      */
-    public void vahennaVettaJarvessa(String nimi, int vetta) {
+    public boolean yrittaavahentaaVettaJarvessa(String nimi, int vetta) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
-            if (jarvi.getNimi().equals(nimi)) {
-                jarvi.vahennaVetta(vetta);
-            } else {
-                System.out.println("Järveä ei löytynyt tietokannasta");
-            }
+            if (jarvi.getNimi().equals(nimi)) { //TODO metodi näyttää toimivan mutta testit rikkoo
+                if(jarvi.vahennaVetta(vetta)==true){
+                    return true;
+                }             
+            } 
         }
+        return false;
     }
 
-//    public void lisaaJokiOlio(Joki joki) {
-//    }
     /**
      * Metodi lisää virtausta joessa. Parametrina saadaan joen nimi ja luku,
-     * mikä lisätään virtaukseen. Jos jokea ei löydy tietokannasta, siitä
-     * ilmoitetaan syötteessä.
+     * mikä lisätään virtaukseen. Jos jokea ei löydy tietokannasta,palatetaan
+     * false
      *
      * @param nimi joen nimi
      * @param virtausta lisättävä virtauksen määrä (>0)
+     * @return boolean
      */
-    public void lisaaVirtaustaJoessa(String nimi, int virtausta) {
+    public boolean yrittaalisataVirtaustaJoessa(String nimi, int virtausta) {
         for (Joki joki : tkanta.getJoet().keySet()) {
             if (joki.getNimi().equals(nimi)) {
                 joki.lisaaVirtausta(virtausta);
+                return true;
             } else {
-                System.out.println("Jokea ei löytynyt tietokannasta");
+                return false;
             }
-
         }
+        return true;
     }
 
     /**
      * Metodi vähentää virtausta joessa. Parametrina saadaan joen nimi ja luku,
-     * mikä vähennetään virtauksesta. Jos jokea ei löydy tietokannasta, siitä
-     * ilmoitetaan syötteessä.
+     * mikä vähennetään virtauksesta. Jos jokea ei löydy tietokannasta,
+     * palatetaan false
      *
      * @param nimi joen nimi
      * @param virtausta vähennettävä määrä (>0)
+     * @return boolean
      */
-    public void vahennaVirtaustaJoessa(String nimi, int virtausta) {
+    public boolean yrittaavahentaaVirtaustaJoessa(String nimi, int virtausta) {
         for (Joki joki : tkanta.getJoet().keySet()) {
             if (joki.getNimi().equals(nimi)) {
                 joki.vahennaVirtausta(virtausta);
+                return true;
             } else {
-                System.out.println("Jokea ei löytynyt tietokannasta");
+                return false;
             }
         }
+        return true;
     }
 
     /**
      * Metodi poistaa järven tietokannasta. Poistettava järven nimi annetaan
      * parametrina ja metodi etsii sen nimeä vastaavan olion tietokannasta. Jos
-     * järveä ei löydy, siitä ilmoitetaan syötteessä.
+     * järveä ei löydy, palautetaan false.
      *
      * @param nimi joen nimi, joka poistetaan
+     * @return boolean
      */
-    public void poistaJarvi(String nimi) {
+    public boolean poistaJarvi(String nimi) {
         if (!tkanta.getJarvet().keySet().isEmpty()) {
-            for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
-                if (jarvi.getNimi().equals(nimi)) {
-                    tkanta.getJarvet().remove(jarvi);
-                    //TODO: ^ poistaako järven vai vain joki-hashmapin?
-                } else {
-                    System.out.println("Järveä ei löytynyt tietokannasta");
-                }
+            if (haeJarviNimella(nimi) != null) {
+                Jarvi poistettavaJarvi = haeJarviNimella(nimi);
+                tkanta.getJarvet().remove(poistettavaJarvi);
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
     /**
      * Metodi poistaa joen tietokannasta. Poistettava joen nimi annetaan
      * parametrina ja metodi etsii sen nimeä vastaavan olion tietokannasta. Jos
-     * jokea ei löydy, siitä ilmoitetaan syötteessä.
+     * jokea ei löydy, palautetaan false.
      *
      * @param nimi joen nimi, joka poistetaan
+     * @return boolean
      */
-    public void poistaJoki(String nimi) {
+    public boolean poistaJoki(String nimi) {
         if (!tkanta.getJoet().keySet().isEmpty()) {
-            for (Joki joki : tkanta.getJoet().keySet()) {
-                if (joki.getNimi().equals(nimi)) {
-                    tkanta.getJoet().remove(joki);
-                    //TODO ^poistaako joen, vai vain integerin?
-                }else {
-                    System.out.println("Jokea ei löytynyt tietokannasta");
-                }
+            if (haeJokiNimella(nimi) != null) {
+                Joki poistettavaJoki = haeJokiNimella(nimi);
+                tkanta.getJoet().remove(poistettavaJoki);
+                //TODO poistaako joen myös järvien hashmapista?
             }
+            return true;
+        } else {
+            return false;
         }
     }
 
     /**
-     * Metodi palauttaa lista tietokantaan tallennetuista järvistä ja siihen liittyvistä joista. 
-     * Jos tietokannassa ei ole yhtään järveä, siitä ilmoitetaan syötteessä. 
-     */    
-    public void palautaListaJarvista() {
+     * Metodi palauttaa lista tietokantaan tallennetuista järvistä ja siihen
+     * liittyvistä joista. Jos tietokannassa ei ole yhtään järveä, siitä
+     * ilmoitetaan syötteessä.
+     */
+    public String palautaListaJarvista() {
         if (tkanta.getJarvet().isEmpty()) {
-            System.out.println("Lista järvistä on tyhjä");
+            return "Lista järvistä on tyhjä";
 
         } else {
+            String teksti = "";
             for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
                 if (!tkanta.getJarvet().keySet().isEmpty()) {
+                    teksti = teksti + "\n" + ejarvi + "\n" + "Siihen laskevat joet: ";
                     for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
-                        System.out.println(ejarvi + "\n" + "   järveen laskevat joet: " + joki);
+                        teksti = teksti + joki;
+                        teksti = teksti + ", ";
                     }
                 }
+                teksti = teksti + "\n";
             }
+            return teksti;
         }
     }
+
     /**
-     * Metodi palauttaa lista tietokantaan tallennetuista joista.
-     * Jos tietokannassa ei ole yhtään jokea, siitä ilmoitetaan syötteessä.
+     * Metodi palauttaa lista tietokantaan tallennetuista joista. Jos
+     * tietokannassa ei ole yhtään jokea, siitä ilmoitetaan syötteessä.
      */
-    public void palautaListaJoista() {
+    public String palautaListaJoista() {
         if (tkanta.getJoet().isEmpty()) {
-            System.out.println("Lista joista on tyhjä");
+            return "Lista joista on tyhjä";
         } else {
+            String teksti = "";
             for (Joki e : tkanta.getJoet().keySet()) {
-                System.out.println(e);
+                teksti = teksti + e + "\n";
             }
+            return teksti;
         }
+
     }
 
     /**
-     * Metodi lisää tunnukset annetusta tiedostosta järjestelmään. Järjestelmään ei voi luoda
-     * tunnuksia, sillä ne ovat tiedostossa. Metodi saa parametrinaan tiedoston, josta tunnukset 
-     * luetaan. Metodi heitää poikkeuksen jos tiedoston lukeminen epäonnistuu, mutta jos onnistuu,
-     * se lukee tiedostosta käyttäjätunnuksen ja salasanan kahtena osana ja tallentaa sen HashMap:iin.
-     * Sitten se sulkee lukija
+     * Metodi lisää tunnukset annetusta tiedostosta järjestelmään. Järjestelmään
+     * ei voi luoda tunnuksia, sillä ne ovat tiedostossa. Metodi saa
+     * parametrinaan tiedoston, josta tunnukset luetaan. Metodi heitää
+     * poikkeuksen ja paluttaa false, jos tiedoston lukeminen epäonnistuu. Jos
+     * tiedoston lukeminen onnistuu, se lukee tiedostosta käyttäjätunnuksen ja
+     * salasanan kahtena osana ja tallentaa sen HashMap:iin. Sitten se sulkee
+     * lukijan ja palauttaa true
+     *
      * @param tiedosto tiedosto, missä käyttäjätunnus- salasanat parit ovat
-     */    
-    public void lisaaTunnuksetTiedostosta(File tiedosto) {
-
+     * @return boolean
+     */
+    public boolean lisaaTunnuksetTiedostosta(File tiedosto) {
         try {
             lukija = new Scanner(tiedosto);
         } catch (Exception e) {
-            System.out.println("Tiedoston lukeminen epäonnistui");
-            return;
+            return false;
         }
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
@@ -335,17 +350,22 @@ public class Jarjestelma {
             System.out.println(tunnukset);
         }
         lukija.close();
+        return true;
 
     }
-    
+
     /**
-     * Metodi luo annettujen syötteiden perusteella järjestelmän. Jos käyttäjätunnus ja 
-     * salasana täsmäävät tunnukset- HashMap:iin, metodi luo adminjärjestelmän. Jos käyttäjä syöttää 
-     * tyhjän salasana, että käyttäjätunnuskentän, metodi luo opiskelijajarjestelman. Jos kirjautuminen epäonnistuu,
-     * järjestelma palauttaa null:in.
-     * @param kayttotunnus käyttäjän syöttämä käyttötunnus jota verrataan tiedoston tunnukseen
-     * @param salasana käyttäjän syöttämä salasana, jota verrataan annettua käyttötunnusta tiedostossa vastaavaan salasanaan
-     * @return Jarjestelma 
+     * Metodi luo annettujen syötteiden perusteella järjestelmän. Jos
+     * käyttäjätunnus ja salasana täsmäävät tunnukset- HashMap:iin, metodi luo
+     * adminjärjestelmän. Jos käyttäjä syöttää tyhjän salasana, että
+     * käyttäjätunnuskentän, metodi luo opiskelijajarjestelman. Jos
+     * kirjautuminen epäonnistuu, järjestelma palauttaa null:in.
+     *
+     * @param kayttotunnus käyttäjän syöttämä käyttötunnus jota verrataan
+     * tiedoston tunnukseen
+     * @param salasana käyttäjän syöttämä salasana, jota verrataan annettua
+     * käyttötunnusta tiedostossa vastaavaan salasanaan
+     * @return Jarjestelma
      */
     public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
 //        AdminJarjestelma luokka = new AdminJarjestelma(tkanta);

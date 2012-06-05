@@ -4,6 +4,7 @@
  */
 package LogiikkaTestit;
 
+import Logiikka.Jarjestelma;
 import Logiikka.Jarvi;
 import Logiikka.Joki;
 import Logiikka.Tietokanta;
@@ -21,6 +22,8 @@ public class TietokantaTest {
     private HashMap<Joki, Integer> jokia;
     private Jarvi isoJarvi;
     private Joki pikkuJoki;
+    private Joki isoJoki;
+    private Jarjestelma jarjestelma;
 
     public TietokantaTest() {
 
@@ -37,11 +40,13 @@ public class TietokantaTest {
     @Before
     public void setUp() {
         tkanta = new Tietokanta();
+        jarjestelma = new Jarjestelma(tkanta);
         jokia = new HashMap<Joki, Integer>();
         pikkuJoki = new Joki(67,"Kalajoki");
+        isoJoki= new Joki(88, "Vantaanjoki");
         jokia.put(pikkuJoki, 44);
         isoJarvi = new Jarvi(450,"Päijänne");
-
+        tkanta.setJarvi(isoJarvi, jokia);
         
     }
 
@@ -54,7 +59,7 @@ public class TietokantaTest {
 
     @Test
     public void tallennetaanJokia() {
-        tkanta.setJoet(jokia);       
+        tkanta.setJoki(pikkuJoki, pikkuJoki.getVirtaus());       
         assertTrue(tkanta.getJoet().containsKey(pikkuJoki));
     }
     
@@ -62,5 +67,12 @@ public class TietokantaTest {
     public void tallennetaanJarvi(){
         tkanta.setJarvi(isoJarvi,jokia);       
         assertTrue(tkanta.getJarvet().containsKey(isoJarvi));
+    }
+    
+    @Test
+    public void setJokiJarvelleToimii(){
+        tkanta.setJokiJarvelle(isoJoki, isoJarvi);
+        
+        assertTrue(tkanta.getJarvet().get(isoJarvi).keySet().contains(isoJoki));
     }
 }

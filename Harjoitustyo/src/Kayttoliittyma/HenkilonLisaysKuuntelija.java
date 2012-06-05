@@ -1,6 +1,7 @@
 
 package Kayttoliittyma;
 
+import Logiikka.Jarjestelma;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JTextField;
@@ -8,19 +9,24 @@ import javax.swing.JTextField;
 
 public class HenkilonLisaysKuuntelija implements ActionListener {
 
-    private HenkiloDAO henkiloDao;
     private JTextField nimiKentta;
     private JTextField salasanaKentta;
+    private Jarjestelma jarjestelma;
 
-    public HenkilonLisaysKuuntelija(HenkiloDAO henkiloDao, JTextField nimiKentta, JTextField salasanaKentta) {
-        this.henkiloDao = henkiloDao;
+    public HenkilonLisaysKuuntelija(Jarjestelma jarjestelma, JTextField nimiKentta, JTextField salasanaKentta) {
+        this.jarjestelma = jarjestelma;
         this.nimiKentta = nimiKentta;
         this.salasanaKentta = salasanaKentta;
+        
     }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-//        Henkilo henkilo = new Henkilo(nimiKentta.getText(), salasanaKentta.getText());
-//        this.henkiloDao.talleta(henkilo);
+        
+        jarjestelma.kirjauduSisaan(nimiKentta.getText(), salasanaKentta.getText());
+//        if(0>r){
+//            
+//        }
+        
     }
 }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Tietokanta {
     
     /**
-     * lista joista. Integer on kyseisen joen virtaus
+     * lista kaikista tallennetuista joista, Integer on kyseisen joen virtaus
      */
     private HashMap <Joki, Integer> joet; 
     
@@ -31,8 +31,20 @@ public class Tietokanta {
      * @param joet HashMap joista jotka liittyvät järveen
      */
     public void setJarvi(Jarvi j, HashMap<Joki, Integer> joet) {
-        jarvet.put(j, joet);
-        
+        jarvet.put(j, joet);        
+    }
+    
+    /**
+     * Metodi asettaa tietokantaan tallennetulle järvelle joen.
+     * @param joki
+     * @param jarvi 
+     */
+    public void setJokiJarvelle(Joki joki, Jarvi jarvi){
+        for (Jarvi jarv : jarvet.keySet()) {
+            if(jarvi.equals(jarv)){
+                jarvet.get(jarvi).put(joki, joki.getVirtaus());
+            }
+        }
     }
     
     /**
@@ -40,8 +52,8 @@ public class Tietokanta {
      * yhteydessä joet poistuisivat, ne löytyvät myös täältä.
      * @param joet parametrina saatu lista joista ja niiden virtauksista
      */
-    public void setJoet(HashMap<Joki, Integer> joet) {
-        this.joet = joet;
+    public void setJoki(Joki joki, int virtaus) {
+        joet.put(joki, virtaus);
     }
 
     public HashMap<Jarvi, HashMap<Joki, Integer>> getJarvet() {
