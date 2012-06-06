@@ -5,6 +5,7 @@ import Logiikka.Jarvi;
 import Logiikka.Joki;
 import Logiikka.Tietokanta;
 import java.io.File;
+import java.util.HashMap;
 
 public class Main {
 
@@ -22,10 +23,13 @@ public class Main {
         Joki kjoki = new Joki(15, "Kalajoki");
         Joki hjoki = new Joki(44, "Haapajoki");
         Jarvi jjarvi = new Jarvi(67, "Saimaa");
+        HashMap joet = new HashMap<Joki, Integer>();
+        
         tkanta.setJoki(hjoki, hjoki.getVirtaus());
         tkanta.setJoki(kjoki, kjoki.getVirtaus());
-        jarjestelma.lisaaJarvi(67, "Saimaa");
+//        jarjestelma.lisaaJarvi(jjarvi.getTase(), jjarvi.getNimi());
         jarjestelma.lisaaJarvi(88, "Päijänne");
+        tkanta.setJarvi(jjarvi,joet);
         tkanta.setJokiJarvelle(hjoki, jjarvi);
         tkanta.setJokiJarvelle(kjoki, jjarvi);
 

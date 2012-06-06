@@ -1,11 +1,5 @@
 package Kayttoliittyma;
 
-;
-
-
-
-
-
 
 
 import Logiikka.*;
@@ -52,7 +46,6 @@ public class Kayttoliittyma {
 
         this.jarjestelma = jarjestelma;
         lukija = new Scanner(System.in);
-
     }
 
     /**
@@ -129,15 +122,6 @@ public class Kayttoliittyma {
         if (komento == '1' || komento == '2' || komento == '3' || komento == '4') {
             numeronToiminnallisuus(komento);
         }
-        if (AdminJarjestelma.class.isInstance(jarjestelma)) {
-
-            if (komento == '5' || komento == '6') {
-                jarviNumeronToiminnallisuus(komento);
-            }
-            if (komento == '7' || komento == '8') {
-                jokiNumeronToiminnallisuus(komento);
-            }
-        }
         if (komento == 'x') {
             jarjestelmaTulostus();
             if (AdminJarjestelma.class.isInstance(jarjestelma)) {
@@ -156,9 +140,15 @@ public class Kayttoliittyma {
     private void numeronToiminnallisuus(char toiminto) {
         if (toiminto == '1') {
             System.out.println(jarjestelma.palautaListaJarvista());
+            if(jarjestelma.palautaListaJarvista()==null){
+                System.out.println("Lista järvistä oli tyhjä.");
+            }
         }
         if (toiminto == '2') {
             System.out.println(jarjestelma.palautaListaJoista());
+            if(jarjestelma.palautaListaJoista()==null){
+                System.out.println("Lista joista on tyhjä.");
+            }
         }
         if (toiminto == '3' && AdminJarjestelma.class.isInstance(jarjestelma)) {
             jarvenKysyminen();
@@ -173,7 +163,9 @@ public class Kayttoliittyma {
         System.out.println("[6] Muutetaan järven tietoja");
         System.out.println("[x] Palataan edelliseen valikkoon");
         char komento = lukija.next().charAt(0);
-        syotteenKysyminen(komento);
+        if (komento == 'x') {
+            syotteenKysyminen(komento);
+        }jarviNumeronToiminnallisuus(komento);
     }
 
     private void jarviNumeronToiminnallisuus(char toiminto) {
@@ -192,7 +184,12 @@ public class Kayttoliittyma {
             System.out.println("[c] Järven vesitaseen vähentäminen");
             System.out.println("[x] Palataan alkuvalikkoon");
             char komento = lukija.next().charAt(0);
+            if (komento == 'x') {
+                syotteenKysyminen(komento);
+            }
             jarviTietojenMuuttaminen(komento);
+
+
         }
     }
 
@@ -233,9 +230,10 @@ public class Kayttoliittyma {
             } else {
                 System.out.println("Järveä ei löytynyt tietokannasta tai antamasi luku ei kelpaa.");
             }
-        } else if (komento == 'x') {
-            syotteenKysyminen(komento);
         }
+//        else if (komento == 'x') {
+//            syotteenKysyminen(komento);
+//        }
 
 
     }
@@ -245,7 +243,11 @@ public class Kayttoliittyma {
         System.out.println("[8] Muutetaan joen tietoja");
         System.out.println("[x] Palataan edelliseen valikkoon");
         char komento = lukija.next().charAt(0);
-        syotteenKysyminen(komento);
+        if (komento == 'x') {
+            syotteenKysyminen(komento);
+        }
+        jokiNumeronToiminnallisuus(komento);
+
     }
 
     private void jokiNumeronToiminnallisuus(char toiminto) {
@@ -271,7 +273,12 @@ public class Kayttoliittyma {
             System.out.println("[f] Joen virtauksen vähentäminen");
             System.out.println("[x] Palataan alkuvalikkoon");
             char komento = lukija.next().charAt(0);
+            if (komento == 'x') {
+                syotteenKysyminen(komento);
+            }
             jokiTietojenMuuttaminen(komento);
+
+
         }
     }
 
@@ -280,7 +287,9 @@ public class Kayttoliittyma {
             System.out.print("Anna poistettavan joen nimi: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            if (jarjestelma.poistaJoki(nimi) == false) {
+            System.out.print("Anna järven nimi, johon joki laskee: ");
+            String jnimi = lukija.nextLine();
+            if (jarjestelma.poistaJoki(nimi, jnimi) == false) {
                 System.out.println("Jokea ei löytynyt tietokannasta" + "\n");
             } else {
                 System.out.println("Joki poistettu tietokannasta" + "\n");
@@ -293,10 +302,11 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä määrä:");
             int virtaus = lukija.nextInt();
-            if (jarjestelma.yrittaalisataVirtaustaJoessa(nimi, virtaus) == true) {
-                System.out.println("Joen virtausta lisätty." + "\n");
-            } else {
+//            lukija.nextLine();
+            if (jarjestelma.yrittaalisataVirtaustaJoessa(nimi, virtaus) == false) {
                 System.out.println("Jokea ei löytynyt tietokannasta tai antamasi luku ei kelpaa." + "\n");
+            } else {
+                System.out.println("Joen virtausta lisätty." + "\n");
             }
         }
         if (komento == 'f') {
@@ -305,14 +315,12 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna vähennettävä määrä: ");
             int virtaus = lukija.nextInt();
-            if (jarjestelma.yrittaavahentaaVirtaustaJoessa(nimi, virtaus) == true) {
-                System.out.println("Joen virtausta vähennetty." + "\n");
-            } else {             //TODO miksei löydä tietokannassa olevaa jokea :(
+//            lukija.nextLine();
+            if (jarjestelma.yrittaavahentaaVirtaustaJoessa(nimi, virtaus) == false) {
                 System.out.println("Jokea ei löytynyt tietokannasta." + "\n");
+            } else {             //TODO miksei löydä tietokannassa olevaa jokea :(
+                System.out.println("Joen virtausta vähennetty." + "\n");
             }
-        }
-        if (komento == 'x') {
-            syotteenKysyminen(komento);
         }
     }
 }

@@ -42,14 +42,18 @@ public class Jarjestelma {
      * @param nimi jarvelle annettu nimi
      */
     public boolean lisaaJarvi(int vesitase, String nimi) {
-        if (haeJarviNimella(nimi) == null) {
-            Jarvi jarvi = new Jarvi(vesitase, nimi);
-            HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
-            tkanta.setJarvi(jarvi, jokia);
-            return true;
-        } else {
-            return false;
-        }
+        if (vesitase > 0) {
+            if (haeJarviNimella(nimi) == null) {
+                Jarvi jarvi = new Jarvi(vesitase, nimi);
+                HashMap<Joki, Integer> jokia = new HashMap<Joki, Integer>();
+                tkanta.setJarvi(jarvi, jokia);
+                return true;
+            }
+//            else {
+//                return false;
+//            }
+        }return false;
+
     }
 
     /**
@@ -83,13 +87,14 @@ public class Jarjestelma {
         }
         return null;
     }
+
     /**
-* Metodi etsii jarvea tietokannasta sen nimella. Jos jarvea ei löytynyt, se
-* palauttaa false, jos löytyy, se palauttaa true.
-*
+     * Metodi etsii jarvea tietokannasta sen nimella. Jos jarvea ei löytynyt, se
+     * palauttaa false, jos löytyy, se palauttaa true.
+     *     
 * @param nimi
-* @return boolean
-*/
+     * @return boolean
+     */
     public boolean onkoJarviTietokannassa(String nimi) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
             if (jarvi.getNimi().equals(nimi)) {
@@ -99,9 +104,18 @@ public class Jarjestelma {
         return false;
     }
 
+    private boolean onkoJokiJarvenMapissa(Joki joki, String jarvinimi) {
+        if (tkanta.getJarvet().get(haeJarviNimella(jarvinimi)).containsKey(joki)) {
+            return true;
+        }
+        return false;
+
+    }
+
     /**
-     * Metodi lisää järjestelmään joen. Jos joki on jo tietokannassa, siitä
-     * ilmoitetaan syötteessä.
+     * Metodi lisää järjestelmään joen. Jos joki on jo tietokannassa,
+     * palautetaan false ja jokea ei voi lisätä. Samannimisiä joki-olioita ei
+     * voi olla.
      *
      * @param virtaus joelle annettu virtaus
      * @param nimi joelle annettu nimi
@@ -110,19 +124,11 @@ public class Jarjestelma {
      */
     public boolean lisaaJoki(int virtaus, String nimi, String jnimi) {
         if (onkoJarviTietokannassa(jnimi) == true) {
-            Joki joki = new Joki(virtaus, nimi);
-            tkanta.setJoki(joki, virtaus);
-            for (Jarvi j : tkanta.getJarvet().keySet()) {
-                if (j.getNimi().equals(jnimi)) {
-                    for (Joki jj : tkanta.getJarvet().get(j).keySet()) {
-                        if (!tkanta.getJarvet().get(j).containsKey(jj)) {
-                            tkanta.setJokiJarvelle(joki, j);
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                }
+            if (onkoJokiJarvenMapissa(haeJokiNimella(nimi), jnimi) == false) {
+                Joki joki = new Joki(virtaus, nimi);
+                tkanta.setJokiJarvelle(joki, haeJarviNimella(jnimi));
+                tkanta.setJoki(joki, virtaus);
+                return true;
             }
         }
         return false;
@@ -130,10 +136,11 @@ public class Jarjestelma {
 
     /**
      * Metodi hakee joen nimen, kun sille annetaan jokiolio. Jos jokea ei löydy,
-     * siitä ilmoitetaan syötteessä.
+     * palautetaan null.
      *
      * @param joki
      * @return String joen nimi
+     *
      */
     public String haeJoki(Joki joki) {
         for (Joki ejoki : tkanta.getJoet().keySet()) {
@@ -144,9 +151,9 @@ public class Jarjestelma {
         return null;
     }
 
-//TODO Käytetään tällä hetkellä lähinnä testauksessa..
     /**
-     * Metodi palauttaa jokiolion, kun annetaan parametrina joen nimi.
+     * Metodi palauttaa jokiolion, kun annetaan parametrina joen nimi. Jos jokea
+     * ei löydy, palautetaan null.
      *
      * @param nimi joen nimi
      * @return Joki joki
@@ -173,11 +180,12 @@ public class Jarjestelma {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
             if (jarvi.getNimi().equals(nimi)) {
 //                jarvi.lisaaVetta(vetta);
-                if(jarvi.lisaaVetta(vetta)==true){
+                if (jarvi.lisaaVetta(vetta) == true) {
                     return true;
-                }              
+                }
             }
-        }return false;
+        }
+        return false;
     }
 
     /**
@@ -191,11 +199,11 @@ public class Jarjestelma {
      */
     public boolean yrittaavahentaaVettaJarvessa(String nimi, int vetta) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
-            if (jarvi.getNimi().equals(nimi)) { //TODO metodi näyttää toimivan mutta testit rikkoo
-                if(jarvi.vahennaVetta(vetta)==true){
+            if (jarvi.getNimi().equals(nimi)) {
+                if (jarvi.vahennaVetta(vetta) == true) {
                     return true;
-                }             
-            } 
+                }
+            }
         }
         return false;
     }
@@ -214,11 +222,9 @@ public class Jarjestelma {
             if (joki.getNimi().equals(nimi)) {
                 joki.lisaaVirtausta(virtausta);
                 return true;
-            } else {
-                return false;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -231,15 +237,14 @@ public class Jarjestelma {
      * @return boolean
      */
     public boolean yrittaavahentaaVirtaustaJoessa(String nimi, int virtausta) {
+        System.out.println(tkanta.getJoet());
         for (Joki joki : tkanta.getJoet().keySet()) {
             if (joki.getNimi().equals(nimi)) {
                 joki.vahennaVirtausta(virtausta);
                 return true;
-            } else {
-                return false;
             }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -270,12 +275,12 @@ public class Jarjestelma {
      * @param nimi joen nimi, joka poistetaan
      * @return boolean
      */
-    public boolean poistaJoki(String nimi) {
+    public boolean poistaJoki(String nimi, String jnimi) {
         if (!tkanta.getJoet().keySet().isEmpty()) {
             if (haeJokiNimella(nimi) != null) {
                 Joki poistettavaJoki = haeJokiNimella(nimi);
                 tkanta.getJoet().remove(poistettavaJoki);
-                //TODO poistaako joen myös järvien hashmapista?
+                tkanta.getJarvet().get(haeJarviNimella(jnimi)).remove(poistettavaJoki);
             }
             return true;
         } else {
@@ -285,13 +290,14 @@ public class Jarjestelma {
 
     /**
      * Metodi palauttaa lista tietokantaan tallennetuista järvistä ja siihen
-     * liittyvistä joista. Jos tietokannassa ei ole yhtään järveä, siitä
-     * ilmoitetaan syötteessä.
+     * liittyvistä joista. Jos tietokannassa ei ole yhtään järveä, palautetaan
+     * null.
+     *
+     * @return String
      */
     public String palautaListaJarvista() {
         if (tkanta.getJarvet().isEmpty()) {
-            return "Lista järvistä on tyhjä";
-
+            return null;
         } else {
             String teksti = "";
             for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
@@ -309,12 +315,14 @@ public class Jarjestelma {
     }
 
     /**
-     * Metodi palauttaa lista tietokantaan tallennetuista joista. Jos
+     * Metodi palauttaa listan tietokantaan tallennetuista joista. Jos
      * tietokannassa ei ole yhtään jokea, siitä ilmoitetaan syötteessä.
+     *
+     * @return String
      */
     public String palautaListaJoista() {
         if (tkanta.getJoet().isEmpty()) {
-            return "Lista joista on tyhjä";
+            return null;
         } else {
             String teksti = "";
             for (Joki e : tkanta.getJoet().keySet()) {

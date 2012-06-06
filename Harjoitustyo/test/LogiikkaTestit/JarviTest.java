@@ -56,14 +56,14 @@ public class JarviTest {
      
      
      @Test
-     public void lisataanVettaNegatiivinenMaara(){
+     public void yritetaanLisataVettaNegatiivinenMaara(){
          paijanne.lisaaVetta(-300);
          paijanne.vahennaVetta(300);
          assertTrue(paijanne.getTase()==100);
      }
      
      @Test
-     public void vahennetaanVettaEnemmänKuinOn(){
+     public void yrittetaanVahentaaVettaEnemmänKuinOn(){
          int maara = 100 + paijanne.getTase();
          paijanne.vahennaVetta(maara);
          assertEquals(0, paijanne.getTase());

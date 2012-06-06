@@ -49,12 +49,22 @@ public class JokiTest {
         jokuJoki.lisaaVirtausta(34);
         assertEquals(89, jokuJoki.getVirtaus());
     }
+    @Test
+    public void yrittaaLisataNegatiivisenVirtauksen(){
+        jokuJoki.lisaaVirtausta(-50);
+        assertTrue(jokuJoki.getVirtaus()==55);
+    }
     
     @Test
     public void yrittaaMuuttaaVirtaustaNegatiiviseksi(){
-        jokuJoki.lisaaVirtausta(-40);
-        jokuJoki.vahennaVirtausta(40);
-        assertTrue(jokuJoki.getVirtaus()== 15);
+        jokuJoki.vahennaVirtausta(60);
+        assertTrue(jokuJoki.getVirtaus()==0);
+    }
+    
+    @Test
+    public void yrittaaAntaaNegatiivisenVirtauksen(){
+        jokuJoki.vahennaVirtausta(-34);
+        assertTrue(jokuJoki.getVirtaus()== 55);
     }
     
     @Test

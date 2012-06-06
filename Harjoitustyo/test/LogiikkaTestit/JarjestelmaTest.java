@@ -12,13 +12,17 @@ public class JarjestelmaTest {
 
     private Jarjestelma jarjestelma;
     File tiedosto;
+    File tyhjatiedosto;
     private Scanner lukija;
     private HashMap<String, String> ttunnukset;
+    Tietokanta tkanta;
 
     public JarjestelmaTest() throws FileNotFoundException {
+        tyhjatiedosto = new File("vaarattunnukset.txt");
         tiedosto = new File("tunnuksetTest.txt");
         lukija = new Scanner(tiedosto);
         ttunnukset = new HashMap<String, String>();
+        tkanta = new Tietokanta();
     }
 
     @BeforeClass
@@ -31,7 +35,7 @@ public class JarjestelmaTest {
 
     @Before
     public void setUp() {
-        Tietokanta tkanta = new Tietokanta();
+
         jarjestelma = new Jarjestelma(tkanta);
         jarjestelma.lisaaJarvi(67, "Päijänne");
 
@@ -51,18 +55,6 @@ public class JarjestelmaTest {
     }
 
     @Test
-    public void haeJarviToimii() {
-        Jarvi suojarvi = null;
-        jarjestelma.lisaaJarvi(41, "Suojärvi");
-        for (Jarvi jarvi : jarjestelma.getTietokanta().getJarvet().keySet()) {
-            if (jarvi.getNimi().equals("Suojärvi")) {
-                suojarvi = jarvi;
-            }
-        }
-        assertEquals(jarjestelma.haeJarvi(suojarvi), "Suojärvi");
-    }
-
-    @Test
     public void lisataanMontaJarvea() {
         jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
         jarjestelma.lisaaJarvi(12, "Physicumjärvi");
@@ -75,9 +67,25 @@ public class JarjestelmaTest {
     @Test
     public void yrittaaLisataJoOlevaaJarvea() {
         jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
-        jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
-        //TODO ja mites tän toteuttaisi? HUOM toteuta ensin metodiin poikkeustapausten käsittely
-//        assertFalse();
+        assertFalse(jarjestelma.lisaaJarvi(56, "Kumpulajärvi"));
+        assertFalse(jarjestelma.lisaaJarvi(45, "Kumpulajärvi"));
+    }
+
+    @Test
+    public void yrittaaLisataJarveaNegatiivisellaTaseella() {
+        assertFalse(jarjestelma.lisaaJarvi(-45, "Kumpulajärvi"));
+    }
+
+    @Test
+    public void haeJarviToimii() {
+        Jarvi suojarvi = null;
+        jarjestelma.lisaaJarvi(41, "Suojärvi");
+        for (Jarvi jarvi : jarjestelma.getTietokanta().getJarvet().keySet()) {
+            if (jarvi.getNimi().equals("Suojärvi")) {
+                suojarvi = jarvi;
+            }
+        }
+        assertEquals(jarjestelma.haeJarvi(suojarvi), "Suojärvi");
     }
 
     @Test
@@ -95,9 +103,39 @@ public class JarjestelmaTest {
     }
 
     @Test
-    public void lisaaJokiToimiiT() {
+    public void lisaaJokiToimii() {
         jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
         assertNotNull(jarjestelma.haeJokiNimella("Testijoki"));
+    }
+
+    @Test
+    public void lisaaJokiToimii2() {
+        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJoki(33, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJoki(12, "Djoki", "päijänne");
+        assertNotNull(jarjestelma.haeJokiNimella("Hjoki"));
+    }
+
+    @Test
+    public void yrittaaLisataJoOlevaaJokea() {
+        jarjestelma.lisaaJoki(45, "Testijoki", "Päijänne");
+        assertFalse(jarjestelma.lisaaJoki(45, "Testijoki", "Päijänne"));
+    }
+
+    @Test
+    public void lisattyJokiLoytyyMyosJarvenMapista() {
+        Joki jjoki = null;
+        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        for (Jarvi jarv : jarjestelma.getTietokanta().getJarvet().keySet()) {
+            if (jarv.getNimi().equals("Päijänne")) {
+                for (Joki j : jarjestelma.getTietokanta().getJarvet().get(jarv).keySet()) {
+                    if (j.getNimi().equals("Testijoki")) {
+                        jjoki = j;
+                    }
+                }
+            }
+        }
+        assertEquals(jjoki.getNimi(), "Testijoki");
     }
 
     @Test
@@ -125,30 +163,28 @@ public class JarjestelmaTest {
         assertFalse(jarjestelma.haeJoki(suojoki).equals("Päijänne"));
         assertFalse(jarjestelma.haeJoki(suojoki).equals("Kalajoki"));
     }
-    
-//    @Test            (käytetäänkö "palautaJoki-metodia" missään?)
-//    public void palautaJokiToimii(){
-//        Joki joki = new Joki(45,"Koejoki");
-//        
-//        assertEquals(jarjestelma.palautaJoki("Koejoki"),joki);
-//    }
-    
+
     @Test
-    public void yrittaaLisataVettaJarvessaTest(){
-       jarjestelma.yrittaalisataVettaJarvessa("Päijänne", 30); 
-       
-       assertTrue(jarjestelma.haeJarviNimella("Päijänne").getTase()==97);
-       assertFalse(jarjestelma.haeJarviNimella("Päijänne").getTase()==99);
+    public void yrittaaLisataVettaJarvessaTest() {
+        jarjestelma.yrittaalisataVettaJarvessa("Päijänne", 30);
+
+        assertTrue(jarjestelma.haeJarviNimella("Päijänne").getTase() == 97);
+        assertFalse(jarjestelma.haeJarviNimella("Päijänne").getTase() == 99);
     }
-    
+
     @Test
-    public void yrittaaVahentaaVettaJarvessaTest(){
+    public void yrittaaVahentaaVettaJarvessaTest() {
         jarjestelma.yrittaavahentaaVettaJarvessa("Päijänne", 7);
-        
-        assertTrue(jarjestelma.haeJarviNimella("Päijänne").getTase()==60);
-        assertFalse(jarjestelma.haeJarviNimella("Päijänne").getTase()==66);
+
+        assertTrue(jarjestelma.haeJarviNimella("Päijänne").getTase() == 60);
+        assertFalse(jarjestelma.haeJarviNimella("Päijänne").getTase() == 66);
     }
-    
+
+    @Test
+    public void yrittaaVahentaaLiikaaVettaJarvesta() {
+        jarjestelma.yrittaavahentaaVettaJarvessa("Päijänne", 99);
+        assertTrue(jarjestelma.haeJarviNimella("Päijänne").getTase() == 0);
+    }
 
     @Test
     public void yrittaaLisataJoenVirtaustaTest() {
@@ -166,44 +202,77 @@ public class JarjestelmaTest {
         assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus() == 40);
 
     }
-    
-    
+
+    @Test
+    public void yrittaaVahentaaLiikaaVirtausta() {
+        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.yrittaavahentaaVirtaustaJoessa("Hjoki", 99);
+        assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus() == 0);
+
+    }
+
+    @Test
+    public void lisaaMontaJokeaJaVahentaaKeskimmaista() {
+        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJoki(45, "Kalajoki", "Päijänne");
+        jarjestelma.lisaaJoki(22, "Fjoki", "Päijänne");
+        jarjestelma.yrittaavahentaaVirtaustaJoessa("Kalajoki", 20);
+
+        assertTrue(jarjestelma.haeJokiNimella("Kalajoki").getVirtaus() == 25);
+    }
 
     @Test
     public void osaaPoistaaJarvenTest() {
         jarjestelma.poistaJarvi("Päijänne");
-        
+
         assertNull(jarjestelma.haeJarviNimella("Päijänne"));
     }
 
     @Test
+    public void osaaPoistaaJarvenEiPoistaKaikkia() {
+        jarjestelma.lisaaJarvi(34, "Silakkajärvi");
+        jarjestelma.poistaJarvi("Päijänne");
+
+        assertNotNull(jarjestelma.palautaListaJarvista());
+    }
+
+    @Test
     public void osaaPoistaaJoenTest() {
-        
+
         jarjestelma.lisaaJoki(33, "Siikajoki", "Päijänne");
-        jarjestelma.poistaJoki("Siikajoki");
+        jarjestelma.poistaJoki("Siikajoki", "Päijänne");
 
         assertNull(jarjestelma.haeJokiNimella("Siikajoki"));
-//        assertNull(jarjestelma.haeJokiNimella("Siikajoki").getVirtaus()); //TODO miksi rikkoo?
-        assertNotNull(jarjestelma.haeJarviNimella("Päijänne"));
+        
+    }
+
+    @Test
+    public void osaaPoistaaJoenEiPoistaKaikkia() {
+        jarjestelma.lisaaJoki(33, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJoki(33, "Haukijoki", "Päijänne");
+        jarjestelma.poistaJoki("Siikajoki", "Päijänne");
+        
+        assertNotNull(jarjestelma.haeJokiNimella("Haukijoki"));
+        assertNotNull(jarjestelma.palautaListaJoista());
     }
 
     @Test
     public void yrittaaPalauttaaListaaJoista() {
         jarjestelma.lisaaJoki(23, "Siikajoki", "Päijänne");
         jarjestelma.lisaaJoki(12, "Koskijoki", "Päijänne");
-        
-        assertNotNull(jarjestelma.palautaListaJoista()); 
+
+        assertNotNull(jarjestelma.palautaListaJoista());
     }
-    
+
     @Test
-    public void yrittaaPalauttaaListaaJarvista(){
+    public void yrittaaPalauttaaListaaJarvista() {
         jarjestelma.lisaaJarvi(567, "Laatokka");
         jarjestelma.palautaListaJarvista();
-        
+
         assertNotNull(jarjestelma.palautaListaJarvista());                                   //TODO miten tämä tehdään??
     }
-    
-        @Test
+
+    @Test
     public void yrittaaLisataTiedostosta() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
 
@@ -219,6 +288,18 @@ public class JarjestelmaTest {
         assertNull(ttunnukset.get("Hhokkanen"));
     }
 
+//    @Test
+//    public void yrittaaLukeaTyhjastaTiedostosta(){
+//        jarjestelma.lisaaTunnuksetTiedostosta(tyhjatiedosto);
+//        while (lukija.hasNextLine()) {
+//            String rivi = lukija.nextLine();
+//            String[] osat = rivi.split(" ");
+//            ttunnukset.put(osat[0], osat[1]);
+//        }
+//        lukija.close();
+//        
+//        assertNull(ttunnukset.get("Hharjoittelija").equals("tapanila"));
+//    }
     @Test
     public void onnistuuKirjautuminenJarjestelmaan() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
@@ -226,16 +307,16 @@ public class JarjestelmaTest {
         Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
 
         assertTrue(j.getClass().equals(luokka.getClass()));
-        //TODO: menee läpi, mutta onko tässä vielä jotain häikkää?
+
     }
-//
-//    @Test
-//    public void epaonnistuuKirjautumaanJarjestelmaan() {
-//        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-//        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
-//        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
-//
-//        assertFalse(j.getClass().equals(luokka.getClass()));
-//        
-//    }
+
+    @Test
+    public void epaonnistuuKirjautumaanJarjestelmaan() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
+        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
+
+        assertFalse(j.getClass().equals(luokka.getClass()));
+
+    }
 }

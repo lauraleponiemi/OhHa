@@ -42,9 +42,11 @@ public class Jarvi {
         if(vesitase >= vetta){
             vesitase = vesitase -vetta;
             return true;
+        }if(vetta >vesitase){
+            vesitase = 0;
+            return true;
         }
         else
-//            vesitase = 0;
             return false;
     }
     
