@@ -175,7 +175,12 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna järven vesitase: ");
             int vesitase = lukija.nextInt();
-            jarjestelma.lisaaJarvi(vesitase, nimi);
+//            jarjestelma.lisaaJaLuoJarvi(vesitase, nimi);
+            if(jarjestelma.lisaaJaLuoJarvi(vesitase, nimi)==true){
+                System.out.println("Järvi lisätty järjestelmään");
+            }else{
+                System.out.println("Järven lisääminen epäonnistui. Kahta samannimistä järveä ei voi olla, ja vesitaseen on oltava positiivinen.");
+            }
 
 
         } else if (toiminto == '6') {
@@ -199,10 +204,10 @@ public class Kayttoliittyma {
             System.out.print("Anna järven nimi, joka poistetaan: ");
             lukija.nextLine();
             String nimi = lukija.nextLine();
-            if (jarjestelma.poistaJarvi(nimi) == false) {
-                System.out.println("Järveä ei löytynyt tietokannasta");
+            if (jarjestelma.poistaJarvi(nimi) == true) {
+                System.out.println("Järvi poistettu tietokannasta");               
             } else {
-                System.out.println("Järvi poistettu tietokannasta");
+                System.out.println("Järveä ei löytynyt tietokannasta");
             }
         }
 
@@ -260,12 +265,13 @@ public class Kayttoliittyma {
             System.out.print("Anna järven nimi, mihin joki laskee:");
             lukija.nextLine();
             String jnimi = lukija.nextLine();
-            jarjestelma.lisaaJoki(virtaus, nimi, jnimi);
-//            if(jarjestelma.lisaaJoki(virtaus, nimi, jnimi)==false){
-//                System.out.println("Joki on jo tietokannassa.");
-//            }else{
-//                System.out.println("Joki lisätty tietokantaan.");
-//            }
+//            jarjestelma.lisaaJaLuoJoki(virtaus, nimi, jnimi);
+            if(jarjestelma.lisaaJaLuoJoki(virtaus, nimi, jnimi)==true){
+                System.out.println("Joki lisätty tietokantaan.");
+                
+            }else{
+               System.out.println("Joen lisääminen epäonnistui. Joki on jo tietokannassa, tai antamaasi järveä ei ole vielä tietokannassa.");
+            }
         }
         if (toiminto == '8') {
             System.out.println("[d] Joen poistaminen tietokannasta");
@@ -289,10 +295,10 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna järven nimi, johon joki laskee: ");
             String jnimi = lukija.nextLine();
-            if (jarjestelma.poistaJoki(nimi, jnimi) == false) {
-                System.out.println("Jokea ei löytynyt tietokannasta" + "\n");
+            if (jarjestelma.poistaJoki(nimi, jnimi) == true) {
+                System.out.println("Joki poistettu tietokannasta" + "\n");               
             } else {
-                System.out.println("Joki poistettu tietokannasta" + "\n");
+                System.out.println("Jokea ei löytynyt järven tietokannasta. Annoitko oikean järven?" + "\n");
             }
 
         }
@@ -302,11 +308,11 @@ public class Kayttoliittyma {
             String nimi = lukija.nextLine();
             System.out.print("Anna lisättävä määrä:");
             int virtaus = lukija.nextInt();
-//            lukija.nextLine();
-            if (jarjestelma.yrittaalisataVirtaustaJoessa(nimi, virtaus) == false) {
-                System.out.println("Jokea ei löytynyt tietokannasta tai antamasi luku ei kelpaa." + "\n");
-            } else {
+            if (jarjestelma.yrittaalisataVirtaustaJoessa(nimi, virtaus) == true) {
                 System.out.println("Joen virtausta lisätty." + "\n");
+            } else {
+                System.out.println("Jokea ei löytynyt tietokannasta tai antamasi luku ei kelpaa." + "\n");
+                
             }
         }
         if (komento == 'f') {
@@ -316,10 +322,10 @@ public class Kayttoliittyma {
             System.out.print("Anna vähennettävä määrä: ");
             int virtaus = lukija.nextInt();
 //            lukija.nextLine();
-            if (jarjestelma.yrittaavahentaaVirtaustaJoessa(nimi, virtaus) == false) {
-                System.out.println("Jokea ei löytynyt tietokannasta." + "\n");
+            if (jarjestelma.yrittaavahentaaVirtaustaJoessa(nimi, virtaus) == true) {
+                System.out.println("Joen virtausta vähennetty." + "\n");         
             } else {             //TODO miksei löydä tietokannassa olevaa jokea :(
-                System.out.println("Joen virtausta vähennetty." + "\n");
+                System.out.println("Jokea ei löytynyt tietokannasta." + "\n");
             }
         }
     }

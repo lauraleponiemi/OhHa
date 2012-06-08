@@ -10,6 +10,7 @@ public class Jarjestelma {
     private Tietokanta tkanta;
     private Scanner lukija;
     private HashMap< String, String> tunnukset;
+    private boolean onAdminJarjestelma;
 
     /**
      * Jarjestelman konstruktori ottaa parametrinään tietokannan, tallentaa sen
@@ -33,7 +34,7 @@ public class Jarjestelma {
 
     /**
      * Metodi lisaa jarven tietokantaansa. Se luo uuden olion, joka saa
-     * parametrikseen annetun nimen ja vesi taseen. Jarveen voi liittyä myös
+     * parametrikseen annetun nimen ja vesitaseen. Jarveen voi liittyä myös
      * monia jokia, joten luodaan sitä varten HashMap johon voi tallentaa
      * joki-olioita ja sen virtauksen. Järvet tallennetaan siis tietokantaan
      * metodilla joka saa jarvi-olion ja juuri luodun Hashmapin
@@ -41,7 +42,7 @@ public class Jarjestelma {
      * @param vesitase jarvelle parametrina annettu vesitase
      * @param nimi jarvelle annettu nimi
      */
-    public boolean lisaaJarvi(int vesitase, String nimi) {
+    public boolean lisaaJaLuoJarvi(int vesitase, String nimi) {
         if (vesitase > 0) {
             if (haeJarviNimella(nimi) == null) {
                 Jarvi jarvi = new Jarvi(vesitase, nimi);
@@ -52,7 +53,8 @@ public class Jarjestelma {
 //            else {
 //                return false;
 //            }
-        }return false;
+        }
+        return false;
 
     }
 
@@ -104,12 +106,20 @@ public class Jarjestelma {
         return false;
     }
 
+    private boolean onkoJokiTietokannassa(String jokinimi) {
+        for (Joki joki : tkanta.getJoet().keySet()) {
+            if (joki.getNimi().equals(jokinimi)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean onkoJokiJarvenMapissa(Joki joki, String jarvinimi) {
         if (tkanta.getJarvet().get(haeJarviNimella(jarvinimi)).containsKey(joki)) {
             return true;
         }
         return false;
-
     }
 
     /**
@@ -122,16 +132,15 @@ public class Jarjestelma {
      * @param jnimi järven nimi, johon joki laskee
      * @return boolean
      */
-    public boolean lisaaJoki(int virtaus, String nimi, String jnimi) {
-        if (onkoJarviTietokannassa(jnimi) == true) {
-            if (onkoJokiJarvenMapissa(haeJokiNimella(nimi), jnimi) == false) {
-                Joki joki = new Joki(virtaus, nimi);
-                tkanta.setJokiJarvelle(joki, haeJarviNimella(jnimi));
-                tkanta.setJoki(joki, virtaus);
-                return true;
-            }
+    public boolean lisaaJaLuoJoki(int virtaus, String nimi, String jnimi) {
+        if (onkoJokiTietokannassa(nimi) == false && onkoJarviTietokannassa(jnimi) == true) {
+            Joki joki = new Joki(virtaus, nimi);
+            tkanta.setJokiJarvelle(joki, haeJarviNimella(jnimi));
+            tkanta.setJoki(joki, virtaus);
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -276,16 +285,30 @@ public class Jarjestelma {
      * @return boolean
      */
     public boolean poistaJoki(String nimi, String jnimi) {
-        if (!tkanta.getJoet().keySet().isEmpty()) {
-            if (haeJokiNimella(nimi) != null) {
-                Joki poistettavaJoki = haeJokiNimella(nimi);
-                tkanta.getJoet().remove(poistettavaJoki);
-                tkanta.getJarvet().get(haeJarviNimella(jnimi)).remove(poistettavaJoki);
+        if (onkoJokiJarvenMapissa(haeJokiNimella(nimi), jnimi)) {
+            if (!tkanta.getJoet().keySet().isEmpty()) {
+                if (haeJokiNimella(nimi) != null) {
+                    Joki poistettavaJoki = haeJokiNimella(nimi);
+                    tkanta.getJoet().remove(poistettavaJoki);
+                    tkanta.getJarvet().get(haeJarviNimella(jnimi)).remove(poistettavaJoki);
+                }
+                return true;
             }
-            return true;
-        } else {
-            return false;
+//            else {
+//                return false;
+//            }
         }
+        return false;
+//        if (!tkanta.getJoet().keySet().isEmpty()) {
+//            if (haeJokiNimella(nimi) != null) {
+//                Joki poistettavaJoki = haeJokiNimella(nimi);
+//                tkanta.getJoet().remove(poistettavaJoki);
+//                tkanta.getJarvet().get(haeJarviNimella(jnimi)).remove(poistettavaJoki);
+//            }
+//            return true;
+//        } else {
+//            return false;
+
     }
 
     /**
@@ -376,9 +399,6 @@ public class Jarjestelma {
      * @return Jarjestelma
      */
     public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-//        AdminJarjestelma luokka = new AdminJarjestelma(tkanta);
-//        System.out.println(luokka.getClass().getCanonicalName());
-
         if (tunnukset.containsKey(kayttotunnus)) {
             if (tunnukset.get(kayttotunnus).equals(salasana)) {
                 AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
@@ -389,5 +409,36 @@ public class Jarjestelma {
             return ojarjestelma;
         }
         return null;
+    }
+
+    /**
+     * Metodi graafisen käyttöliittymän sisäänkirjautumiseen.
+     *
+     * @param kayttotunnus
+     * @param salasana
+     * @return boolean
+     */
+    public boolean kirjautuukoSisaanGui(String kayttotunnus, String salasana) {
+        if (tunnukset.containsKey(kayttotunnus)) {
+            if (tunnukset.get(kayttotunnus).equals(salasana)) {
+//                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
+                onAdminJarjestelma = true;
+                return true;
+            }
+        } else if (kayttotunnus.equals("") && salasana.equals("")) {
+//            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
+            onAdminJarjestelma = false;
+            return true;
+        }
+        return false;
+    }
+
+    
+    /**
+     * Metodi kertoo kumpi jarjestelma kyseessä.
+     * @return boolean
+     */
+    public boolean onkoAdminJarjestelma() {
+            return onAdminJarjestelma;
     }
 }

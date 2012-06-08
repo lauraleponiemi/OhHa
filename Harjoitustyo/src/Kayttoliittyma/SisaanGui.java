@@ -7,7 +7,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.*;
 
-public class Gui implements Runnable {
+public class SisaanGui implements Runnable {
 
     private JFrame frame;
     Jarjestelma jarjestelma;
@@ -15,11 +15,15 @@ public class Gui implements Runnable {
     public void Gui(Jarjestelma jarjestelma) {
         this.jarjestelma = jarjestelma;
     }
-
+    
+    /**
+     * Graafisen käyttöjärjestelmän käynnistys ja ikkunan luonti. 
+     */
+    
     @Override
     public void run() {
         frame = new JFrame("Sisäänkirjautuminen vesistömallijärjestelmään");
-        frame.setPreferredSize(new Dimension(200, 100));
+        frame.setPreferredSize(new Dimension(500, 150));
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -31,23 +35,22 @@ public class Gui implements Runnable {
 
 
     private void luoKomponentit(Container container) {
-        GridLayout layout = new GridLayout(3, 2);
+        GridLayout layout = new GridLayout(3,2);
         container.setLayout(layout);
 //        JLabel teksti = new JLabel("Syötä käyttäjätunnus ja salasana, tai paina Enter kaksi kertaa");
-        JLabel nimiTeksti = new JLabel("Käyttäjätunnus");
+        JLabel nimiTeksti = new JLabel("  Käyttäjätunnus: ");
         JTextField nimiKentta = new JTextField();
-        JLabel salasanaTeksti = new JLabel("Salasana");
+        JLabel salasanaTeksti = new JLabel("  Salasana: ");
         JTextField salasanaKentta = new JTextField();
         
         JButton loginnappi = new JButton("Login");
-        HenkilonLisaysKuuntelija kuuntelija = new HenkilonLisaysKuuntelija(jarjestelma, nimiKentta, salasanaKentta);
+        KirjautumisKuuntelija kuuntelija = new KirjautumisKuuntelija(jarjestelma, nimiKentta, salasanaKentta);
         loginnappi.addActionListener(kuuntelija);
-        
-//        container.add(teksti);
-        container.add(nimiKentta);
-        container.add(salasanaKentta);
+ 
         container.add(nimiTeksti);
+        container.add(nimiKentta);
         container.add(salasanaTeksti);
+        container.add(salasanaKentta);       
         container.add(new JLabel(""));
         container.add(loginnappi, BorderLayout.SOUTH);
         

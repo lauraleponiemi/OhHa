@@ -37,7 +37,7 @@ public class JarjestelmaTest {
     public void setUp() {
 
         jarjestelma = new Jarjestelma(tkanta);
-        jarjestelma.lisaaJarvi(67, "Päijänne");
+        jarjestelma.lisaaJaLuoJarvi(67, "Päijänne");
 
     }
 
@@ -56,9 +56,9 @@ public class JarjestelmaTest {
 
     @Test
     public void lisataanMontaJarvea() {
-        jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
-        jarjestelma.lisaaJarvi(12, "Physicumjärvi");
-        jarjestelma.lisaaJarvi(34, "Chemicumjärvi");
+        jarjestelma.lisaaJaLuoJarvi(45, "Kumpulajärvi");
+        jarjestelma.lisaaJaLuoJarvi(12, "Physicumjärvi");
+        jarjestelma.lisaaJaLuoJarvi(34, "Chemicumjärvi");
 
 
         assertTrue(jarjestelma.onkoJarviTietokannassa("Physicumjärvi"));
@@ -66,20 +66,20 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaLisataJoOlevaaJarvea() {
-        jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
-        assertFalse(jarjestelma.lisaaJarvi(56, "Kumpulajärvi"));
-        assertFalse(jarjestelma.lisaaJarvi(45, "Kumpulajärvi"));
+        jarjestelma.lisaaJaLuoJarvi(45, "Kumpulajärvi");
+        assertFalse(jarjestelma.lisaaJaLuoJarvi(56, "Kumpulajärvi"));
+        assertFalse(jarjestelma.lisaaJaLuoJarvi(45, "Kumpulajärvi"));
     }
 
     @Test
     public void yrittaaLisataJarveaNegatiivisellaTaseella() {
-        assertFalse(jarjestelma.lisaaJarvi(-45, "Kumpulajärvi"));
+        assertFalse(jarjestelma.lisaaJaLuoJarvi(-45, "Kumpulajärvi"));
     }
 
     @Test
     public void haeJarviToimii() {
         Jarvi suojarvi = null;
-        jarjestelma.lisaaJarvi(41, "Suojärvi");
+        jarjestelma.lisaaJaLuoJarvi(41, "Suojärvi");
         for (Jarvi jarvi : jarjestelma.getTietokanta().getJarvet().keySet()) {
             if (jarvi.getNimi().equals("Suojärvi")) {
                 suojarvi = jarvi;
@@ -96,36 +96,66 @@ public class JarjestelmaTest {
 
     @Test
     public void onkoJarviTietokannassa() {
-        jarjestelma.lisaaJarvi(45, "Kumpulajärvi");
+        jarjestelma.lisaaJaLuoJarvi(45, "Kumpulajärvi");
 
         assertTrue(jarjestelma.onkoJarviTietokannassa("Kumpulajärvi"));
         assertFalse(jarjestelma.onkoJarviTietokannassa("Chemicumjärvi"));
     }
 
+//    @Test             //ei voi testata private metodeja
+//    public void onkoJokiTietokannassa(){
+//        jarjestelma.lisaaJaLuoJoki(22, "Kalajoki", "Päijänne");
+//        assertTrue(jarjestelma.);
+//    }
     @Test
     public void lisaaJokiToimii() {
-        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
         assertNotNull(jarjestelma.haeJokiNimella("Testijoki"));
     }
 
     @Test
     public void lisaaJokiToimii2() {
-        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
-        jarjestelma.lisaaJoki(33, "Hjoki", "Päijänne");
-        jarjestelma.lisaaJoki(12, "Djoki", "päijänne");
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(33, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(12, "Djoki", "Päijänne");
         assertNotNull(jarjestelma.haeJokiNimella("Hjoki"));
     }
 
     @Test
+    public void lisaaJokiEiToimiJosJarveaEiOlemassa() {
+//        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Testijarvi");
+        assertFalse(jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Testijarvi"));
+    }
+
+    @Test
     public void yrittaaLisataJoOlevaaJokea() {
-        jarjestelma.lisaaJoki(45, "Testijoki", "Päijänne");
-        assertFalse(jarjestelma.lisaaJoki(45, "Testijoki", "Päijänne"));
+        jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Päijänne");
+        assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Päijänne"));
+    }
+
+    @Test
+    public void yrittaaLisataJoOlevaaJokea2() {
+        jarjestelma.lisaaJaLuoJarvi(45, "Kumpulajärvi");
+        jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Päijänne");
+        assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Kumpulajärvi"));
+
+    }
+
+    @Test
+    public void yrittaaLisataJoOlevaaJokeaEiOlevaanJarveen() {
+        jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Päijänne");
+        assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Testijärvi"));
+    }
+    
+    @Test
+    public void yrittaaLisataUuttaJokeaEiOlevaanJarveen(){      
+        assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Testijärvi"));
     }
 
     @Test
     public void lisattyJokiLoytyyMyosJarvenMapista() {
         Joki jjoki = null;
-        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
         for (Jarvi jarv : jarjestelma.getTietokanta().getJarvet().keySet()) {
             if (jarv.getNimi().equals("Päijänne")) {
                 for (Joki j : jarjestelma.getTietokanta().getJarvet().get(jarv).keySet()) {
@@ -141,7 +171,7 @@ public class JarjestelmaTest {
     @Test
     public void lisaaJokiPalauttaaOikeanJoen() {
         Joki testijoki = null;
-        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
         for (Joki joki : jarjestelma.getTietokanta().getJoet().keySet()) {
             if (joki.getNimi().equals("Testijoki")) {
                 testijoki = joki;
@@ -153,7 +183,7 @@ public class JarjestelmaTest {
     @Test
     public void haeJokiToimii() {
         Joki suojoki = null;
-        jarjestelma.lisaaJoki(33, "Suojoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(33, "Suojoki", "Päijänne");
         for (Joki jo : jarjestelma.getTietokanta().getJoet().keySet()) {
             if (jo.getNimi().equals("Suojoki")) {
                 suojoki = jo;
@@ -188,7 +218,7 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaLisataJoenVirtaustaTest() {
-        jarjestelma.lisaaJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
         jarjestelma.yrittaalisataVirtaustaJoessa("Testijoki", 4);
         assertEquals(70, jarjestelma.haeJokiNimella("Testijoki").getVirtaus());
 
@@ -196,7 +226,7 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaVahentaaJoenVirtaustaTest() {
-        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(44, "Hjoki", "Päijänne");
         jarjestelma.yrittaavahentaaVirtaustaJoessa("Hjoki", 4);
 
         assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus() == 40);
@@ -205,7 +235,7 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaVahentaaLiikaaVirtausta() {
-        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(44, "Hjoki", "Päijänne");
         jarjestelma.yrittaavahentaaVirtaustaJoessa("Hjoki", 99);
         assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus() == 0);
 
@@ -213,9 +243,9 @@ public class JarjestelmaTest {
 
     @Test
     public void lisaaMontaJokeaJaVahentaaKeskimmaista() {
-        jarjestelma.lisaaJoki(44, "Hjoki", "Päijänne");
-        jarjestelma.lisaaJoki(45, "Kalajoki", "Päijänne");
-        jarjestelma.lisaaJoki(22, "Fjoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(44, "Hjoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(45, "Kalajoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(22, "Fjoki", "Päijänne");
         jarjestelma.yrittaavahentaaVirtaustaJoessa("Kalajoki", 20);
 
         assertTrue(jarjestelma.haeJokiNimella("Kalajoki").getVirtaus() == 25);
@@ -230,7 +260,7 @@ public class JarjestelmaTest {
 
     @Test
     public void osaaPoistaaJarvenEiPoistaKaikkia() {
-        jarjestelma.lisaaJarvi(34, "Silakkajärvi");
+        jarjestelma.lisaaJaLuoJarvi(34, "Silakkajärvi");
         jarjestelma.poistaJarvi("Päijänne");
 
         assertNotNull(jarjestelma.palautaListaJarvista());
@@ -239,37 +269,60 @@ public class JarjestelmaTest {
     @Test
     public void osaaPoistaaJoenTest() {
 
-        jarjestelma.lisaaJoki(33, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(33, "Siikajoki", "Päijänne");
         jarjestelma.poistaJoki("Siikajoki", "Päijänne");
 
         assertNull(jarjestelma.haeJokiNimella("Siikajoki"));
-        
+
+    }
+
+    @Test
+    public void eiPoistaJokeaJosAnnetaanVaaraJarvi() {
+        jarjestelma.lisaaJaLuoJarvi(44, "Saimaa");
+        jarjestelma.lisaaJaLuoJoki(33, "Siikajoki", "Päijänne");
+
+        assertFalse(jarjestelma.poistaJoki("Siikajoki", "Saimaa"));
     }
 
     @Test
     public void osaaPoistaaJoenEiPoistaKaikkia() {
-        jarjestelma.lisaaJoki(33, "Siikajoki", "Päijänne");
-        jarjestelma.lisaaJoki(33, "Haukijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(33, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(33, "Haukijoki", "Päijänne");
         jarjestelma.poistaJoki("Siikajoki", "Päijänne");
-        
+
         assertNotNull(jarjestelma.haeJokiNimella("Haukijoki"));
         assertNotNull(jarjestelma.palautaListaJoista());
     }
 
     @Test
-    public void yrittaaPalauttaaListaaJoista() {
-        jarjestelma.lisaaJoki(23, "Siikajoki", "Päijänne");
-        jarjestelma.lisaaJoki(12, "Koskijoki", "Päijänne");
+    public void palauttaaListanJoista() {
+        jarjestelma.lisaaJaLuoJoki(23, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(12, "Koskijoki", "Päijänne");
 
         assertNotNull(jarjestelma.palautaListaJoista());
     }
 
     @Test
-    public void yrittaaPalauttaaListaaJarvista() {
-        jarjestelma.lisaaJarvi(567, "Laatokka");
+    public void palauttaaNullinJosTyhjaListaJokia() {
+        jarjestelma.lisaaJaLuoJoki(23, "Siikajoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(12, "Koskijoki", "Päijänne");
+        jarjestelma.poistaJoki("Siikajoki", "Päijänne");
+        jarjestelma.poistaJoki("Koskijoki", "Päijänne");
+        assertNull(jarjestelma.palautaListaJoista());
+    }
+
+    @Test
+    public void palauttaaListanJarvista() {
+        jarjestelma.lisaaJaLuoJarvi(567, "Laatokka");
         jarjestelma.palautaListaJarvista();
 
         assertNotNull(jarjestelma.palautaListaJarvista());                                   //TODO miten tämä tehdään??
+    }
+
+    @Test
+    public void palauttaaNullinJosTyhjaListaJarvia() {
+        jarjestelma.poistaJarvi("Päijänne");
+        assertNull(jarjestelma.palautaListaJarvista());
     }
 
     @Test

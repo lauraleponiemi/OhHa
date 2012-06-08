@@ -62,7 +62,7 @@ public class JokiTest {
     }
     
     @Test
-    public void yrittaaAntaaNegatiivisenVirtauksen(){
+    public void yrittaaVahentaaNegatiivisenVirtauksen(){
         jokuJoki.vahennaVirtausta(-34);
         assertTrue(jokuJoki.getVirtaus()== 55);
     }

@@ -15,8 +15,9 @@ public class Main {
 
         Tietokanta tkanta = new Tietokanta();
         Jarjestelma jarjestelma = new Jarjestelma(tkanta);
-        Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
-//      Gui liittyma = new Gui();
+        KayttoGui gui = new KayttoGui(jarjestelma);
+//        Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
+        SisaanGui liittyma = new SisaanGui();
         if (jarjestelma.lisaaTunnuksetTiedostosta(tiedosto) == false) {
             System.out.println("Tunnuksien lisääminen tiedostosta epäonnistui");
         }
@@ -27,15 +28,16 @@ public class Main {
         
         tkanta.setJoki(hjoki, hjoki.getVirtaus());
         tkanta.setJoki(kjoki, kjoki.getVirtaus());
-//        jarjestelma.lisaaJarvi(jjarvi.getTase(), jjarvi.getNimi());
-        jarjestelma.lisaaJarvi(88, "Päijänne");
+//        jarjestelma.lisaaJaLuoJarvi(jjarvi.getTase(), jjarvi.getNimi());
+        jarjestelma.lisaaJaLuoJarvi(88, "Päijänne");
         tkanta.setJarvi(jjarvi,joet);
         tkanta.setJokiJarvelle(hjoki, jjarvi);
         tkanta.setJokiJarvelle(kjoki, jjarvi);
 
 
 
-        liittyma.kaynnista();
-//      liittyma.run();
+//        liittyma.kaynnista();
+//        liittyma.run();
+        gui.run();
     }
 }
