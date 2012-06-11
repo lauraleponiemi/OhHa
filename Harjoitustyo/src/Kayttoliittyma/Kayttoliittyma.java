@@ -207,7 +207,7 @@ public class Kayttoliittyma {
             if (jarjestelma.poistaJarvi(nimi) == true) {
                 System.out.println("Järvi poistettu tietokannasta");               
             } else {
-                System.out.println("Järveä ei löytynyt tietokannasta");
+                System.out.println("iJärveä ei löytynyt tietokannasta");
             }
         }
 

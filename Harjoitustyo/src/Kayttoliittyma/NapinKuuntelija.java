@@ -1,13 +1,19 @@
 package Kayttoliittyma;
 
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import javax.swing.*;
 
-public class NapinKuuntelija implements KeyListener {
+public class NapinKuuntelija implements ActionListener {
 
     private KayttoGui kayttis;
+    private JButton joet;
+    private JButton lopeta;
+    private JButton jarvet;
+ 
+    private JFrame frame;
 
     /**
      * Metodi antaa saamansa tapahtumat kayttoliittyman aktiivisen ikkunan
@@ -15,41 +21,34 @@ public class NapinKuuntelija implements KeyListener {
      *
      * @param kayttis Kayttoliittyma, jota kuuntelija kuuntelee
      */
-    public NapinKuuntelija(KayttoGui kayttis) {
+    public NapinKuuntelija(KayttoGui kayttis, JFrame frame, JButton lopeta, JButton jarvet, JButton joet) {
         this.kayttis = kayttis;
+        this.joet = joet;
+        this.lopeta = lopeta;
+        this.jarvet = jarvet;
+       
+        this.frame = frame;
     }
 
-    /**
-     * Ei tee mitaan.
-     *
-     * @param ke Nappaintapahtuma nappaimen painalluksesta
-     */
+/**
+ * Reagoi napin painalukseen 
+ * @param ae 
+ */
     @Override
-    public void keyTyped(KeyEvent ke) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void actionPerformed(ActionEvent ae) {
+        
+        if (ae.getSource() == joet) {
+            System.out.println("lista joista");
+
+        }
+        if (ae.getSource() == jarvet) {
+            System.out.println("lista järvistä");
+        }
+        if (ae.getSource() == lopeta) {
+            System.out.println("lopeta ohjelma");
+            
+        }
     }
 
-    /**
-     * Antaa napintapahtuman edelleen kayttoliittyman aktiivisen ikkunan
-     * napinkuuntelijalle.
-     *
-     * @param ke Napin tapahtuma napin painamisesta
-     */
-    @Override
-    public void keyPressed(KeyEvent ke) {
-        
-        
-        
-        
-    }
 
-    /**
-     * Ei tee mitaan.
-     *
-     * @param ke Nappitapahtuma napin vapauttamisesta
-     */
-    @Override
-    public void keyReleased(KeyEvent ke) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 }

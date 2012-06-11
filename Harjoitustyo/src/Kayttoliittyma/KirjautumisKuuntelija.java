@@ -27,9 +27,11 @@ public class KirjautumisKuuntelija implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
       KayttoGui kg = new KayttoGui(jarjestelma);  //miksi tulee NullPointerError seuraavalta riviltä?
+
       if(jarjestelma.kirjautuukoSisaanGui(nimiKentta.getText(), salasanaKentta.getText())== true){
           kg.run();
       }
+      
 //      Jarjestelma j =  jarjestelma.kirjauduSisaan(nimiKentta.getText(), salasanaKentta.getText()); 
 //      if(j==null){  
 //          return;

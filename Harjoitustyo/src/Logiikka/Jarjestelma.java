@@ -83,8 +83,6 @@ public class Jarjestelma {
         for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
             if (ejarvi.getNimi().equals(nimi)) {
                 return ejarvi;
-            } else {
-                System.out.println("Järveä ei löytynyt tietokannasta");
             }
         }
         return null;
@@ -104,6 +102,21 @@ public class Jarjestelma {
             }
         }
         return false;
+    }
+    /**
+     * Metodi palauttaa kysyttyyn järveen laskevien jokien virtauksen summan. 
+     * @param jnimi
+     * @return int luku, miten paljon jarveen laskee jokiean mukana vettä vuorokauden aikana (kuutiolitraa)
+     */
+    public int paljonkoVirtaaJarveenPaivassa(String jnimi){
+        int luku = 0;
+        if(onkoJarviTietokannassa(jnimi)==true){
+            for(Joki joki : tkanta.getJarvet().get(haeJarviNimella(jnimi)).keySet()){
+                luku = luku + joki.getVirtaus();
+            }
+        }
+        return luku;
+        
     }
 
     private boolean onkoJokiTietokannassa(String jokinimi) {
@@ -419,6 +432,12 @@ public class Jarjestelma {
      * @return boolean
      */
     public boolean kirjautuukoSisaanGui(String kayttotunnus, String salasana) {
+        if(kayttotunnus == null && salasana == null){
+            kayttotunnus = " ";
+            salasana = " ";
+            onAdminJarjestelma = false;
+            return true;
+        }
         if (tunnukset.containsKey(kayttotunnus)) {
             if (tunnukset.get(kayttotunnus).equals(salasana)) {
 //                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);

@@ -16,8 +16,8 @@ public class Main {
         Tietokanta tkanta = new Tietokanta();
         Jarjestelma jarjestelma = new Jarjestelma(tkanta);
         KayttoGui gui = new KayttoGui(jarjestelma);
-//        Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
-        SisaanGui liittyma = new SisaanGui();
+        Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
+        SisaanGui sliittyma = new SisaanGui();
         if (jarjestelma.lisaaTunnuksetTiedostosta(tiedosto) == false) {
             System.out.println("Tunnuksien lisääminen tiedostosta epäonnistui");
         }
@@ -36,8 +36,8 @@ public class Main {
 
 
 
-//        liittyma.kaynnista();
-//        liittyma.run();
+        //liittyma.kaynnista();
+        //sliittyma.run();
         gui.run();
     }
 }

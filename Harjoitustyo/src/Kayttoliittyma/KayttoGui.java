@@ -1,21 +1,23 @@
 package Kayttoliittyma;
 
 import Logiikka.Jarjestelma;
-import java.awt.BorderLayout;
+//import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.event.KeyListener;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class KayttoGui implements Runnable {
 
     private JFrame frame;
     Jarjestelma jarjestelma;
-    private KeyListener nkuuntelija;
+    private ActionListener nkuuntelija;
+    private ActionListener akuuntelija;
 
     public KayttoGui(Jarjestelma jarjestelma) {
         this.jarjestelma = jarjestelma;
-        NapinKuuntelija nkuuntelija = new NapinKuuntelija(this);
+//        NapinKuuntelija nkuuntelija = new NapinKuuntelija(this);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class KayttoGui implements Runnable {
 //        frame.addActionListener(new ValintaKuuntelija(this));
 
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        
+
         luoPerusKomponentit(frame.getContentPane());
         luoAdminKomponentit(frame.getContentPane());
         if (jarjestelma.onkoAdminJarjestelma() == true) {
@@ -38,6 +40,7 @@ public class KayttoGui implements Runnable {
     }
 
     private void luoPerusKomponentit(Container container) {
+
         BoxLayout layout = new BoxLayout(container, BoxLayout.Y_AXIS);
         container.setLayout(layout);
 
@@ -46,16 +49,16 @@ public class KayttoGui implements Runnable {
         JButton lopeta = new JButton(" Lopetus");
         JButton jarvet = new JButton(" Avaa lista tietokannan järvistä");
         JButton joet = new JButton(" Avaa lista tietokannan joista");
-        
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(lopeta);
-        buttonGroup.add(jarvet);
-        buttonGroup.add(joet);
-        
+        nkuuntelija = new NapinKuuntelija(this,frame, lopeta, jarvet, joet);
+//        ButtonGroup buttonGroup = new ButtonGroup();
+//        buttonGroup.add(lopeta);
+//        buttonGroup.add(jarvet);
+//        buttonGroup.add(joet);
+
         lopeta.addActionListener(nkuuntelija);
         jarvet.addActionListener(nkuuntelija);
         joet.addActionListener(nkuuntelija);
-        
+
         container.add(lopeta);
         container.add(jarvet);
         container.add(joet);
@@ -64,13 +67,25 @@ public class KayttoGui implements Runnable {
     private void luoAdminKomponentit(Container container) {
         JButton ljarvi = new JButton(" Lisää uusi järvi tai muuta järven tietoja");
         JButton ljoki = new JButton(" Lisää uusi joki tai muuta joen tietoja");
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(ljarvi);
-        buttonGroup.add(ljoki);
+        akuuntelija = new AdminNapinKuuntelija(this, jarjestelma, frame, ljarvi, ljoki);
+//        ButtonGroup buttonGroup = new ButtonGroup();
+//        buttonGroup.add(ljarvi);
+//        buttonGroup.add(ljoki);
+        ljarvi.addActionListener(akuuntelija);
+        ljoki.addActionListener(akuuntelija);
 
         container.add(ljarvi);
         container.add(ljoki);
     }
 
+    //tänne toiminnallisuus jota voi käyttää kuuntelijasta käsin
+    
+    
+    public void luoIkkuna(Container container) {
+        frame = new JFrame();
+        frame.setPreferredSize(new Dimension(200, 100));
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        JTextArea tekstiKentta = new JTextArea();
+        container.add(tekstiKentta);
+    }
 }

@@ -107,6 +107,21 @@ public class JarjestelmaTest {
 //        jarjestelma.lisaaJaLuoJoki(22, "Kalajoki", "Päijänne");
 //        assertTrue(jarjestelma.);
 //    }
+    
+    @Test
+    public void laskeekoVirtauksenJarveenOikein(){
+        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
+        jarjestelma.lisaaJaLuoJoki(4, "Pikkujoki", "Päijänne");
+        
+        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 70);
+    }
+    
+    @Test
+    public void laskeekoVirtauksenJarveenOIkeinJosEiJokia(){
+        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 0);
+    }
+    
+    
     @Test
     public void lisaaJokiToimii() {
         jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
