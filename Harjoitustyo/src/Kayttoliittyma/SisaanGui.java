@@ -12,8 +12,14 @@ public class SisaanGui implements Runnable {
     private JFrame frame;
     Jarjestelma jarjestelma;
 
-    public void Gui(Jarjestelma jarjestelma) {
+    public SisaanGui(Jarjestelma jarjestelma) {
+        if (jarjestelma == null) {
+            System.out.println("sisaanguissa parametrina null");
+        }
         this.jarjestelma = jarjestelma;
+        if (this.jarjestelma == null) {
+            System.out.println("sisaanguissa järjestelmä null");
+        }
     }
     
     /**
@@ -24,7 +30,8 @@ public class SisaanGui implements Runnable {
     public void run() {
         frame = new JFrame("Sisäänkirjautuminen vesistömallijärjestelmään");
         frame.setPreferredSize(new Dimension(500, 150));
-
+       
+        
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         luoKomponentit(frame.getContentPane());
@@ -37,7 +44,7 @@ public class SisaanGui implements Runnable {
     private void luoKomponentit(Container container) {
         GridLayout layout = new GridLayout(3,2);
         container.setLayout(layout);
-//        JLabel teksti = new JLabel("Syötä käyttäjätunnus ja salasana, tai paina Enter kaksi kertaa");
+        //JLabel teksti = new JLabel("Syötä käyttäjätunnus ja salasana, tai paina Enter kaksi kertaa");
         JLabel nimiTeksti = new JLabel("  Käyttäjätunnus: ");
         JTextField nimiKentta = new JTextField();
         JLabel salasanaTeksti = new JLabel("  Salasana: ");
@@ -46,7 +53,8 @@ public class SisaanGui implements Runnable {
         JButton loginnappi = new JButton("Login");
         KirjautumisKuuntelija kuuntelija = new KirjautumisKuuntelija(jarjestelma, nimiKentta, salasanaKentta);
         loginnappi.addActionListener(kuuntelija);
- 
+        
+//        container.add(teksti, BorderLayout.NORTH);
         container.add(nimiTeksti);
         container.add(nimiKentta);
         container.add(salasanaTeksti);

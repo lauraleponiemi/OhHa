@@ -107,21 +107,18 @@ public class JarjestelmaTest {
 //        jarjestelma.lisaaJaLuoJoki(22, "Kalajoki", "Päijänne");
 //        assertTrue(jarjestelma.);
 //    }
-    
-    @Test
-    public void laskeekoVirtauksenJarveenOikein(){
-        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
-        jarjestelma.lisaaJaLuoJoki(4, "Pikkujoki", "Päijänne");
-        
-        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 70);
-    }
-    
-    @Test
-    public void laskeekoVirtauksenJarveenOIkeinJosEiJokia(){
-        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 0);
-    }
-    
-    
+//    @Test
+//    public void laskeekoVirtauksenJarveenOikein(){
+//        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
+//        jarjestelma.lisaaJaLuoJoki(4, "Pikkujoki", "Päijänne");
+//        
+//        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 70);
+//    }
+//    
+//    @Test
+//    public void laskeekoVirtauksenJarveenOIkeinJosEiJokia(){
+//        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 0);
+//    }
     @Test
     public void lisaaJokiToimii() {
         jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
@@ -161,9 +158,9 @@ public class JarjestelmaTest {
         jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Päijänne");
         assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Testijärvi"));
     }
-    
+
     @Test
-    public void yrittaaLisataUuttaJokeaEiOlevaanJarveen(){      
+    public void yrittaaLisataUuttaJokeaEiOlevaanJarveen() {
         assertFalse(jarjestelma.lisaaJaLuoJoki(45, "Testijoki", "Testijärvi"));
     }
 
@@ -371,20 +368,44 @@ public class JarjestelmaTest {
     @Test
     public void onnistuuKirjautuminenJarjestelmaan() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-        AdminJarjestelma luokka = new AdminJarjestelma(jarjestelma.getTietokanta());
-        Jarjestelma j = jarjestelma.kirjauduSisaan("Oopiskelija", "punavuori");
-
-        assertTrue(j.getClass().equals(luokka.getClass()));
+        Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "punavuori");
+        assertTrue(kj);
 
     }
 
     @Test
     public void epaonnistuuKirjautumaanJarjestelmaan() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
-        OpiskelijaJarjestelma luokka = new OpiskelijaJarjestelma(tkanta);
-        Jarjestelma j = luokka.kirjauduSisaan("Oopiskelija", "punavuori");
+        Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "tapanila");
+        assertFalse(kj);
 
-        assertFalse(j.getClass().equals(luokka.getClass()));
+    }
 
+    @Test
+    public void epaonnistuuKirjautumaanSisaan2() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "");
+        assertFalse(kj);
+    }
+
+    @Test
+    public void onnistuuKirjautumaanSelailuJarjestelmaan() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        Boolean kj = jarjestelma.kirjautuukoSisaan("", "");
+        assertTrue(kj);
+    }
+
+    @Test
+    public void onAdminJarjestelmaTesti() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "punavuori");
+        assertTrue(jarjestelma.onkoAdminJarjestelma());
+    }
+
+    @Test
+    public void eiAdminJarjestelmaTesti() {
+        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        Boolean kj = jarjestelma.kirjautuukoSisaan("", "");
+        assertFalse(jarjestelma.onkoAdminJarjestelma());
     }
 }

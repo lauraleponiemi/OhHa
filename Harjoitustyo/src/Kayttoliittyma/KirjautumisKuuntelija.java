@@ -16,9 +16,11 @@ public class KirjautumisKuuntelija implements ActionListener {
 
     public KirjautumisKuuntelija(Jarjestelma jarjestelma, JTextField nimiKentta, JTextField salasanaKentta) {
         this.jarjestelma = jarjestelma;
+        if (jarjestelma == null) {
+        System.out.println("järjestelmä null");
+        }
         this.nimiKentta = nimiKentta;
-        this.salasanaKentta = salasanaKentta;
-        
+        this.salasanaKentta = salasanaKentta;       
     }
     /**
      * Metodissa tarkistetaan vastaavatko annettu käyttäjätunnus siihen liitettyä salasanaa.
@@ -26,18 +28,14 @@ public class KirjautumisKuuntelija implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-      KayttoGui kg = new KayttoGui(jarjestelma);  //miksi tulee NullPointerError seuraavalta riviltä?
-
-      if(jarjestelma.kirjautuukoSisaanGui(nimiKentta.getText(), salasanaKentta.getText())== true){
+        KayttoGui kg = new KayttoGui(jarjestelma);
+        if(nimiKentta.getText()== null && salasanaKentta.getText()== null){
+            nimiKentta.getText().equals(" ");
+            salasanaKentta.getText().equals(" "); 
+            jarjestelma.kirjautuukoSisaan(nimiKentta.getText(), salasanaKentta.getText());
+        }
+        if(jarjestelma.kirjautuukoSisaan(nimiKentta.getText(), salasanaKentta.getText())== true){
           kg.run();
-      }
-      
-//      Jarjestelma j =  jarjestelma.kirjauduSisaan(nimiKentta.getText(), salasanaKentta.getText()); 
-//      if(j==null){  
-//          return;
-//      }
-      
-      
-        
+      }        
     }
 }

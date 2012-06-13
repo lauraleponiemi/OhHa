@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 
 import java.util.Scanner;
-import Logiikka.AdminJarjestelma;
+
 
 import Logiikka.Jarjestelma;
 
@@ -71,16 +71,15 @@ public class Kayttoliittyma {
         System.out.print("Salasana: ");
         salasana = lukija.nextLine();
 
-        Jarjestelma luokka = jarjestelma.kirjauduSisaan(kayttotunnus, salasana);
+        Boolean kirjaudutaankoJarjestelmaan = jarjestelma.kirjautuukoSisaan(kayttotunnus, salasana);
 
-        if (luokka == null) {
+        if (kirjaudutaankoJarjestelmaan == false) {
             System.out.println("Kirjautuminen epäonnistui.");
-        } else if (luokka.getClass().getCanonicalName().equals("Logiikka.AdminJarjestelma")) {
+        } if (kirjaudutaankoJarjestelmaan == true && jarjestelma.onkoAdminJarjestelma()== true) {
             System.out.println("Kirjautuminen onnistui. Tervetuloa tutkijoiden tietokantaan!");
             while (true) {
                 jarjestelmaTulostus();
                 adminjarjestelmaTulostus();
-                jarjestelma = new AdminJarjestelma(jarjestelma.getTietokanta());
                 char komento = lukija.next().charAt(0);
                 if (komento == '0') {
                     System.out.println("Olet poistunut järjestelmästä, tervetuloa uudelleen!");
@@ -90,11 +89,10 @@ public class Kayttoliittyma {
                 }
             }
 
-        } else {
+        } else if(kirjaudutaankoJarjestelmaan == true && jarjestelma.onkoAdminJarjestelma()== false) {
             System.out.println("Kirjautuminen onnistui. Tervetuloa selailutietokantaan!");
             while (true) {
                 jarjestelmaTulostus();
-                jarjestelma = new OpiskelijaJarjestelma(jarjestelma.getTietokanta());
                 char komento = lukija.next().charAt(0);
                 if (komento == '0') {
                     System.out.println("Olet poistunut järjestelmästä, tervetuloa uudelleen!");
@@ -105,7 +103,6 @@ public class Kayttoliittyma {
             }
         }
     }
-
     private void jarjestelmaTulostus() {
         System.out.println("Valitse toiminto: ");
         System.out.println("[0] Lopetus");
@@ -124,7 +121,7 @@ public class Kayttoliittyma {
         }
         if (komento == 'x') {
             jarjestelmaTulostus();
-            if (AdminJarjestelma.class.isInstance(jarjestelma)) {
+            if (jarjestelma.onkoAdminJarjestelma()==true) {     // AdminJarjestelma.class.isInstance(jarjestelma)
                 adminjarjestelmaTulostus();
             }
             komento = lukija.next().charAt(0);
@@ -150,10 +147,10 @@ public class Kayttoliittyma {
                 System.out.println("Lista joista on tyhjä.");
             }
         }
-        if (toiminto == '3' && AdminJarjestelma.class.isInstance(jarjestelma)) {
+        if (toiminto == '3' && jarjestelma.onkoAdminJarjestelma()==true) {  //  AdminJarjestelma.class.isInstance(jarjestelma)
             jarvenKysyminen();
         }
-        if (toiminto == '4' && AdminJarjestelma.class.isInstance(jarjestelma)) {
+        if (toiminto == '4' && jarjestelma.onkoAdminJarjestelma()==true) {   //  AdminJarjestelma.class.isInstance(jarjestelma)
             joenKysyminen();
         }
     }

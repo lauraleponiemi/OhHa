@@ -103,15 +103,13 @@ public class Jarjestelma {
         }
         return false;
     }
-    /**
-     * Metodi palauttaa kysyttyyn järveen laskevien jokien virtauksen summan. 
-     * @param jnimi
-     * @return int luku, miten paljon jarveen laskee jokiean mukana vettä vuorokauden aikana (kuutiolitraa)
-     */
-    public int paljonkoVirtaaJarveenPaivassa(String jnimi){
+
+    
+    
+    private int paljonkoVirtaaJarveenPaivassa(Jarvi jarvi){
         int luku = 0;
-        if(onkoJarviTietokannassa(jnimi)==true){
-            for(Joki joki : tkanta.getJarvet().get(haeJarviNimella(jnimi)).keySet()){
+        if(onkoJarviTietokannassa(jarvi.getNimi())==true){
+            for(Joki joki : tkanta.getJarvet().get(jarvi).keySet()){
                 luku = luku + joki.getVirtaus();
             }
         }
@@ -338,7 +336,10 @@ public class Jarjestelma {
             String teksti = "";
             for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
                 if (!tkanta.getJarvet().keySet().isEmpty()) {
-                    teksti = teksti + "\n" + ejarvi + "\n" + "Siihen laskevat joet: ";
+                    teksti = teksti + "\n" + ejarvi + "\n"
+                            + "Järveen laskeva vesimäärä päivässä: "
+                            +paljonkoVirtaaJarveenPaivassa(ejarvi)+ "\n" + 
+                            "Siihen laskevat joet: ";
                     for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
                         teksti = teksti + joki;
                         teksti = teksti + ", ";
@@ -398,46 +399,49 @@ public class Jarjestelma {
 
     }
 
-    /**
-     * Metodi luo annettujen syötteiden perusteella järjestelmän. Jos
-     * käyttäjätunnus ja salasana täsmäävät tunnukset- HashMap:iin, metodi luo
-     * adminjärjestelmän. Jos käyttäjä syöttää tyhjän salasana, että
-     * käyttäjätunnuskentän, metodi luo opiskelijajarjestelman. Jos
-     * kirjautuminen epäonnistuu, järjestelma palauttaa null:in.
-     *
-     * @param kayttotunnus käyttäjän syöttämä käyttötunnus jota verrataan
-     * tiedoston tunnukseen
-     * @param salasana käyttäjän syöttämä salasana, jota verrataan annettua
-     * käyttötunnusta tiedostossa vastaavaan salasanaan
-     * @return Jarjestelma
-     */
-    public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-        if (tunnukset.containsKey(kayttotunnus)) {
-            if (tunnukset.get(kayttotunnus).equals(salasana)) {
-                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
-                return ajarjestelma;
-            }
-        } else if (kayttotunnus.equals("") && salasana.equals("")) {
-            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
-            return ojarjestelma;
-        }
-        return null;
-    }
+//    /**
+//     * Metodi luo annettujen syötteiden perusteella järjestelmän. Jos
+//     * käyttäjätunnus ja salasana täsmäävät tunnukset- HashMap:iin, metodi luo
+//     * adminjärjestelmän. Jos käyttäjä syöttää tyhjän salasana, että
+//     * käyttäjätunnuskentän, metodi luo opiskelijajarjestelman. Jos
+//     * kirjautuminen epäonnistuu, järjestelma palauttaa null:in.
+//     *
+//     * @param kayttotunnus käyttäjän syöttämä käyttötunnus jota verrataan
+//     * tiedoston tunnukseen
+//     * @param salasana käyttäjän syöttämä salasana, jota verrataan annettua
+//     * käyttötunnusta tiedostossa vastaavaan salasanaan
+//     * @return Jarjestelma
+//     */
+//    public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
+//        if (tunnukset.containsKey(kayttotunnus)) {
+//            if (tunnukset.get(kayttotunnus).equals(salasana)) {
+//                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
+//                return ajarjestelma;
+//            }
+//        } else if (kayttotunnus.equals("") && salasana.equals("")) {
+//            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
+//            return ojarjestelma;
+//        }
+//        return null;
+//    }
 
     /**
-     * Metodi graafisen käyttöliittymän sisäänkirjautumiseen.
+     * Metodi määrittää, kirjaudutaanko järjestelmään ja kumpaan niistä. Boolean
+     * -muuttuja muutetaan true tai false -arvoksi sen mukaan kumpaan järjestelmään kirjaudutaan.
+     * kirjautuukoSisaan() - meto palauttaa true, jos kirjauduttiin ylipäätään järjestelmään
+     * ja false, jos epäonnistuttiin.
      *
      * @param kayttotunnus
      * @param salasana
      * @return boolean
      */
-    public boolean kirjautuukoSisaanGui(String kayttotunnus, String salasana) {
-        if(kayttotunnus == null && salasana == null){
-            kayttotunnus = " ";
-            salasana = " ";
-            onAdminJarjestelma = false;
-            return true;
-        }
+    public boolean kirjautuukoSisaan(String kayttotunnus, String salasana) {
+//        if(kayttotunnus.equals(null) && salasana.equals(null)){
+//            kayttotunnus.equals(" ");
+//            salasana.equals(" ");
+//            onAdminJarjestelma = false;
+//            return true;
+//        }
         if (tunnukset.containsKey(kayttotunnus)) {
             if (tunnukset.get(kayttotunnus).equals(salasana)) {
 //                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
