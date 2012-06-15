@@ -67,7 +67,6 @@ public class KayttoGui implements Runnable, ActionListener {
 
         jarvet = new JButton("Avaa lista tietokannan järvistä");
         joet = new JButton("Avaa lista tietokannan joista");
-        nkuuntelija = new NapinKuuntelija(this, jarjestelma, frame, jarvet, joet);
         jarvet.addActionListener(this);
         joet.addActionListener(this);
 
