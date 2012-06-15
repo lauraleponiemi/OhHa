@@ -1,8 +1,13 @@
 package Logiikka;
 
 public class Joki {
-
+/**
+ * Joen nimi
+ */
     private String nimi;
+    /**
+     * Joen virtaus
+     */
     private int virtaus;
 
     public Joki(int virtaus, String nimi) {

@@ -17,28 +17,25 @@ public class Main {
         Jarjestelma jarjestelma = new Jarjestelma(tkanta);
         Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
         SisaanGui sliittyma = new SisaanGui(jarjestelma);
-        if (jarjestelma.lisaaTunnuksetTiedostosta(tiedosto) == false) {
+        if (jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto) == false) {
             System.out.println("Tunnuksien lisääminen tiedostosta epäonnistui");
         }
-        if(jarjestelma.lisaaJarvetTiedostosta(jtiedosto) == false){
+        if(jarjestelma.yrittaaLisataJarvetTiedostosta(jtiedosto) == false){
             System.out.println("Järvien ja jokien lisääminen tiedostosta epäonnistui");
         }
         Joki kjoki = new Joki(15, "Kalajoki");
         Joki hjoki = new Joki(44, "Haapajoki");
-        Jarvi jjarvi = new Jarvi(67, "Saimaa");
+        Jarvi jjarvi = new Jarvi(67, "Harjoitusjärvi");
         HashMap joet = new HashMap<Joki, Integer>();
-        
+//        
         tkanta.setJoki(hjoki, hjoki.getVirtaus());
         tkanta.setJoki(kjoki, kjoki.getVirtaus());
 //        jarjestelma.lisaaJaLuoJarvi(jjarvi.getTase(), jjarvi.getNimi());
-        jarjestelma.lisaaJaLuoJarvi(88, "Päijänne");
+        jarjestelma.lisaaJaLuoJarvi(88, "Kumpulajärvi");
         tkanta.setJarvi(jjarvi,joet);
         tkanta.setJokiJarvelle(hjoki, jjarvi);
         tkanta.setJokiJarvelle(kjoki, jjarvi);
-
-
-
-//        liittyma.kaynnista();
+        //liittyma.kaynnista();
         sliittyma.run();
     }
 }

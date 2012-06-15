@@ -1,15 +1,26 @@
 package Logiikka;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Jarjestelma {
 
+    /**
+     * Tietokanta, jossa säilytetään järviä ja jokia
+     */
     private Tietokanta tkanta;
+    /**
+     * Scanner lukija lukee käyttäjän syötteitä
+     */
     private Scanner lukija;
+    /**
+     * Tiedostosta luettu ja tallennettu lista käyttäjätunnus - salasana
+     * pareista
+     */
     private HashMap< String, String> tunnukset;
+    /**
+     * Boolean muuttuja palauttaa tiedon kumpaan järjestelmään kirjaudutaan
+     */
     private boolean onAdminJarjestelma;
 
     /**
@@ -148,7 +159,6 @@ public class Jarjestelma {
             return false;
         }
     }
-    
 
     /**
      * Metodi hakee joen nimen, kun sille annetaan jokiolio. Jos jokea ei löydy,
@@ -302,20 +312,11 @@ public class Jarjestelma {
             }
         }
         return false;
-//        if (!tkanta.getJoet().keySet().isEmpty()) {
-//            if (haeJokiNimella(nimi) != null) {
-//                Joki poistettavaJoki = haeJokiNimella(nimi);
-//                tkanta.getJoet().remove(poistettavaJoki);
-//                tkanta.getJarvet().get(haeJarviNimella(jnimi)).remove(poistettavaJoki);
-//            }
-//            return true;
-//        } else {
-//            return false;
 
     }
 
     /**
-     * Metodi palauttaa lista tietokantaan tallennetuista järvistä ja siihen
+     * Metodi palauttaa listan tietokantaan tallennetuista järvistä ja siihen
      * liittyvistä joista. Jos tietokannassa ei ole yhtään järveä, palautetaan
      * null.
      *
@@ -326,24 +327,32 @@ public class Jarjestelma {
             return null;
         } else {
             String teksti = "";
-            for (Jarvi ejarvi : tkanta.getJarvet().keySet()) {
-                if (!tkanta.getJarvet().keySet().isEmpty()) {
-                    teksti = teksti + "\n" + ejarvi + "\n"
-                            + "Järveen laskeva vesimäärä päivässä: "
-                            + paljonkoVirtaaJarveenPaivassa(ejarvi) + "\n"
-                            + "Siihen laskevat joet: ";
-                    for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
-                        teksti = teksti + joki;
-                        teksti = teksti + ", ";
-                    }
-                }
-                teksti = teksti + "\n";
-            }
+            teksti = rakentaaTulostettavanJarviJaJokiTekstin(teksti) + "\n";
             return teksti;
         }
     }
-    
 
+    private String rakentaaTulostettavanJarviJaJokiTekstin(String teksti) {
+        for (Jarvi ejarvi : jarjestaaJarvetAakkostenMukaan()) {
+            teksti = teksti + "\n" + ejarvi + "\n"
+                    + "Järveen laskeva vesimäärä päivässä: " + paljonkoVirtaaJarveenPaivassa(ejarvi) + "\n" + "Siihen laskevat joet: ";
+            for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
+                teksti = teksti + joki;
+                teksti = teksti + ", ";
+            }
+            teksti = teksti + "\n";
+        }
+        return teksti;
+    }
+
+    private List<Jarvi> jarjestaaJarvetAakkostenMukaan() {
+        List<Jarvi> jarvetJarjestyksessa = new ArrayList<Jarvi>();
+        for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
+            jarvetJarjestyksessa.add(jarvi);
+        }
+        Collections.sort(jarvetJarjestyksessa);
+        return jarvetJarjestyksessa;
+    }
 
     /**
      * Metodi palauttaa listan tietokantaan tallennetuista joista. Jos
@@ -376,12 +385,17 @@ public class Jarjestelma {
      * @param tiedosto tiedosto, missä käyttäjätunnus- salasanat parit ovat
      * @return boolean
      */
-    public boolean lisaaTunnuksetTiedostosta(File tiedosto) {
+    public boolean yrittaaLisataTunnuksetTiedostosta(File tiedosto) {
         try {
             lukija = new Scanner(tiedosto);
         } catch (Exception e) {
             return false;
         }
+        lisaaTunnuksetTiedostosta();
+        return true;
+    }
+
+    private void lisaaTunnuksetTiedostosta() {
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             String[] osat = rivi.split(" ");
@@ -389,55 +403,50 @@ public class Jarjestelma {
             System.out.println(tunnukset);
         }
         lukija.close();
-        return true;
-
     }
+
     /**
-     * Metodi lukee tiedostosta järviä ja siihen liittyviä jokia. Se tallentaa ne tietokantaan.
-     * Metodi heitää poikkeuksen ja paluttaa false, jos tiedoston lukeminen epäonnistuu.
-     * 
+     * Metodi lukee tiedostosta järviä ja siihen liittyviä jokia. Se tallentaa
+     * ne tietokantaan. Metodi heitää poikkeuksen ja palauttaa false, jos
+     * tiedoston lukeminen epäonnistuu.
+     *
      * @param tiedosto
      * @return boolean
      */
-    public boolean lisaaJarvetTiedostosta(File tiedosto) {
+    public boolean yrittaaLisataJarvetTiedostosta(File tiedosto) {
         try {
             lukija = new Scanner(tiedosto);
         } catch (Exception e) {
             return false;
         }
+        lisaaJarvetJaJoetOhjelmanTiedostoon(tiedosto);
+        return true;
+    }
+
+    private void lisaaJarvetJaJoetOhjelmanTiedostoon(File tiedosto) {
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
             String[] osat = rivi.split(" ");
             lisaaJaLuoJarvi(Integer.parseInt(osat[1]), osat[0]);
-            if(osat.length > 1){
-                lisaaJokiaTiedostostaJarvelle(osat[0], osat);
-            }           
+            if (osat.length > 1) {
+                lisaaJokiaJarvelleOhjelmanTiedostoon(osat[0], osat);
+            }
         }
         lukija.close();
-        return true;
-    }
-    
-    public void jarjestaAakkosjarjestykseen(File tiedosto){
-        
-    }
-    
-    
-    public void luoJarvelleJoki(String nimi, String jnimi, Integer virtaus){
-        lisaaJaLuoJoki(virtaus, jnimi, nimi);
     }
 
-    private void lisaaJokiaTiedostostaJarvelle(String jarvenNimi, String[] osat) {
-            for (int i = 2; i < osat.length; i++) {
-                if (i % 2 == 0) {
-                    String joenNimi = osat[i];
-                    int jv = Integer.parseInt(osat[i + 1]);
-                    Joki uusiJoki = new Joki(jv, joenNimi);
-                    if (onkoJokiJarvenMapissa(uusiJoki, osat[0]) == false) {
-                        tkanta.setJokiJarvelle(uusiJoki, haeJarviNimella(jarvenNimi));
-                        tkanta.setJoki(uusiJoki, jv);
-                    }
+    private void lisaaJokiaJarvelleOhjelmanTiedostoon(String jarvenNimi, String[] osat) {
+        for (int i = 2; i < osat.length; i++) {
+            if (i % 2 == 0) {
+                String joenNimi = osat[i];
+                int jv = Integer.parseInt(osat[i + 1]);
+                Joki uusiJoki = new Joki(jv, joenNimi);
+                if (onkoJokiJarvenMapissa(uusiJoki, osat[0]) == false) {
+                    tkanta.setJokiJarvelle(uusiJoki, haeJarviNimella(jarvenNimi));
+                    tkanta.setJoki(uusiJoki, jv);
                 }
             }
+        }
     }
 
     /**

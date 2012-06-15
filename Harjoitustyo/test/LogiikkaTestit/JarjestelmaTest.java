@@ -37,7 +37,6 @@ public class JarjestelmaTest {
 
     @Before
     public void setUp() {
-
         jarjestelma = new Jarjestelma(tkanta);
         jarjestelma.lisaaJaLuoJarvi(67, "Päijänne");
 
@@ -109,23 +108,6 @@ public class JarjestelmaTest {
         assertFalse(jarjestelma.onkoJarviTietokannassa("Chemicumjärvi"));
     }
 
-//    @Test             //ei voi testata private metodeja
-//    public void onkoJokiTietokannassa(){
-//        jarjestelma.lisaaJaLuoJoki(22, "Kalajoki", "Päijänne");
-//        assertTrue(jarjestelma.);
-//    }
-//    @Test
-//    public void laskeekoVirtauksenJarveenOikein(){
-//        jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
-//        jarjestelma.lisaaJaLuoJoki(4, "Pikkujoki", "Päijänne");
-//        
-//        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 70);
-//    }
-//    
-//    @Test
-//    public void laskeekoVirtauksenJarveenOIkeinJosEiJokia(){
-//        assertEquals(jarjestelma.paljonkoVirtaaJarveenPaivassa("Päijänne"), 0);
-//    }
     @Test
     public void lisaaJokiToimii() {
         jarjestelma.lisaaJaLuoJoki(66, "Testijoki", "Päijänne");
@@ -337,6 +319,7 @@ public class JarjestelmaTest {
 
         assertNotNull(jarjestelma.palautaListaJarvista());                                   //TODO miten tämä tehdään??
     }
+    
 
     @Test
     public void palauttaaNullinJosTyhjaListaJarvia() {
@@ -346,7 +329,7 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaLisataTunnuksiaTiedostosta() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
 
         while (lukija.hasNextLine()) {
             String rivi = lukija.nextLine();
@@ -362,7 +345,7 @@ public class JarjestelmaTest {
 
     @Test
     public void yrittaaLisataJarviaJaJokiaTiedostosta() {
-        jarjestelma.lisaaJarvetTiedostosta(jtiedosto);
+        jarjestelma.yrittaaLisataJarvetTiedostosta(jtiedosto);
         lukija.close();
         assertTrue(jarjestelma.haeJarviNimella("Kallavesi").getTase()==47);
         assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus()==1);
@@ -371,7 +354,7 @@ public class JarjestelmaTest {
 
 //    @Test
 //    public void yrittaaLukeaTyhjastaTiedostosta(){
-//        jarjestelma.lisaaTunnuksetTiedostosta(tyhjatiedosto);
+//        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tyhjatiedosto);
 //        while (lukija.hasNextLine()) {
 //            String rivi = lukija.nextLine();
 //            String[] osat = rivi.split(" ");
@@ -383,7 +366,7 @@ public class JarjestelmaTest {
 //    }
     @Test
     public void onnistuuKirjautuminenJarjestelmaan() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "punavuori");
         assertTrue(kj);
 
@@ -391,7 +374,7 @@ public class JarjestelmaTest {
 
     @Test
     public void epaonnistuuKirjautumaanJarjestelmaan() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "tapanila");
         assertFalse(kj);
 
@@ -399,28 +382,28 @@ public class JarjestelmaTest {
 
     @Test
     public void epaonnistuuKirjautumaanSisaan2() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "");
         assertFalse(kj);
     }
 
     @Test
     public void onnistuuKirjautumaanSelailuJarjestelmaan() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("", "");
         assertTrue(kj);
     }
 
     @Test
     public void onAdminJarjestelmaTesti() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("Oopiskelija", "punavuori");
         assertTrue(jarjestelma.onkoAdminJarjestelma());
     }
 
     @Test
     public void eiAdminJarjestelmaTesti() {
-        jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
+        jarjestelma.yrittaaLisataTunnuksetTiedostosta(tiedosto);
         Boolean kj = jarjestelma.kirjautuukoSisaan("", "");
         assertFalse(jarjestelma.onkoAdminJarjestelma());
     }

@@ -8,7 +8,7 @@ package Logiikka;
  *
  * @author lleponie
  */
-public class Jarvi {
+public class Jarvi implements Comparable{
     
     
     private String nimi;
@@ -59,6 +59,17 @@ public class Jarvi {
     
     public String toString(){
         return nimi+"("+ vesitase+")" ;
+    }
+    /**
+     * Metodi vertailee saatua oliota ja luokan olioilmentymää keskenään
+     * @param t
+     * @return int  
+     */
+    @Override
+    public int compareTo(Object t) {
+        Jarvi verrattava = (Jarvi) t;
+        return this.nimi.compareTo(verrattava.getNimi());
+        
     }
     
     
