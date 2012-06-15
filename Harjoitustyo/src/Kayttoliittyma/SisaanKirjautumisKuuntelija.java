@@ -7,14 +7,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 
 
-public class KirjautumisKuuntelija implements ActionListener {
+public class SisaanKirjautumisKuuntelija implements ActionListener {
 
     private JTextField nimiKentta;
     private JTextField salasanaKentta;
     private Jarjestelma jarjestelma;
     
 
-    public KirjautumisKuuntelija(Jarjestelma jarjestelma, JTextField nimiKentta, JTextField salasanaKentta) {
+    public SisaanKirjautumisKuuntelija(Jarjestelma jarjestelma, JTextField nimiKentta, JTextField salasanaKentta) {
         this.jarjestelma = jarjestelma;
         if (jarjestelma == null) {
         System.out.println("järjestelmä null");

@@ -27,46 +27,54 @@ public class NapinKuuntelija implements ActionListener {
         this.jarjestelma = jarjestelma;
     }
 
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    
+    
+
     /**
      * Reagoi napin painallukseen
      *
      * @param ae
      */
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        if (ae.getActionCommand().equals("Avaa lista tietokannan järvistä")) {
-            String teksti = jarjestelma.palautaListaJarvista();
-            String otsikko = "Tietokantaan tallennetut järvet ja niihin laskevat joet";
-            Ikkuna tekstiIkkuna = new Ikkuna(otsikko, teksti);
-        }
-
-        if (ae.getActionCommand().equals("Avaa lista tietokannan joista")) {
-            String teksti = jarjestelma.palautaListaJoista();
-            String otsikko = "Tietokantaan tallennetut joet";
-            Ikkuna tekstiIkkuna = new Ikkuna(otsikko, teksti);
-        }
-        if (ae.getActionCommand().equals("Lisää uusi järvi tai muuta järven tietoja")) {
-            String otsikko = "Järven lisäys / järven tietojen muuttaminen";
-            int komento = 3;
-            kayttis.luoIkkuna(otsikko, komento,frame);
-        }
-        if (ae.getActionCommand().equals("Lisää uusi joki tai muuta joen tietoja")) {
-            String otsikko = "Joen lisäys / joen tietojen muuttaminen";
-            int komento = 4;
-            kayttis.luoIkkuna(otsikko, komento,frame);
-        }
-        if (ae.getActionCommand().equals("Lisätään järvi")) {
-            
-        }
-        if (ae.getActionCommand().equals("Muutetaan järven tietoja")) {
-            
-        }
-        if (ae.getActionCommand().equals("Lisätään joki")) {
-            
-        }
-        if (ae.getActionCommand().equals("Muutetaan joen tietoja")) {
-            
-        }
-
-    }
+//    @Override
+//    public void actionPerformed(ActionEvent ae) {
+//        if (ae.getActionCommand().equals("Avaa lista tietokannan järvistä")) {
+//            String teksti = jarjestelma.palautaListaJarvista();
+//            String otsikko = "Tietokantaan tallennetut järvet ja niihin laskevat joet";
+//            Ikkuna tekstiIkkuna = new Ikkuna(otsikko, teksti);
+//        }
+//
+//        if (ae.getActionCommand().equals("Avaa lista tietokannan joista")) {
+//            String teksti = jarjestelma.palautaListaJoista();
+//            String otsikko = "Tietokantaan tallennetut joet";
+//            Ikkuna tekstiIkkuna = new Ikkuna(otsikko, teksti);
+//        }
+//        if (ae.getActionCommand().equals("Lisää uusi järvi tai muuta järven tietoja")) {
+//            String otsikko = "Järven lisäys / järven tietojen muuttaminen";
+//            int komento = 3;
+////            kayttis.luoIkkuna(otsikko, komento,frame);
+//        }
+//        if (ae.getActionCommand().equals("Lisää uusi joki tai muuta joen tietoja")) {
+//            String otsikko = "Joen lisäys / joen tietojen muuttaminen";
+//            int komento = 4;
+////            kayttis.luoIkkuna(otsikko, komento,frame);
+//        }
+//        if (ae.getActionCommand().equals("Lisätään järvi")) {
+//            
+//        }
+//        if (ae.getActionCommand().equals("Muutetaan järven tietoja")) {
+//            
+//        }
+//        if (ae.getActionCommand().equals("Lisätään joki")) {
+//            
+//        }
+//        if (ae.getActionCommand().equals("Muutetaan joen tietoja")) {
+//            
+//        }
+//
+//    }
 }

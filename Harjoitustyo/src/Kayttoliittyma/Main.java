@@ -12,14 +12,16 @@ public class Main {
     public static void main(String[] args) {
 
         File tiedosto = new File("tunnukset.txt");
-
+        File jtiedosto = new File("jarvet.txt");
         Tietokanta tkanta = new Tietokanta();
         Jarjestelma jarjestelma = new Jarjestelma(tkanta);
-        //KayttoGui gui = new KayttoGui(jarjestelma);
-        //Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
+        Kayttoliittyma liittyma = new Kayttoliittyma(jarjestelma);
         SisaanGui sliittyma = new SisaanGui(jarjestelma);
         if (jarjestelma.lisaaTunnuksetTiedostosta(tiedosto) == false) {
             System.out.println("Tunnuksien lisääminen tiedostosta epäonnistui");
+        }
+        if(jarjestelma.lisaaJarvetTiedostosta(jtiedosto) == false){
+            System.out.println("Järvien ja jokien lisääminen tiedostosta epäonnistui");
         }
         Joki kjoki = new Joki(15, "Kalajoki");
         Joki hjoki = new Joki(44, "Haapajoki");
@@ -36,8 +38,7 @@ public class Main {
 
 
 
-        //liittyma.kaynnista();
+//        liittyma.kaynnista();
         sliittyma.run();
-        //gui.run();
     }
 }

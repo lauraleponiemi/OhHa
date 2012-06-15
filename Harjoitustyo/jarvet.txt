@@ -1,0 +1,37 @@
+﻿Saimaa 1377 Kjoki 234 Ljoki 78
+Päijänne 1080 Mjoki 34 Njoki 99 Ojoki 77 Pjoki 33
+Inari 1040 
+Pielinen 894 
+Oulujärvi 887 
+Pihlajavesi 712 
+Orivesi 601 
+Haukivesi 562 
+Keitele 493
+Kallavesi 472
+Puruvesi 420
+Pyhäselkä 361 Fjoki 456 Gjoki 44 Hjoki 11 Ijoki 22 Jjoki 11
+Puula 330
+LokanTekojärvi 315
+Höytiäinen 282 
+Näsijärvi 256  
+Yli-Kitka 237 
+Suvasvesi 233 
+Kemijärvi 230
+Juojärvi 219
+Pyhäjärvi(Kitee) 206
+Enonvesi 196
+Kiantajärvi 191
+Konnevesi 189 
+Nilakka 168  
+Koitere 167 
+Iisvesi 164 
+Juurusvesi–Akonvesi 159  
+Pyhäjärvi(Säkylä) 155 
+Kivijärvi(Kannonkoski) 154  
+Vanajavesi 149  
+PorttipahdanTekojärvi 148 
+Lappajärvi 145  
+Suontee 143 
+Viinijärvi 134 
+Längelmävesi 133 
+Kyyvesi 128 Ajoki 72

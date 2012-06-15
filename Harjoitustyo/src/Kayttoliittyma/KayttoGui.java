@@ -1,8 +1,9 @@
 package Kayttoliittyma;
 
-import Logiikka.Jarjestelma;
-import java.awt.BorderLayout;
+
+
 //import java.awt.BorderLayout;
+import Logiikka.Jarjestelma;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,10 @@ public class KayttoGui implements Runnable, ActionListener {
     public KayttoGui(Jarjestelma jarjestelma) {
         this.jarjestelma = jarjestelma;
 
+    }
+    
+    public Jarjestelma getJarjestelma(){
+        return jarjestelma;
     }
 
     /**
@@ -60,17 +65,9 @@ public class KayttoGui implements Runnable, ActionListener {
         container.add(new JLabel("Valitse toiminto: "));
         container.add(new JLabel("Lopeta istunto sulkemalla ikkuna "));
 
-
-
         jarvet = new JButton("Avaa lista tietokannan järvistä");
         joet = new JButton("Avaa lista tietokannan joista");
         nkuuntelija = new NapinKuuntelija(this, jarjestelma, frame, jarvet, joet);
-//        ButtonGroup buttonGroup = new ButtonGroup();
-//        buttonGroup.add(lopeta);
-//        buttonGroup.add(jarvet);
-//        buttonGroup.add(joet);
-
-
         jarvet.addActionListener(this);
         joet.addActionListener(this);
 
@@ -98,8 +95,8 @@ public class KayttoGui implements Runnable, ActionListener {
 
         JLabel otsikkoKentta = new JLabel(otsikko);
 //        add(new JLabel("Valitse toiminto: "));
-        JButton jarvi1 = new JButton(nappi1);
-        JButton jarvi2 = new JButton(nappi2);
+        jarvi1 = new JButton(nappi1);
+        jarvi2 = new JButton(nappi2);
         container.add(otsikkoKentta);
         container.add(jarvi1);
         container.add(jarvi2);
@@ -113,28 +110,28 @@ public class KayttoGui implements Runnable, ActionListener {
     /**
      * Metodi luo ikkunan johon tulostetaan valintanappulan tapahtuma.
      */
-    public void luoIkkuna(String otsikko, Integer komento, Container container) {   // miten annetaan viite tekstikenttään?
-        String nappi1 = " ";
-        String nappi2 = " ";
-//        frame = new JFrame(otsikko);
-//        frame.setPreferredSize(new Dimension(200, 100));
-        if (komento == 3) {
-            nappi1 = "Lisätään järvi";
-            nappi2 = "Muutetaan järven tietoja";
-        } else if (komento == 4) {
-            nappi1 = "Lisätään joki";
-            nappi2 = "Muutetaan joen tietoja";
-        }
-        NappiIkkuna nIkkuna = new NappiIkkuna(this, otsikko, nappi1, nappi2);
-//        JButton ekaNappi = new JButton(nappi1);
-//        JButton tokaNappi = new JButton(nappi2);
-//        container.add(ekaNappi);
-//        container.add(tokaNappi);
-//        ekaNappi.addActionListener(this);
-//        tokaNappi.addActionListener(this);
-
-        frame.setVisible(true);
-    }
+//    public void luoIkkuna(String otsikko, Integer komento, Container container) {   // miten annetaan viite tekstikenttään?
+//        String nappi1 = " ";
+//        String nappi2 = " ";
+////        frame = new JFrame(otsikko);
+////        frame.setPreferredSize(new Dimension(200, 100));
+//        if (komento == 3) {
+//            nappi1 = "Lisätään järvi";
+//            nappi2 = "Muutetaan järven tietoja";
+//        } else if (komento == 4) {
+//            nappi1 = "Lisätään joki";
+//            nappi2 = "Muutetaan joen tietoja";
+//        }
+//        NappiIkkuna nIkkuna = new NappiIkkuna(this, otsikko, nappi1, nappi2);
+////        JButton ekaNappi = new JButton(nappi1);
+////        JButton tokaNappi = new JButton(nappi2);
+////        container.add(ekaNappi);
+////        container.add(tokaNappi);
+////        ekaNappi.addActionListener(this);
+////        tokaNappi.addActionListener(this);
+//
+//        frame.setVisible(true);
+//    }
 
     @Override
     public void actionPerformed(ActionEvent ae) {
@@ -152,12 +149,21 @@ public class KayttoGui implements Runnable, ActionListener {
         if (ae.getSource() == ljarvi) {
             String otsikko = " Järven lisäys / järven tietojen muuttaminen";
             int komento = 3;
-            luoIkkuna(otsikko, komento, container);
+//            luoIkkuna(otsikko, komento, container);
+            String nappi1 = "Lisätään järvi";
+            String nappi2 = "Muutetaan järven tietoja";
+            NappiIkkuna nIkkuna = new NappiIkkuna(this, otsikko, nappi1, nappi2);
+            nIkkuna.run();
         }
         if (ae.getSource() == ljoki) {
             String otsikko = " Joen lisäys / joen tietojen muuttaminen";
             int komento = 4;
-            luoIkkuna(otsikko, komento, frame);
+//            luoIkkuna(otsikko, komento, frame);
+            String nappi1 = "Lisätään joki";
+            String nappi2 = "Muutetaan joen tietoja";
+            NappiIkkuna nIkkuna = new NappiIkkuna(this, otsikko, nappi1, nappi2);
+            nIkkuna.run();
+            System.out.println("millon ollaan täällä");
         }
 
     }

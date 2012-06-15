@@ -50,9 +50,6 @@ public class Jarjestelma {
                 tkanta.setJarvi(jarvi, jokia);
                 return true;
             }
-//            else {
-//                return false;
-//            }
         }
         return false;
 
@@ -104,17 +101,15 @@ public class Jarjestelma {
         return false;
     }
 
-    
-    
-    private int paljonkoVirtaaJarveenPaivassa(Jarvi jarvi){
+    private int paljonkoVirtaaJarveenPaivassa(Jarvi jarvi) {
         int luku = 0;
-        if(onkoJarviTietokannassa(jarvi.getNimi())==true){
-            for(Joki joki : tkanta.getJarvet().get(jarvi).keySet()){
+        if (onkoJarviTietokannassa(jarvi.getNimi()) == true) {
+            for (Joki joki : tkanta.getJarvet().get(jarvi).keySet()) {
                 luku = luku + joki.getVirtaus();
             }
         }
         return luku;
-        
+
     }
 
     private boolean onkoJokiTietokannassa(String jokinimi) {
@@ -153,6 +148,7 @@ public class Jarjestelma {
             return false;
         }
     }
+    
 
     /**
      * Metodi hakee joen nimen, kun sille annetaan jokiolio. Jos jokea ei löydy,
@@ -199,7 +195,6 @@ public class Jarjestelma {
     public boolean yrittaalisataVettaJarvessa(String nimi, int vetta) {
         for (Jarvi jarvi : tkanta.getJarvet().keySet()) {
             if (jarvi.getNimi().equals(nimi)) {
-//                jarvi.lisaaVetta(vetta);
                 if (jarvi.lisaaVetta(vetta) == true) {
                     return true;
                 }
@@ -305,9 +300,6 @@ public class Jarjestelma {
                 }
                 return true;
             }
-//            else {
-//                return false;
-//            }
         }
         return false;
 //        if (!tkanta.getJoet().keySet().isEmpty()) {
@@ -338,8 +330,8 @@ public class Jarjestelma {
                 if (!tkanta.getJarvet().keySet().isEmpty()) {
                     teksti = teksti + "\n" + ejarvi + "\n"
                             + "Järveen laskeva vesimäärä päivässä: "
-                            +paljonkoVirtaaJarveenPaivassa(ejarvi)+ "\n" + 
-                            "Siihen laskevat joet: ";
+                            + paljonkoVirtaaJarveenPaivassa(ejarvi) + "\n"
+                            + "Siihen laskevat joet: ";
                     for (Joki joki : tkanta.getJarvet().get(ejarvi).keySet()) {
                         teksti = teksti + joki;
                         teksti = teksti + ", ";
@@ -350,6 +342,8 @@ public class Jarjestelma {
             return teksti;
         }
     }
+    
+
 
     /**
      * Metodi palauttaa listan tietokantaan tallennetuista joista. Jos
@@ -398,70 +392,83 @@ public class Jarjestelma {
         return true;
 
     }
+    /**
+     * Metodi lukee tiedostosta järviä ja siihen liittyviä jokia. Se tallentaa ne tietokantaan.
+     * Metodi heitää poikkeuksen ja paluttaa false, jos tiedoston lukeminen epäonnistuu.
+     * 
+     * @param tiedosto
+     * @return boolean
+     */
+    public boolean lisaaJarvetTiedostosta(File tiedosto) {
+        try {
+            lukija = new Scanner(tiedosto);
+        } catch (Exception e) {
+            return false;
+        }
+        while (lukija.hasNextLine()) {
+            String rivi = lukija.nextLine();
+            String[] osat = rivi.split(" ");
+            lisaaJaLuoJarvi(Integer.parseInt(osat[1]), osat[0]);
+            if(osat.length > 1){
+                lisaaJokiaTiedostostaJarvelle(osat[0], osat);
+            }           
+        }
+        lukija.close();
+        return true;
+    }
+    
+    public void jarjestaAakkosjarjestykseen(File tiedosto){
+        
+    }
+    
+    
+    public void luoJarvelleJoki(String nimi, String jnimi, Integer virtaus){
+        lisaaJaLuoJoki(virtaus, jnimi, nimi);
+    }
 
-//    /**
-//     * Metodi luo annettujen syötteiden perusteella järjestelmän. Jos
-//     * käyttäjätunnus ja salasana täsmäävät tunnukset- HashMap:iin, metodi luo
-//     * adminjärjestelmän. Jos käyttäjä syöttää tyhjän salasana, että
-//     * käyttäjätunnuskentän, metodi luo opiskelijajarjestelman. Jos
-//     * kirjautuminen epäonnistuu, järjestelma palauttaa null:in.
-//     *
-//     * @param kayttotunnus käyttäjän syöttämä käyttötunnus jota verrataan
-//     * tiedoston tunnukseen
-//     * @param salasana käyttäjän syöttämä salasana, jota verrataan annettua
-//     * käyttötunnusta tiedostossa vastaavaan salasanaan
-//     * @return Jarjestelma
-//     */
-//    public Jarjestelma kirjauduSisaan(String kayttotunnus, String salasana) {
-//        if (tunnukset.containsKey(kayttotunnus)) {
-//            if (tunnukset.get(kayttotunnus).equals(salasana)) {
-//                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
-//                return ajarjestelma;
-//            }
-//        } else if (kayttotunnus.equals("") && salasana.equals("")) {
-//            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
-//            return ojarjestelma;
-//        }
-//        return null;
-//    }
+    private void lisaaJokiaTiedostostaJarvelle(String jarvenNimi, String[] osat) {
+            for (int i = 2; i < osat.length; i++) {
+                if (i % 2 == 0) {
+                    String joenNimi = osat[i];
+                    int jv = Integer.parseInt(osat[i + 1]);
+                    Joki uusiJoki = new Joki(jv, joenNimi);
+                    if (onkoJokiJarvenMapissa(uusiJoki, osat[0]) == false) {
+                        tkanta.setJokiJarvelle(uusiJoki, haeJarviNimella(jarvenNimi));
+                        tkanta.setJoki(uusiJoki, jv);
+                    }
+                }
+            }
+    }
 
     /**
      * Metodi määrittää, kirjaudutaanko järjestelmään ja kumpaan niistä. Boolean
-     * -muuttuja muutetaan true tai false -arvoksi sen mukaan kumpaan järjestelmään kirjaudutaan.
-     * kirjautuukoSisaan() - meto palauttaa true, jos kirjauduttiin ylipäätään järjestelmään
-     * ja false, jos epäonnistuttiin.
+     * -muuttuja muutetaan true tai false -arvoksi sen mukaan kumpaan
+     * järjestelmään kirjaudutaan. kirjautuukoSisaan() - meto palauttaa true,
+     * jos kirjauduttiin ylipäätään järjestelmään ja false, jos epäonnistuttiin.
      *
      * @param kayttotunnus
      * @param salasana
      * @return boolean
      */
     public boolean kirjautuukoSisaan(String kayttotunnus, String salasana) {
-//        if(kayttotunnus.equals(null) && salasana.equals(null)){
-//            kayttotunnus.equals(" ");
-//            salasana.equals(" ");
-//            onAdminJarjestelma = false;
-//            return true;
-//        }
         if (tunnukset.containsKey(kayttotunnus)) {
             if (tunnukset.get(kayttotunnus).equals(salasana)) {
-//                AdminJarjestelma ajarjestelma = new AdminJarjestelma(tkanta);
                 onAdminJarjestelma = true;
                 return true;
             }
         } else if (kayttotunnus.equals("") && salasana.equals("")) {
-//            OpiskelijaJarjestelma ojarjestelma = new OpiskelijaJarjestelma(tkanta);
             onAdminJarjestelma = false;
             return true;
         }
         return false;
     }
 
-    
     /**
      * Metodi kertoo kumpi jarjestelma kyseessä.
+     *
      * @return boolean
      */
     public boolean onkoAdminJarjestelma() {
-            return onAdminJarjestelma;
+        return onAdminJarjestelma;
     }
 }

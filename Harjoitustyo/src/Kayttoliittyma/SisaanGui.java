@@ -51,7 +51,7 @@ public class SisaanGui implements Runnable {
         JPasswordField salasanaKentta = new JPasswordField();
         
         JButton loginnappi = new JButton("Login");
-        KirjautumisKuuntelija kuuntelija = new KirjautumisKuuntelija(jarjestelma, nimiKentta, salasanaKentta);
+        SisaanKirjautumisKuuntelija kuuntelija = new SisaanKirjautumisKuuntelija(jarjestelma, nimiKentta, salasanaKentta);
         loginnappi.addActionListener(kuuntelija);
         
 //        container.add(teksti, BorderLayout.NORTH);

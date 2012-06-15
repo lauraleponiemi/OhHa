@@ -13,12 +13,14 @@ public class JarjestelmaTest {
     private Jarjestelma jarjestelma;
     File tiedosto;
     File tyhjatiedosto;
+    File jtiedosto;
     private Scanner lukija;
     private HashMap<String, String> ttunnukset;
     Tietokanta tkanta;
 
     public JarjestelmaTest() throws FileNotFoundException {
         tyhjatiedosto = new File("vaarattunnukset.txt");
+        jtiedosto = new File("jarvetTest.txt");
         tiedosto = new File("tunnuksetTest.txt");
         lukija = new Scanner(tiedosto);
         ttunnukset = new HashMap<String, String>();
@@ -74,6 +76,11 @@ public class JarjestelmaTest {
     @Test
     public void yrittaaLisataJarveaNegatiivisellaTaseella() {
         assertFalse(jarjestelma.lisaaJaLuoJarvi(-45, "Kumpulajärvi"));
+    }
+
+    @Test
+    public void yrittaaLisataJarveaNollaTaseella() {
+        assertFalse(jarjestelma.lisaaJaLuoJarvi(0, "Kumpulajärvi"));
     }
 
     @Test
@@ -338,7 +345,7 @@ public class JarjestelmaTest {
     }
 
     @Test
-    public void yrittaaLisataTiedostosta() {
+    public void yrittaaLisataTunnuksiaTiedostosta() {
         jarjestelma.lisaaTunnuksetTiedostosta(tiedosto);
 
         while (lukija.hasNextLine()) {
@@ -351,6 +358,15 @@ public class JarjestelmaTest {
         assertTrue(ttunnukset.get("Hharjoittelija").equals("tapanila"));
         assertFalse(ttunnukset.get("Hharjoittelija").equals("jokusalasana"));
         assertNull(ttunnukset.get("Hhokkanen"));
+    }
+
+    @Test
+    public void yrittaaLisataJarviaJaJokiaTiedostosta() {
+        jarjestelma.lisaaJarvetTiedostosta(jtiedosto);
+        lukija.close();
+        assertTrue(jarjestelma.haeJarviNimella("Kallavesi").getTase()==47);
+        assertTrue(jarjestelma.haeJokiNimella("Hjoki").getVirtaus()==1);
+
     }
 
 //    @Test
